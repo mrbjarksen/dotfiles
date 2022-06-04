@@ -4,6 +4,7 @@
 alias ls='ls --color -F'
 alias ll='ls --color -AFlv'
 alias vim=nvim
+alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # Options
 setopt AUTO_CD 
@@ -20,11 +21,6 @@ zsh_highlight+=(paste:none)
 
 # Handler for unknown command (using `pkgfile')
 source /usr/share/doc/pkgfile/command-not-found.zsh
-
-# ------ Dotfile management ------ #
-
-alias dot='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-dot config status.showUntrackedFiles no
 
 # ------ Vi mode ------ #
 
