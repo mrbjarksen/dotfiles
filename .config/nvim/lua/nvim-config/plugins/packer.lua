@@ -20,7 +20,10 @@ packer.startup(function()
   -- Packer
   use {
     'wbthomason/packer.nvim',
-    event = 'CmdlineEnter',
+    cmd = {
+      'PackerClean', 'PackerCompile', 'PackerInstall', 'PackerUpdate', 'PackerSync', 'PackerLoad',
+      'PackerSnapshot', 'PackerSnapshotDelete', 'PackerSnapshotRollback', 'PackerProfile',
+    },
     config = function ()
       require 'nvim-config.plugins.packer'
     end
@@ -46,8 +49,9 @@ packer.startup(function()
         end
       end
       if override.default_icon then
-        override.default_icon.color = '#CCCCCC'
-        override.default_icon.cterm_color = '16'
+        local normal_fg = vim.api.nvim_get_hl_by_name('Normal', true).foreground
+        override.default_icon.color = ('%x'):format(normal_fg)
+        -- override.default_icon.cterm_color = '16'
       end
       require'nvim-web-devicons'.setup {
         override = override,
@@ -58,24 +62,10 @@ packer.startup(function()
   use { 'MunifTanjim/nui.nvim', module = 'nui' }
 
   -- Startup
-  use {
-    'nathom/filetype.nvim',
-    config = function ()
-      require'filetype'.setup {
-        overrides = {
-          function_complex = {
-            ['*.lua'] = function ()
-              vim.notify "complex"
-              vim.opt_local.formatoptions:remove 'r'
-              vim.opt_local.formatoptions:remove 'o'
-            end
-          }
-        }
-      }
-    end
-  }
+  use 'nathom/filetype.nvim'
   use 'lewis6991/impatient.nvim'
   use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
+  -- use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
 
   -- Completion
   use {
@@ -100,7 +90,7 @@ packer.startup(function()
   use {
     {
       'neovim/nvim-lspconfig',
-      ft = require'nvim-config.configured-filetypes'.lsp:filetypes(),
+      ft = require'nvim-config.plugins.ft-setup'.lsp:filetypes(),
       config = function ()
         require 'nvim-config.plugins.lsp'
       end,
@@ -124,14 +114,31 @@ packer.startup(function()
     {
       'nvim-treesitter/nvim-treesitter',
       module = 'nvim-treesitter',
-      ft = require'nvim-config.configured-filetypes'.treesitter:filetypes(),
-      event = 'CmdlineEnter',
+      ft = require'nvim-config.plugins.ft-setup'.treesitter:filetypes(),
+      cmd = {
+        'TSInstall', 'TSInstallSync', 'TSInstallInfo', 'TSUpdate', 'TSUpdateSync',
+        'TSUninstall', 'TSBufEnable', 'TSBufDisable', 'TSBufToggle', 'TSEnable',
+        'TSDisable', 'TSToggle', 'TSModuleInfo', 'TSEditQuery', 'TSEditQueryUserAfter',
+      },
       run = ':TSUpdate',
       config = function ()
         require 'nvim-config.plugins.treesitter'
       end
     },
-    { 'nvim-treesitter/playground',                  event = 'CmdlineEnter'    },
+    {
+      'nvim-treesitter/playground',
+      cond = function ()
+        return vim.g.loaded_nvim_treesitter
+      end,
+      keys = '<Leader>k',
+      cmd = {
+        'TSPlaygroundToggle',
+        'TSHighlightCapturesUnderCursor'
+      },
+      config = function ()
+        vim.keymap.set('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>', { noremap = true, silent = true })
+      end
+    },
     { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
     { 'windwp/nvim-ts-autotag',                      after = 'nvim-treesitter' },
     { 'RRethy/nvim-treesitter-endwise',              after = 'nvim-treesitter' },
@@ -191,7 +198,7 @@ packer.startup(function()
       vim.g.tokyonight_italic_keywords = false
       vim.g.tokyonight_sidebars = { 'neo-tree', 'Trouble', 'qf' }
       vim.cmd [[colorscheme tokyonight]]
-      vim.cmd [[hi FloatBorder guibg=NONE]]
+      vim.cmd [[hi Folded guibg=NONE]]
     end
   }
   use {
@@ -233,14 +240,14 @@ packer.startup(function()
       vim.g.lightline = { colorscheme = 'tokyonight' }
     end
   }
-  use {
-    'goolord/alpha-nvim',
-    disable = true,
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function ()
-      require'nvim-config.plugins.alpha'
-    end
-  }
+  -- use {
+  --   'feline-nvim/feline.nvim',
+  --   config = function ()
+  --     vim.opt.termguicolors = true
+  --     require'feline'.setup()
+  --   end
+  -- }
+  -- use 'rebelot/heirline.nvim'
   use {
     'lukas-reineke/indent-blankline.nvim',
     disable = true,
@@ -278,7 +285,17 @@ packer.startup(function()
   -- Leap
   use {
     'ggandor/leap.nvim',
-    keys = { {'n','s'}, {'n','S'}, {'n','gs'}, {'x','s'}, {'x','S'}, {'o','z'}, {'o','Z'}, {'o','x'}, {'o','X'} },
+    keys = {
+      { 'n', 's'  },
+      { 'n', 'S'  },
+      { 'n', 'gs' },
+      { 'x', 's'  },
+      { 'x', 'S'  },
+      { 'o', 'z'  },
+      { 'o', 'Z'  },
+      { 'o', 'x'  },
+      { 'o', 'X'  },
+    },
     config = function ()
       require'leap'.setup { case_insensitive = false }
       require'leap'.set_default_keymaps()
@@ -295,10 +312,24 @@ packer.startup(function()
   }
 
   -- QoL
-  -- use 'tpope/vim-sleuth'
+  use {
+    'tpope/vim-surround',
+    keys = {
+      { 'n', 'ds' },
+      { 'n', 'cs' },
+      { 'n', 'cS' },
+      { 'n', 'ys' },
+      { 'n', 'yS' },
+      { 'v', 'S'  },
+      { 'v', 'gS' },
+    }
+  }
+  use 'tpope/vim-repeat'
+  use { 'tpope/vim-characterize', keys = 'ga' }
+  use { 'tommcdo/vim-lion', keys = { 'gl', 'gL' } }
   use {
     'andymass/vim-matchup',
-    event = 'CursorHold',
+    event = 'CursorMoved',
     keys = { '%', 'g%', '[%', ']%', 'z%', 'i%', 'a%',  },
     config = function ()
       --vim.g.matchup_matchparen_enabled = 0
@@ -308,10 +339,33 @@ packer.startup(function()
       vim.g.matchup_override_vimtex = 1
     end
   }
-  use { 'tpope/vim-surround',     keys = { {'n','ds'}, {'n','cs'}, {'n','cS'}, {'n','ys'}, {'n','yS'}, {'v','S'}, {'v','gS'} } }
-  use { 'tpope/vim-characterize', keys = 'ga' }
-  use { 'tommcdo/vim-lion',       keys = { 'gl', 'gL' } }
-  use { 'numToStr/Comment.nvim',  keys = 'gc', config = function () require'Comment'.setup() end }
+  use {
+    'luukvbaal/stabilize.nvim',
+    disable = true,
+    event = 'WinNew',
+    cond = function ()
+      return #vim.api.nvim_tabpage_list_wins(0) > 1
+    end,
+    config = function ()
+      require'stabilize'.setup()
+    end
+  }
+  use {
+    'numToStr/Comment.nvim',
+    keys = 'gc',
+    config = function ()
+      require'Comment'.setup()
+    end
+  }
+  use {
+    'booperlv/nvim-gomove',
+    keys = { '<A-h>', '<A-j>', '<A-k>', '<A-l>' },
+    config = function ()
+      require'gomove'.setup {
+        move_past_end_col = true
+      }
+    end
+  }
   use {
     'max397574/better-escape.nvim',
     event = 'InsertEnter',

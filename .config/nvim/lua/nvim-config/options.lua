@@ -7,6 +7,10 @@ vim.opt.whichwrap   = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true,
 vim.opt.showmode    = false
 vim.opt.lazyredraw  = true
 
+-- Scrolloff
+vim.opt.scrolloff     = 3
+vim.opt.sidescrolloff = 3
+
 -- Tabs and Indents
 vim.opt.shiftwidth  = 4
 vim.opt.expandtab   = true
@@ -17,8 +21,11 @@ vim.opt.ignorecase  = true
 vim.opt.smartcase   = true
 vim.opt.tagcase     = 'match'
 
+-- Folds
+vim.opt.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').' ... '.trim(getline(v:foldend))]]
+
 -- Breaks and chars
-vim.opt.fillchars   = { eob = '│' }
+vim.opt.fillchars   = { eob = '│', fold = ' ' }
 vim.opt.listchars   = { tab = '>-', space = '⸱', nbsp = '+', eol = '↴' }
 vim.opt.wrap        = false
 --vim.opt.showbreak   = '> '

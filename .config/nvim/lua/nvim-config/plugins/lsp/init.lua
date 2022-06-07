@@ -10,7 +10,7 @@ win.default_opts = function (options)
   return opts
 end
 
-local servers = require'nvim-config.configured-filetypes'.lsp:values()
+local servers = require'nvim-config.plugins.ft-setup'.lsp:values()
 for _, server in pairs(servers) do
   local settings_ok, settings = pcall(require, 'nvim-config.plugins.lsp.' .. server)
   if not settings_ok then settings = {} end

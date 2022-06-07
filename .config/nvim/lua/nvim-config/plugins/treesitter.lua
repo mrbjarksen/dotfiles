@@ -1,5 +1,5 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = table.insert(require'nvim-config.configured-filetypes'.treesitter:values(), 'query'),
+  ensure_installed = table.insert(require'nvim-config.plugins.ft-setup'.treesitter:values(), 'query'),
   highlight = { enable = true, additional_vim_regex_highlighting = true },
   incremental_selection = { enable = true, keymaps = require'nvim-config.keymaps'.treesitter.visual },
   indent = { enable = true },

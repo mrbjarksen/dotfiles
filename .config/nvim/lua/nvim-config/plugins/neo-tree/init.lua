@@ -17,8 +17,8 @@ require'neo-tree'.setup {
     },
     icon = {
       folder_closed = require'nvim-config.icons'.filesystem.closed_folder,
-      folder_open = require'nvim-config.icons'.filesystem.open_folder,
-      folder_empty = require'nvim-config.icons'.filesystem.empty_folder,
+      folder_open   = require'nvim-config.icons'.filesystem.open_folder,
+      folder_empty  = require'nvim-config.icons'.filesystem.empty_folder,
     },
   },
   window = {
@@ -97,7 +97,7 @@ require'neo-tree'.setup {
   },
 }
 
-vim.keymap.set('n', '<Leader>tf', '<Cmd>Neotree filesystem toggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>tt', '<Cmd>Neotree filesystem toggle<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>tb', '<Cmd>Neotree show buffers right toggle<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>', { noremap = true, silent = true })
 

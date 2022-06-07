@@ -5,7 +5,6 @@ local popup = Popup {
   position = '50%',
   enter = true,
   focusable = true,
-  
 }
 
 popup:mount()
