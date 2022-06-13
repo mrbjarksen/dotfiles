@@ -147,10 +147,53 @@ packer.startup(function()
 
   -- Telescope
   use {
-    'nvim-telescope/telescope.nvim',
-    requires = 'nvim-lua/plenary.nvim',
-    event = 'CmdlineEnter',
-    keys = '<Leader>f',
+    {
+      -- 'nvim-telescope/telescope.nvim',
+      '~/telescope.nvim',
+      cmd = 'Telescope',
+      keys = { '<Leader>f', '<Leader>F' },
+      config = function ()
+        require 'nvim-config.plugins.telescope'
+        if packer_plugins['nvim-neoclip.lua'].loaded then
+          require'telescope'.load_extension 'neoclip'
+        end
+      end
+    },
+    {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      run = 'make',
+      after = 'telescope.nvim',
+      config = function ()
+        require'telescope'.load_extension 'fzf'
+      end
+    },
+    {
+      'nvim-telescope/telescope-github.nvim',
+      after = 'telescope.nvim',
+      config = function ()
+        require'telescope'.load_extension 'gh'
+      end
+    },
+    {
+      'nvim-telescope/telescope-packer.nvim',
+      after = 'telescope.nvim',
+      config = function ()
+        require'telescope'.load_extension 'packer'
+      end
+    },
+    {
+      'luc-tielen/telescope_hoogle',
+      after = 'telescope.nvim',
+      config = function ()
+        require'telescope'.load_extension 'hoogle'
+      end
+    },
+  }
+
+  -- Neoclip
+  use {
+    'AckslD/nvim-neoclip.lua',
+    event = 'TextYankPost',
     config = function ()
       require 'nvim-config.plugins.telescope'
     end
