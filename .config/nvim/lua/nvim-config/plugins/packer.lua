@@ -413,16 +413,70 @@ packer.startup(function()
     end
   }
 
-      if vim.g.colors_name == 'tokyonight' then
-        vim.cmd [[
-          highlight! link LeapMatch LightspeedShortcut
-          highlight! link LeapLabelPrimary LightspeedLabel
-          highlight! link LeapLabelSecondary LightspeedLabelDistant
-          highlight! link LeapBackdrop LightspeedGreyWash
-        ]]
+  -- Project management
+  use {
+    {
+      'rmagatti/auto-session',
+      cmd = { 'SaveSession', 'RestoreSession', 'RestoreSessionFromFile', 'DeleteSession' },
+      event = 'VimLeavePre',
+      config = function ()
+        require'auto-session'.setup {
+          log_level = 'error',
+          auto_restore_enabled = false,
+          auto_session_use_git_branch = true,
+        }
       end
+    },
+    {
+      'rmagatti/session-lens',
+      after = 'telescope.nvim',
+      config = function ()
+        require'session-lens'.setup()
+        require'telescope'.load_extension 'session-lens'
+      end
+    }
+  }
+  use {
+    'airblade/vim-rooter',
+    event = 'BufEnter',
+    config = function ()
+      vim.g.rooter_patterns = { '.git', '>LaTeX', '>.config' }
     end
   }
+  -- use {
+  --   'ahmedkhalf/project.nvim',
+  --   config = function ()
+  --     require'project_nvim'.setup {
+  --       patterns = { '>LaTeX', '>.config' },
+  --       silent_chdir = false,
+  --     }
+  --   end
+  -- }
+  -- use {
+  --   'olimorris/persisted.nvim',
+  --   event = 'VimLeavePre',
+  --   cmd = {
+  --     'SessionStart', 'SessionStop', 'SessionSave', 'SessionLoad',
+  --     'SessionLoadLast', 'SessionDelete', 'SessionToggle',
+  --   },
+  --   after = 'telescope.nvim',
+  --   config = function ()
+  --     require'persisted'.setup {
+  --       use_git_branch = true,
+  --       telescope = {
+  --         before_source = function()
+  --           pcall(vim.cmd, "%bdelete")
+  --         end,
+  --         after_source = function(session)
+  --           pcall(vim.cmd, "git checkout " .. session.branch)
+  --         end,
+  --       },
+  --     }
+  --     if packer_plugins['telescope.nvim'].loaded then
+  --       require'telescope'.load_extension 'persisted'
+  --     end
+  --   end
+  -- }
 
   -- QoL
   use {
