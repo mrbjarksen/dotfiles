@@ -1,3 +1,11 @@
+--[[
+Wishlist:
+  - Diagnostic list (Trouble replacement) in neo-tree
+  - Refined project management
+  - Faster indent lines
+  - Zen mode?
+]]
+
 local packer = require 'packer'
 local use = packer.use
 
