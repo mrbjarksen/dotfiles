@@ -122,13 +122,25 @@ local keymaps = {
   },
 
   telescope = {
-    active = function () return {
-      ['<C-J>'] = require'telescope.actions'.preview_scrolling_down,
-      ['<C-K>'] = require'telescope.actions'.preview_scrolling_up,
-    } end,
-    normal = function () return makeKeymaps {
-      { modes = 'n', lhs = '<Leader>ff', rhs = require'telescope.builtin'.find_files, desc = "Find files" },
-      { modes = 'n', lhs = '<Leader>fg', rhs = require'telescope.builtin'.live_grep,  desc = "Find text in workspace" },
+    normal = function () local builtin = require 'telescope.builtin'; return makeKeymaps {
+      { modes = 'n', lhs = '<Leader>ff', rhs = builtin.find_files,                desc = "Find files"                            },
+      { modes = 'n', lhs = '<Leader>fg', rhs = builtin.live_grep,                 desc = "Find text in workspace"                },
+      { modes = 'n', lhs = '<Leader>fG', rhs = builtin.grep_string,               desc = "Find string under cursor in workspace" },
+      { modes = 'n', lhs = '<Leader>fb', rhs = builtin.buffers,                   desc = "Find buffers"                          },
+      -- { modes = 'n', lhs = '<Leader>fh', rhs = builtin.help_tags,                 desc = "Find help"                             },
+      -- { modes = 'n', lhs = '<Leader>fH', rhs = builtin.man_pages,                 desc = "Find man pages"                        },
+      { modes = 'n', lhs = '<Leader>fm', rhs = builtin.marks,                     desc = "Find marks"                            },
+      { modes = 'n', lhs = '<Leader>fF', rhs = builtin.current_buffer_fuzzy_find, desc = "Find in current buffer"                },
+      -- { modes = 'n', lhs = '<Leader>fc', rhs = builtin.commands,                  desc = "Find command"                          },
+      -- { modes = 'n', lhs = '<Leader>fC', rhs = builtin.command_history,           desc = "Find in command history"               },
+      -- { modes = 'n', lhs = '<Leader>fr', rhs = builtin.lsp_references,            desc = "Find LSP references"                   },
+      { modes = 'n', lhs = '<Leader>fs', rhs = builtin.lsp_workspace_symbols,     desc = "Find LSP symbols in workspace"         },
+      { modes = 'n', lhs = '<Leader>fS', rhs = builtin.lsp_document_symbols,      desc = "Find LSP symbols in document"          },
+      -- { modes = 'n', lhs = '<Leader>fa', rhs = builtin.lsp_code_actions,          desc = "Find LSP code actions"                 },
+      { modes = 'n', lhs = '<Leader>ft', rhs = builtin.treesitter,                desc = "Find treesitter symbols"               },
+      { modes = 'n', lhs = '<Leader>F',  rhs = builtin.builtin,                   desc = "Find finders"                          },
+      { modes = 'n', lhs = '<Leader>f.', rhs = builtin.resume,                    desc = "Resume finding"                        },
+      { modes = 'n', lhs = '<Leader>fj', rhs = builtin.jumplist,                  desc = "Find jumps"                            },
     } end,
   },
 
