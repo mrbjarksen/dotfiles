@@ -480,6 +480,13 @@ packer.startup(function()
 
   -- QoL
   use {
+    'tpope/vim-repeat',
+    after = {
+      'gitsigns.nvim',
+      'vim-surround',
+    }
+  }
+  use {
     'tpope/vim-surround',
     keys = {
       { 'n', 'ds' },
@@ -491,7 +498,6 @@ packer.startup(function()
       { 'v', 'gS' },
     }
   }
-  use 'tpope/vim-repeat'
   use { 'tpope/vim-characterize', keys = 'ga' }
   use { 'tommcdo/vim-lion', keys = { 'gl', 'gL' } }
   use {
