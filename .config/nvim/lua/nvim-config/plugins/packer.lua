@@ -226,13 +226,8 @@ packer.startup(function()
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v2.x',
     module = 'neo-tree',
-    event = 'CmdlineEnter',
+    cmd = 'Neotree',
     keys = '<Leader>t',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
-      'MunifTanjim/nui.nvim',
-    },
     setup = function () vim.g.neo_tree_remove_legacy_commands = 1 end,
     config = function ()
       require 'nvim-config.plugins.neo-tree'
