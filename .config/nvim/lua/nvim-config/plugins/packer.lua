@@ -499,7 +499,15 @@ packer.startup(function()
     }
   }
   use { 'tpope/vim-characterize', keys = 'ga' }
-  use { 'tommcdo/vim-lion', keys = { 'gl', 'gL' } }
+  use { 'junegunn/vim-slash', event = 'CmdlineEnter /' }
+  use {
+    'junegunn/vim-easy-align',
+    cmd = 'EasyAlign',
+    keys = 'gl',
+    config = function ()
+      vim.keymap.set({ 'n', 'x' }, 'gl', '<Plug>(EasyAlign)', { noremap = true, silent = true })
+    end
+  }
   use {
     'andymass/vim-matchup',
     event = 'CursorMoved',
