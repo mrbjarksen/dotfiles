@@ -360,24 +360,20 @@ packer.startup(function()
   --   end
   -- }
   -- use 'rebelot/heirline.nvim'
-  use {
-    'lukas-reineke/indent-blankline.nvim',
-    disable = true,
-    config = function ()
-      require'indent_blankline'.setup {
-        use_treesitter = true,
-        --indent_level = 50,
-        show_trailing_blankline_indent = false,
-        show_end_of_line = true,
-        show_current_context = true,
-        use_treesitter_scope = true,
-      }
-      vim.api.nvim_clear_autocmds {
-        event = { 'TextChangedI, TextChangedP' },
-        group = 'IndentBlanklineAutogroup',
-      }
-    end
-  }
+
+  -- use {
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   config = function ()
+  --     require'indent_blankline'.setup {
+  --       use_treesitter = true,
+  --       --indent_level = 50,
+  --       show_trailing_blankline_indent = false,
+  --       show_end_of_line = true,
+  --       show_current_context = true,
+  --       use_treesitter_scope = true,
+  --     }
+  --   end
+  -- }
   use {
     'rcarriga/nvim-notify',
     config = function ()
