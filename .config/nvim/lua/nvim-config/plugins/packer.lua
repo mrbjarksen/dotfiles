@@ -20,6 +20,7 @@ packer.startup(function()
   -- Packer
   use {
     'wbthomason/packer.nvim',
+    module = 'packer',
     cmd = {
       'PackerClean', 'PackerCompile', 'PackerInstall', 'PackerUpdate', 'PackerSync', 'PackerLoad',
       'PackerSnapshot', 'PackerSnapshotDelete', 'PackerSnapshotRollback', 'PackerProfile',
