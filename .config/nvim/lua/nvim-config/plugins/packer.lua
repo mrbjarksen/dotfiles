@@ -115,11 +115,11 @@ packer.startup(function()
       'nvim-treesitter/nvim-treesitter',
       module = 'nvim-treesitter',
       ft = require'nvim-config.plugins.ft-setup'.treesitter:filetypes(),
-      cmd = {
-        'TSInstall', 'TSInstallSync', 'TSInstallInfo', 'TSUpdate', 'TSUpdateSync',
-        'TSUninstall', 'TSBufEnable', 'TSBufDisable', 'TSBufToggle', 'TSEnable',
-        'TSDisable', 'TSToggle', 'TSModuleInfo', 'TSEditQuery', 'TSEditQueryUserAfter',
-      },
+      -- cmd = {
+      --   'TSInstall', 'TSInstallSync', 'TSInstallInfo', 'TSUpdate', 'TSUpdateSync',
+      --   'TSUninstall', 'TSBufEnable', 'TSBufDisable', 'TSBufToggle', 'TSEnable',
+      --   'TSDisable', 'TSToggle', 'TSModuleInfo', 'TSEditQuery', 'TSEditQueryUserAfter',
+      -- },
       run = ':TSUpdate',
       config = function ()
         require 'nvim-config.plugins.treesitter'
