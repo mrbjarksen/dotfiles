@@ -12,4 +12,9 @@ require'nvim-config.functions'.enhance_startup(function ()
   require 'nvim-config.diagnostic'
 
   -- require 'nvim-config.theme'
+  vim.api.nvim_create_autocmd('BufEnter', {
+    command = [[colorscheme tokyonight]],
+    nested = true,
+    once = true,
+  })
 end)
