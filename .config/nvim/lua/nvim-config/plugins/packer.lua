@@ -322,46 +322,27 @@ packer.startup(function()
   -- Theming
   use {
     'folke/tokyonight.nvim',
-    -- disable = true,
-    config = function ()
+    event = 'ColorSchemePre tokyonight',
+    setup = function ()
       vim.g.tokyonight_style = 'night'
       vim.g.tokyonight_terminal_colors = false
       vim.g.tokyonight_italic_keywords = false
-      vim.g.tokyonight_sidebars = { 'neo-tree', 'Trouble', 'qf' }
-      vim.cmd [[colorscheme tokyonight]]
-      vim.cmd [[hi Folded guibg=NONE]]
-    end
-  }
-  use {
-    'catppuccin/nvim',
-    disable = true,
-    as = 'catppuccin',
-    config = function ()
-      require'catppuccin'.setup {
-        styles = {
-          conditionals = 'NONE',
-        },
-        integrations = {
-          native_lsp = {
-            underlines = {
-              errors = 'undercurl',
-              hints = 'undercurl',
-              warnings = 'undercurl',
-              information = 'undercurl',
-            }
-          },
-          lsp_trouble = true,
-          gitsigns = false,
-          nvimtree = { enabled = false },
-          neotree = { enabled = true, show_root = true },
-          dashboard = false,
-          bufferline = false,
-          telekasten = false,
-          symbols_outline = false,
-        }
-      }
-      vim.g.catppuccin_flavour = 'mocha'
-      vim.cmd [[colorscheme catppuccin]]
+      vim.g.tokyonight_sidebars = { 'neo-tree', 'qf', 'help', 'man' }
+
+      vim.api.nvim_create_augroup('tokyonight_overrides', { clear = true })
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        group = 'tokyonight_overrides',
+        pattern = 'tokyonight',
+        callback = function ()
+          vim.cmd [[
+            highlight Folded guibg=NONE
+            highlight! link LeapMatch LightspeedShortcut
+            highlight! link LeapLabelPrimary LightspeedLabel
+            highlight! link LeapLabelSecondary LightspeedLabelDistant
+            highlight! link LeapBackdrop LightspeedGreyWash
+          ]]
+        end
+      })
     end
   }
   use {
