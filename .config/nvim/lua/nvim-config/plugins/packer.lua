@@ -295,6 +295,30 @@ packer.startup(function()
     end
   }
 
+  -- Auto-pairs
+  use {
+    'windwp/nvim-autopairs',
+    event = 'InsertCharPre',
+    config = function ()
+      require 'nvim-config.plugins.nvim-autopairs'
+    end
+  }
+
+  -- Trouble
+  -- use {
+  --   'folke/trouble.nvim',
+  --   cmd = { 'Trouble', 'TroubleClose', 'TroubleToggle', 'TroubleRefresh' },
+  --   keys = '<Leader>x',
+  --   -- ft = 'qf',
+  --   config = function ()
+  --     require'trouble'.setup {
+  --       signs = { other = require'nvim-config.icons'.diagnostic.Other },
+  --       use_diagnostic_signs = true
+  --     }
+  --     require'nvim-config.keymaps'.trouble:apply()
+  --   end
+  -- }
+
   -- Theming
   use {
     'folke/tokyonight.nvim',
