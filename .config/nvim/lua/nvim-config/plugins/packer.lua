@@ -234,17 +234,64 @@ packer.startup(function()
     end
   }
 
-  -- Trouble
+  -- Git
   use {
-    'folke/trouble.nvim',
-    event = 'CmdlineEnter',
-    keys = '<Leader>x',
+    'lewis6991/gitsigns.nvim',
+    module = 'gitsigns',
+    event = 'BufRead',
+    keys = { '<Leader>g', ']c', '[c' },
     config = function ()
-      require'trouble'.setup {
-        signs = { other = require'nvim-config.icons'.diagnostic.Other },
-        use_diagnostic_signs = true
+      require'gitsigns'.setup {
+        signs = {
+          add          = { text = '▎' },
+          change       = { text = '▎' },
+          delete       = { text = '🬽' },
+          topdelete    = { text = '🭘' },
+          changedelete = { text = '▎' },
+        },
+        trouble = false,
+        on_attach = function (bufnr)
+          local gs = require 'gitsigns'
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          map('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          -- Actions
+          map({'n', 'v'}, '<Leader>gs', gs.stage_hunk                                )
+          map({'n', 'v'}, '<Leader>gr', gs.reset_hunk                                )
+          map('n',        '<Leader>gS', gs.stage_buffer                              )
+          map('n',        '<Leader>gu', gs.undo_stage_hunk                           )
+          map('n',        '<Leader>gR', gs.reset_buffer                              )
+          map('n',        '<Leader>gp', gs.preview_hunk                              )
+          map('n',        '<Leader>gb', function() gs.blame_line { full = true } end )
+          map('n',        '<Leader>gB', gs.toggle_current_line_blame                 )
+          map('n',        '<Leader>gd', gs.diffthis                                  )
+          map('n',        '<Leader>gD', function() gs.diffthis '~'  end              )
+          -- map('n',        '<Leader>gd', gs.toggle_deleted                            )
+
+          -- map('n', '<Leader>gt', gs.toggle_signs)
+
+          -- Text object
+          map({'o', 'x'}, 'ih', gs.select_hunk)
+          map({'o', 'x'}, 'ah', gs.select_hunk)
+        end
       }
-      require'nvim-config.keymaps'.trouble:apply()
     end
   }
 
