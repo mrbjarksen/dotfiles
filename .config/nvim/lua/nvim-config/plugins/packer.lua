@@ -294,6 +294,20 @@ packer.startup(function()
       }
     end
   }
+  use {
+    'TimUntersberger/neogit',
+    cmd = 'Neogit',
+    keys = '<Leader>gg',
+    config = function ()
+      require'neogit'.setup {
+        signs = {
+          section = { '', '' },
+          item    = { '', '' },
+        }
+      }
+      vim.keymap.set('n', '<Leader>gg', require'neogit'.open)
+    end
+  }
 
   -- Auto-pairs
   use {
