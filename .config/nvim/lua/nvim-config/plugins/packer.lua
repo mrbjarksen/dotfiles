@@ -51,7 +51,6 @@ packer.startup(function()
       if override.default_icon then
         local normal_fg = vim.api.nvim_get_hl_by_name('Normal', true).foreground
         override.default_icon.color = ('%x'):format(normal_fg)
-        -- override.default_icon.cterm_color = '16'
       end
       require'nvim-web-devicons'.setup {
         override = override,
