@@ -12,7 +12,26 @@ vim.api.nvim_create_user_command(
   { nargs = 1, range = '%', bang = true, desc = "Reindent range and set options accordingly" }
 )
 
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_user_command(
+  'ToggleDotfiles',
+  function ()
+    vim.g.git_env = vim.g.git_env or { dotfiles = false, dir = vim.env.GIT_DIR, worktree = vim.env.GIT_WORK_TREE }
+    if not vim.g.git_env.dotfiles then
+      vim.env.GIT_DIR = '/home/mrbjarksen/.dotfiles'
+      vim.env.GIT_WORK_TREE = '/home/mrbjarksen'
+    else
+      vim.env.GIT_DIR = vim.g.git_env.dir
+      vim.env.GIT_WORK_TREE = vim.g.git_env.worktree
+    end
+    vim.g.git_env = { dotfiles = not vim.g.git_env.dotfiles, dir = vim.g.git_env.dir, worktree = vim.g.git_env.worktree }
+    pcall(require'gitsigns'.attach)
+  end,
+  { desc = "Toggle if git should look for dotfiles" }
+)
+
+vim.api.nvim_create_augroup('disable_comment_formatoptions', { clear = true })
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = 'disable_comment_formatoptions',
   callback = function ()
     vim.opt_local.formatoptions:remove 'c'
     vim.opt_local.formatoptions:remove 'r'
