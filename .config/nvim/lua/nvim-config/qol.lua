@@ -20,3 +20,14 @@ vim.api.nvim_create_autocmd('FileType', {
   end
 })
 
+vim.api.nvim_create_augroup('vert_help', { clear = true })
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = '*.txt',
+  group = 'vert_help',
+  callback = function ()
+    if vim.bo.buftype == 'help' and not vim.w.vert_help_done then
+      vim.cmd [[wincmd L]]
+      vim.w.vert_help_done = true
+    end
+  end
+})
