@@ -520,17 +520,16 @@ packer.startup(function()
       vim.g.matchup_override_vimtex = 1
     end
   }
-  use {
-    'luukvbaal/stabilize.nvim',
-    disable = true,
-    event = 'WinNew',
-    cond = function ()
-      return #vim.api.nvim_tabpage_list_wins(0) > 1
-    end,
-    config = function ()
-      require'stabilize'.setup()
-    end
-  }
+  -- use {
+  --   'luukvbaal/stabilize.nvim',
+  --   event = 'WinNew',
+  --   cond = function ()
+  --     return #vim.api.nvim_tabpage_list_wins(0) > 1
+  --   end,
+  --   config = function ()
+  --     require'stabilize'.setup()
+  --   end
+  -- }
   use {
     'numToStr/Comment.nvim',
     keys = 'gc',
