@@ -410,6 +410,8 @@ packer.startup(function()
     config = function ()
       require'leap'.setup { case_insensitive = false }
       require'leap'.set_default_keymaps()
+    end
+  }
 
       if vim.g.colors_name == 'tokyonight' then
         vim.cmd [[
