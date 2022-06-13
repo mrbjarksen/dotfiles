@@ -203,7 +203,21 @@ packer.startup(function()
     'AckslD/nvim-neoclip.lua',
     event = 'TextYankPost',
     config = function ()
-      require 'nvim-config.plugins.telescope'
+      require'neoclip'.setup {
+        keys = {
+          telescope = {
+            i = {
+              paste = '<C-X>p',
+              paste_behind = '<C-X>P',
+              replay = '<C-X>q',
+              delete = '<C-X>d',
+            }
+          }
+        }
+      }
+      if packer_plugins['telescope.nvim'].loaded then
+        require'telescope'.load_extension 'neoclip'
+      end
     end
   }
 
