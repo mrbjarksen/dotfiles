@@ -7,6 +7,7 @@ vim.opt.whichwrap  = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true, 
 vim.opt.showmode   = false
 vim.opt.lazyredraw = true
 vim.opt.ruler      = false
+vim.opt.conceallevel = 2
 
 -- Scrolloff
 vim.opt.scrolloff     = 3
@@ -26,7 +27,7 @@ vim.opt.tagcase     = 'match'
 vim.opt.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').' ... '.trim(getline(v:foldend))]]
 
 -- Breaks and chars
-vim.opt.fillchars   = { eob = '│', fold = ' ' }
+vim.opt.fillchars   = { eob = '│', fold = ' ', diff = '╱' }
 vim.opt.listchars   = { tab = '>-', space = '⸱', nbsp = '+', eol = '↴' }
 vim.opt.wrap        = false
 --vim.opt.showbreak   = '> '
@@ -37,9 +38,16 @@ vim.opt.linebreak   = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.pumheight = 5
 
--- LSP highlight and swapfile time
-vim.opt.updatetime = 500
-
 -- Display signs in number column
 vim.opt.signcolumn = 'yes:1'
--- vim.opt.signcolumn = 'number'
+
+-- Thicker window seperators
+vim.opt.fillchars:append {
+  horiz = '━',
+  horizup = '┻',
+  horizdown = '┳',
+  vert = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+}

@@ -8,7 +8,7 @@ vim.opt.complete = ''
 vim.opt.wildchar = 0
 vim.opt.wildmenu = false
 
-for _, key in pairs { 'D', 'N', 'P', 'A', 'L', 'G', 'T' } do
+for _, key in ipairs { 'D', 'N', 'P', 'A', 'L', 'G', 'T' } do
   vim.keymap.set('c', '<C-' .. key .. '>', '')
 end
 vim.keymap.set('c', '<S-Tab>', '')
@@ -17,12 +17,33 @@ vim.keymap.set('c', '<S-Tab>', '')
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
-local ins_maps = require'nvim-config.keymaps'.completion 'i'
-local cmd_maps = require'nvim-config.keymaps'.completion 'c'
-
 cmp.setup {
-  mapping = ins_maps,
-  completion = { keyword_length = 2 },
+  mapping = {
+    ['<C-D>']     = cmp.mapping(cmp.mapping.scroll_docs(4),  { 'i', 'c' }),
+    ['<C-U>']     = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-E>']     = cmp.mapping(cmp.mapping.abort(),         { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(
+      function () if cmp.visible() then cmp.close() else cmp.complete() end end,
+      { 'i', 'c' }
+    ),
+    ['<C-N>'] = cmp.mapping(
+      function () if not cmp.visible() then cmp.complete() end; cmp.select_next_item() end,
+      { 'i', 'c' }
+    ),
+    ['<C-P>'] = cmp.mapping(
+      function () if not cmp.visible() then cmp.complete() end; cmp.select_prev_item() end,
+      { 'i', 'c' }
+    ),
+    ['<CR>']    = cmp.mapping(cmp.mapping.confirm(), { 'i' }),
+    ['<Tab>']   = cmp.mapping(
+      function (fallback) if cmp.visible() then cmp.select_next_item() else fallback() end end,
+      { 'i' }
+    ),
+    ['<S-Tab>'] = cmp.mapping(
+      function (fallback) if cmp.visible() then cmp.select_prev_item() else fallback() end end,
+      { 'i' }
+    )
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -44,12 +65,13 @@ cmp.setup {
     end
   },
   sources = {
-    { name = 'nvim_lua', max_item_count = 10 },
-    { name = 'luasnip',  max_item_count = 10 },
-    { name = 'nvim_lsp', max_item_count = 10 },
-    { name = 'buffer',   max_item_count = 10, option = { keyword_pattern = [[\k\+]] } },
-    { name = 'path',     max_item_count = 10 },
-    { name = 'calc',     max_item_count = 10 },
+    { name = 'git' },
+    { name = 'nvim_lua' },
+    { name = 'luasnip' },
+    { name = 'nvim_lsp' },
+    { name = 'buffer', option = { keyword_pattern = [[\k\+]] } },
+    { name = 'path' },
+    { name = 'calc' },
   },
   experimental = {
     ghost_text = true
@@ -57,32 +79,23 @@ cmp.setup {
 }
 
 cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(cmd_maps),
-  sources = {
-    {
-      name = 'cmdline',
-      max_item_count = 10,
-    }
-  }
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = { { name = 'cmdline', } }
 })
-for _,  search in pairs { '/', '?' } do
+
+for _, search in ipairs { '/', '?' } do
   cmp.setup.cmdline(search, {
-    mapping = cmp.mapping.preset.cmdline(cmd_maps),
-    sources = {
-      { 
-        name = 'buffer',
-        max_item_count = 10,
-        option = {
-          keyword_pattern = [[\k\+]]
-        }
-      }
-    }
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = { { name = 'buffer', option = { keyword_pattern = [[\k\+]] } } }
   })
 end
 
 -- Setup LuaSnip
-require'nvim-config.keymaps'.luasnip():apply()
-local snip_icon = require'nvim-config.icons'.diagnostic.Other
+local map = require'nvim-config.keymaps'.map
+local snip_icon = ' '
+
+map('is', '<C-L>', function () if luasnip.expand_or_jumpable() then luasnip.expand_or_jump() end end)
+map('is', '<C-H>', function () if luasnip.jumpable(-1) then luasnip.jump(-1) end end)
 
 luasnip.config.setup {
   history = true,
@@ -90,7 +103,7 @@ luasnip.config.setup {
   region_check_events = 'InsertEnter',
   delete_check_events = 'TextChanged',
   ext_opts = {
-    [require'luasnip.util.types'.choiceNode] = { passive = { virt_text = {{ snip_icon, 'DiagnosticInfo' }} } },
-    [require'luasnip.util.types'.insertNode] = { passive = { virt_text = {{ snip_icon, 'DiagnosticHint' }} } },
+    [require'luasnip.util.types'.choiceNode] = { passive = { virt_text = {{ '⬤', 'DiagnosticInfo' }} } },
+    [require'luasnip.util.types'.insertNode] = { passive = { virt_text = {{ '⬤', 'DiagnosticHint' }} } },
   }
 }

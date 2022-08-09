@@ -44,7 +44,7 @@ local builtins = {
   'zipPlugin',
 }
 
-for _, plugin in pairs(builtins) do
+for _, plugin in ipairs(builtins) do
   vim.g['loaded_' .. plugin] = 1
 end
 
@@ -55,6 +55,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
     if packer_plugins['neo-tree.nvim'].loaded then
       vim.api.nvim_del_autocmd(a.id)
     elseif vim.fn.isdirectory(a.file) ~= 0 then
+      vim.api.nvim_exec_autocmds('BufEnter', { group = 'set_colorscheme' })
       require'neo-tree.setup.netrw'.hijack()
       vim.api.nvim_del_autocmd(a.id)
     end

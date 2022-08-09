@@ -80,4 +80,28 @@ return {
     vim.g.diagnostic_underline = not vim.g.diagnostic_underline
     vim.diagnostic.config { underline = vim.g.diagnostic_underline }
   end,
+
+  pin = function (nw_corner, width, height)
+    local winid = vim.api.nvim_open_win(0, false, {
+      relative = 'editor',
+      anchor = 'NE',
+      width = width,
+      height = height,
+      row = 0.5,
+      col = 0.5,
+      -- focusable = false,
+      zindex = 1,
+      style = 'minimal',
+      border = 'single',
+    })
+    vim.api.nvim_win_set_option(winid, 'signcolumn', 'no')
+    vim.api.nvim_win_call(winid, function ()
+      vim.fn.winrestview {
+        lnum = nw_corner[1],
+        col = nw_corner[2],
+        topline = nw_corner[1],
+        leftcol = nw_corner[2],
+      }
+    end)
+  end,
 }

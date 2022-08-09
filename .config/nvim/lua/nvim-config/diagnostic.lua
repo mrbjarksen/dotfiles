@@ -23,4 +23,4 @@ vim.diagnostic.config {
   update_in_insert = true,
 }
 
-require'nvim-config.keymaps'.diagnostic:apply()
+require'nvim-config.keymaps'.diagnostic()

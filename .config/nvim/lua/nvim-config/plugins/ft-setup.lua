@@ -1,13 +1,13 @@
 local filetypes = function (self)
-  local fts = {}
-  for ft in pairs(self.ftconf) do
-    if type(ft) == 'table' then
-      for _, ft_ in pairs(ft) do fts[#fts+1] = ft_ end
+  local ftss = {}
+  for fts in pairs(self.ftconf) do
+    if type(fts) == 'table' then
+      for _, ft in pairs(fts) do ftss[#ftss+1] = ft end
     else
-      fts[#fts+1] = ft
+      ftss[#ftss+1] = fts
     end
   end
-  return fts
+  return ftss
 end
 
 local values = function (self)
@@ -26,10 +26,15 @@ return {
     python = 'python',
     haskell = 'haskell',
     [{'tex', 'cls', 'sty'}] = 'latex',
+    html = 'html',
+    javascript = 'javascript',
+    markdown = 'markdown',
   },
   lsp = ftconf {
     lua = 'sumneko_lua',
     python = 'pyright',
     [{'tex', 'bib'}] = 'texlab',
+    javascript = 'tsserver',
+    [{'haskell', 'lhaskell'}] = 'hls',
   }
 }

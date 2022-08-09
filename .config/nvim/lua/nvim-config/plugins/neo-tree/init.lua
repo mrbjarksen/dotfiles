@@ -1,19 +1,39 @@
 local commands = require 'nvim-config.plugins.neo-tree.commands'
 
 require'neo-tree'.setup {
+  sources = {
+    'filesystem',
+    'buffers',
+    'git_status',
+    'diagnostics',
+  },
   close_if_last_window = true,
   -- popup_border_style = 'rounded',
   sort_case_insensitive = true,
   -- use_popups_for_input = false,
   use_default_mappings = false,
   event_handlers = {
-    { event = 'neo_tree_buffer_enter', handler = function () vim.opt.guicursor:append 'n:Cursorline' end },
-    { event = 'neo_tree_buffer_leave', handler = function () vim.opt.guicursor:remove 'n:Cursorline' end },
-    { event = 'file_opened', handler = function () require'neo-tree.sources.manager'.close 'filesystem' end },
+    {
+      event = 'neo_tree_buffer_enter',
+      handler = function ()
+        vim.opt.guicursor:append 'n:Cursorline'
+        vim.wo.scrolloff = 1
+      end
+    },
+    {
+      event = 'neo_tree_buffer_leave',
+      handler = function ()
+        vim.opt.guicursor:remove 'n:Cursorline'
+        vim.wo.scrolloff = 3
+      end
+    },
+    -- { event = 'file_opened', handler = function () require'neo-tree.sources.manager'.close 'filesystem' end },
   },
   default_component_configs = {
     indent = {
-      with_expanders = true
+      with_expanders = true,
+      expander_collapsed = require'nvim-config.icons'.misc.collapsed,
+      expander_expanded = require'nvim-config.icons'.misc.expanded,
     },
     icon = {
       folder_closed = require'nvim-config.icons'.filesystem.closed_folder,
@@ -23,6 +43,8 @@ require'neo-tree'.setup {
   },
   window = {
     mappings = {
+      ['s'] = function (state) local s = vim.deepcopy(state); s.tree = nil; vim.notify(vim.inspect(s)) end,
+      ['S'] = function (state) local t = vim.deepcopy(state.tree); t._content = nil; vim.notify(vim.inspect(t)) end,
       ['<2-LeftMouse>'] = 'open',
       ['<CR>'] = 'open',
       ['<C-X>'] = 'open_split',
@@ -77,8 +99,8 @@ require'neo-tree'.setup {
     window = {
       mappings = {
         ['d'] = 'buffer_delete',
-        ['-'] = 'navigate_up',
-        ['+'] = 'set_root',
+        -- ['-'] = 'navigate_up',
+        -- ['+'] = 'set_root',
       }
     },
   },
@@ -95,23 +117,30 @@ require'neo-tree'.setup {
       }
     },
   },
+  diagnostics = {
+    renderers = {
+      file = {
+        { 'indent' },
+        { 'icon' },
+        { 'grouped_path' },
+        { 'name' },
+        { 'split_diagnostic_counts', highlight = 'NeoTreeDimText' },
+        { 'clipboard' },
+      },
+      diagnostic = {
+        { 'indent' },
+        { 'icon', right_padding = 1 },
+        { 'lnum', min_width = 4, right = { text = "▕ ", highlight = "NeoTreeDimText" } },
+        { 'message' },
+      },
+    },
+    window = {
+      mappings = {
+        -- ['p'] = 'preview',
+        -- ['P'] = 'revert_preview',
+      }
+    }
+  }
 }
 
-vim.keymap.set('n', '<Leader>tt', '<Cmd>Neotree filesystem toggle<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>tb', '<Cmd>Neotree show buffers right toggle<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>', { noremap = true, silent = true })
-
-if vim.g.colors_name == 'tokyonight' then
-  vim.cmd [[
-    highlight! link NeoTreeNormal NvimTreeNormal
-    highlight! link NeoTreeNormalNC NvimTreeNormalNC
-    highlight! link NeoTreeRootName NvimTreeRootFolder
-    highlight! link NeoTreeGitModified NvimTreeGitDirty
-    highlight! link NeoTreeGitAdded NvimTreeGitNew
-    highlight! link NeoTreeGitDeleted NvimTreeGitDeleted
-    highlight! link NeoTreeIndentMarker NvimTreeIndentMarker
-    highlight! link NeoTreeImageFile NvimTreeImageFile
-    highlight! link NeoTreeSymbolicLinkTarget NvimTreeSymlink
-  ]]
-end
-
+require'nvim-config.keymaps'.neo_tree()

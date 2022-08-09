@@ -1,16 +1,19 @@
 local icons = {}
 
-icons.packer = {
-  Working  = '', -- fa
-  Error    = '', -- fa
-  Done     = '', -- fa
-  Removed  = '', -- fa
-  Moved    = '', -- fa
+icons.misc = {
+  working   = '',
+  error     = '',
+  success   = '',
+  removed   = '',
+  moved     = '',
+  expanded  = '',
+  collapsed = '',
 }
 
 icons.filesystem = {
   closed_folder = '', -- mdi
-  open_folder   = 'ﱮ', -- mdi
+  -- open_folder   = 'ﱮ', -- mdi
+  open_folder = '', -- fa
   empty_folder  = '', -- mdi
   file          = '', -- mdi
 }
@@ -34,15 +37,6 @@ icons.devicons = {
   ['terminal'] = '', -- dev
   ['default_icon'] = icons.filesystem.file
 }
-
--- icons.git = {
---   added = '',
---   removed = '',
---   modified = '',
---   renamed = '',
---   ignored = '',
---   untracked = ''
--- }
 
 icons.completion = {
   Text          = '', -- mdi
@@ -77,7 +71,6 @@ icons.diagnostic = {
   Warn  = '', -- fa
   Info  = '', -- fa
   Hint  = '', -- fa
-  Other = '', -- fa
 }
 
 return icons

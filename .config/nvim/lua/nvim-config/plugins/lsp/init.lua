@@ -19,7 +19,7 @@ for _, server in pairs(servers) do
     settings = settings,
     capabilities = capabilities,
     on_attach = function (client, bufnr)
-      require'nvim-config.keymaps'.lsp:apply(bufnr)
+      require'nvim-config.keymaps'.lsp(bufnr)
 
       if client.resolved_capabilities.document_range_formatting then
         vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')

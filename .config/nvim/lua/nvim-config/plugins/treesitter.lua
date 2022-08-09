@@ -1,7 +1,15 @@
 require'nvim-treesitter.configs'.setup {
   ensure_installed = table.insert(require'nvim-config.plugins.ft-setup'.treesitter:values(), 'query'),
-  highlight = { enable = true, additional_vim_regex_highlighting = true },
-  incremental_selection = { enable = true, keymaps = require'nvim-config.keymaps'.treesitter.visual },
+  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection    = '<Leader>v',
+      node_incremental  = 'an',
+      node_decremental  = 'aN',
+      scope_incremental = 'as',
+    }
+  },
   indent = { enable = true },
   textobjects = {
     select = {

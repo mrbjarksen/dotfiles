@@ -29,6 +29,36 @@ vim.api.nvim_create_user_command(
   { desc = "Toggle if git should look for dotfiles" }
 )
 
+vim.api.nvim_create_user_command(
+  'Pin',
+  function (o)
+    local height = o.line2 - o.line1 + 1
+    if not (height > 0) then
+      vim.notify("Could not find range to pin", vim.log.levels.ERROR)
+      return
+    end
+
+    local width = 0
+    local leftcol = math.huge
+    local lines = vim.api.nvim_buf_get_lines(0, o.line1, o.line2 + 1, false)
+    for _, line in ipairs(lines) do
+      local leading = line:match('^%s*')
+      line = line:gsub('%s*$', '')
+      width = math.max(width, vim.fn.strdisplaywidth(line))
+      leftcol = math.min(leftcol, vim.fn.strdisplaywidth(leading))
+    end
+    width = width - leftcol
+    if not (width > 0) then
+      vim.notify("Could not find range to pin", vim.log.levels.ERROR)
+      return
+    end
+
+    local nw_corner = { o.line1, leftcol }
+    require'nvim-config.functions'.pin(nw_corner, width, height)
+  end,
+  { range = true, desc = 'Pin range to corner' }
+)
+
 vim.api.nvim_create_augroup('disable_comment_formatoptions', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter', {
   group = 'disable_comment_formatoptions',
@@ -50,3 +80,25 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
   end
 })
+
+-- local update_foldtext = vim.api.nvim_create_augroup('update_foldtext', { clear = true })
+-- vim.api.nvim_create_autocmd('OptionSet', {
+--   group = update_foldtext,
+--   pattern = 'foldmethod',
+--   callback = function ()
+--     vim.notify(vim.v.option_type..vim.v.option_new)
+--     local scope
+--     if vim.v.option_type == 'global' then
+--       scope = vim.go
+--     elseif vim.v.option_type == 'local' then
+--       scope = vim.wo
+--     else
+--       return
+--     end
+--     if vim.v.option_new == 'expr' or vim.v.option_new == 'indent' then
+--       scope.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').' ... '.trim(getline(v:foldend))]]
+--     else
+--       scope.foldtext = [[foldtext()]]
+--     end
+--   end
+-- })

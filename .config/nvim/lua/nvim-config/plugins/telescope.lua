@@ -56,4 +56,4 @@ require'telescope'.setup {
   }
 }
 
-require'nvim-config.keymaps'.telescope.normal():apply()
+require'nvim-config.keymaps'.telescope()
