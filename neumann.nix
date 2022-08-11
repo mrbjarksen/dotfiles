@@ -47,7 +47,7 @@
 
   services.xserver = {
     layout = "us,is";
-    xkbOption = "grp:caps_toggle";
+    xkbOptions = "grp:caps_toggle";
   };
 
   services.xserver = {
