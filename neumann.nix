@@ -101,4 +101,5 @@
       experimental-features = nix-command flakes
     '';
   };
+  environment.pathsToLink = [ "/share/zsh" ];
 }

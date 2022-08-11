@@ -82,7 +82,6 @@ in
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     '';
   };
-  environment.pathsToLink = [ "/share/zsh" ];
 
   programs.git = {
     enable = true;
