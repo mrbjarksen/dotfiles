@@ -22,7 +22,7 @@
       enable = true;
       device = "nodev";
       efiSupport = true;
-      usOSProber = true;
+      useOSProber = true;
       fsIdentifier = "label";
       configurationLimit = 10;
     };
