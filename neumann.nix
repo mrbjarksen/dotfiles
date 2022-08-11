@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  fileSystem."/" = {
+  fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
 
-  fileSystem."/boot/efi" = {
+  fileSystems."/boot/efi" = {
     device = "/dev/disk/by-label/boot";
     fsType = "vfat";
   };
