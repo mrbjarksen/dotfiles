@@ -21,7 +21,7 @@
     nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ({ ... }: { networking.hostname = "neumann"; })
+        ({ ... }: { networking.hostName = "neumann"; })
         nixos-hardware.nixosModules.dell-xps-17-9700-intel
         ./neumann.nix
       ];
