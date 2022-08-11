@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  system.stateVersion = "22.05";
+
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
