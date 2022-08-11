@@ -5,6 +5,8 @@ let
   # theme = import ./themes/everblush;
 in
 {
+  home.stateVersion = "22.05";
+
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.packages = with pkgs; [
     bat
