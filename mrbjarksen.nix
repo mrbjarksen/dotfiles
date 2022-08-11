@@ -5,7 +5,10 @@ let
   # theme = import ./themes/everblush;
 in
 {
+  home.username = "mrbjarken";
+  home.homeDirectory = "/home/mrbjarksen";
   home.stateVersion = "22.05";
+  programs.home-manager.enable = true;
 
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.packages = with pkgs; [
