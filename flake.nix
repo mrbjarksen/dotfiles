@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware }:
+  outputs = { self, nixpkgs, nixos-hardware, home-manager }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
