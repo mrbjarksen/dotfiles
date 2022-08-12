@@ -36,15 +36,15 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_TIME           = "en_GB.UFT-8";
-    LC_COLLATE        = "is_IS.UFT-8";
-    LC_MONETARY       = "is_IS.UFT-8";
-    LC_PAPER          = "is_IS.UFT-8";
-    LC_NAME           = "is_IS.UFT-8";
-    LC_ADDRESS        = "is_IS.UFT-8";
-    LC_TELEPHONE      = "is_IS.UFT-8";
-    LC_MEASUREMENT    = "is_IS.UFT-8";
-    LC_IDENTIFICATION = "is_IS.UFT-8";
+    LC_TIME           = "en_GB.UTF-8";
+    LC_COLLATE        = "is_IS.UTF-8";
+    LC_MONETARY       = "is_IS.UTF-8";
+    LC_PAPER          = "is_IS.UTF-8";
+    LC_NAME           = "is_IS.UTF-8";
+    LC_ADDRESS        = "is_IS.UTF-8";
+    LC_TELEPHONE      = "is_IS.UTF-8";
+    LC_MEASUREMENT    = "is_IS.UTF-8";
+    LC_IDENTIFICATION = "is_IS.UTF-8";
   };
 
   services.xserver = {
