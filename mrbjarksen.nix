@@ -61,7 +61,7 @@ in
 
     history = {
       extended = true;
-      path = "${xdg "stateHome"}/zsh/history";
+      path = "${config.xdg.stateHome}/zsh/history";
     };
 
     enableAutosuggestions = true;
