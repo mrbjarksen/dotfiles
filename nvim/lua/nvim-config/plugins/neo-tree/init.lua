@@ -68,6 +68,8 @@ require'neo-tree'.setup {
       ['R'] = 'refresh',
       ['q'] = 'close_window' ,
       ['?'] = 'show_help',
+      ['P'] = 'preview',
+      ['<C-P>'] = 'revert_preview',
     }
   },
   filesystem = {

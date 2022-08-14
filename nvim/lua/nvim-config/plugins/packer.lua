@@ -223,8 +223,9 @@ packer.startup(function()
 
   -- Neo-tree
   use {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    -- 'nvim-neo-tree/neo-tree.nvim',
+    -- branch = 'v2.x',
+    '~/neo-tree.nvim',
     module = 'neo-tree',
     cmd = 'Neotree',
     keys = '<Leader>t',
@@ -235,8 +236,8 @@ packer.startup(function()
       require 'nvim-config.plugins.neo-tree'
     end
   }
-  use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
-  -- use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
+  -- use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
+  use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
 
   -- Git and GitHub
   use {

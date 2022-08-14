@@ -3,6 +3,7 @@
 let
   font = "JetBrainsMono Nerd Font";
   # theme = import ./themes/everblush;
+  xdg = attr: builtins.replaceStrings [ "~/" "/home/mrbjarksen/" ] [ "" "" ] config.xdg.${attr};
 in
 {
   home.username = "mrbjarken";
@@ -53,14 +54,14 @@ in
 
   programs.zsh = {
     enable = true;
-    dotDir = "${config.xdg.configHome}/zsh";
+    dotDir = "${xdg "configHome"}/zsh";
 
     autocd = true;
     defaultKeymap = "viins";
 
     history = {
       extended = true;
-      path = "${config.xdg.stateHome}/zsh/history";
+      path = "${xdg "stateHome"}/zsh/history";
     };
 
     enableAutosuggestions = true;
@@ -86,6 +87,12 @@ in
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     '';
+  };
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
   };
 
   programs.git = {
