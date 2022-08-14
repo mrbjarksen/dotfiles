@@ -15,6 +15,8 @@ in
   home.packages = with pkgs; [
     bat
     btop
+    neovim
+    xmobar
     nerdfonts
     firefox
   ];
@@ -30,7 +32,6 @@ in
     enable = true;
     enableContribAndExtras = true;
   };
-  programs.xmobar.enable = true;
 
   programs.kitty = {
     enable = true;
@@ -56,7 +57,6 @@ in
     enable = true;
     dotDir = "${xdg "configHome"}/zsh";
 
-    autocd = true;
     defaultKeymap = "viins";
 
     history = {
@@ -68,6 +68,7 @@ in
     enableSyntaxHighlighting = true;
 
     initExtra = ''
+      setopt AUTO_CD
       setopt LIST_PACKED
       setopt INTERACTIVE_COMMENTS
       unsetopt BEEP
@@ -87,12 +88,6 @@ in
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
     '';
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
   };
 
   programs.git = {
