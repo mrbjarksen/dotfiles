@@ -1,7 +1,15 @@
 import XMonad
+import XMonad.Hooks.EwmhDesktops (ewmhFullscreen, ewmh)
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
-main :: IO ()
-main = xmonad $ def
+statusbar :: StatusBarConfig
+statusbar = statusBarProp "xmobar" (pure def)
+
+settings = def
     { terminal = "kitty"
     , borderWidth = 1
     }
+
+main :: IO ()
+main = xmonad . ewmhFullscreen . ewmh . withSB statusbar $ settings 
