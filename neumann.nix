@@ -32,25 +32,7 @@
 
   networking.networkmanager.enable = true;
   
-  time.timeZone = "Atlantic/Reykjavik";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_TIME           = "en_GB.UTF-8";
-    LC_COLLATE        = "is_IS.UTF-8";
-    LC_MONETARY       = "is_IS.UTF-8";
-    LC_PAPER          = "is_IS.UTF-8";
-    LC_NAME           = "is_IS.UTF-8";
-    LC_ADDRESS        = "is_IS.UTF-8";
-    LC_TELEPHONE      = "is_IS.UTF-8";
-    LC_MEASUREMENT    = "is_IS.UTF-8";
-    LC_IDENTIFICATION = "is_IS.UTF-8";
-  };
-
-  services.xserver = {
-    layout = "us,is";
-    xkbOptions = "grp:caps_toggle";
-  };
+  services.localtime.enable = true;
 
   services.xserver = {
     enable = true;
@@ -59,7 +41,6 @@
       { x = 2560; y = 1600; } # 2.5k 16:10
       { x = 1920; y = 1200; } # 2k   16:10
     ];
-    windowManager.xmonad.enable = true;
   };
 
   services.xserver.displayManager.lightdm = {
@@ -99,9 +80,10 @@
 
   nix = {
     package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+    };
   };
+
   environment.pathsToLink = [ "/share/zsh" ];
 }

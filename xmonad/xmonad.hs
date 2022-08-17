@@ -2,7 +2,6 @@ import XMonad
 
 main :: IO ()
 main = xmonad $ def
-    { modMask = mod4Mask
-    , terminal = "kitty"
+    { terminal = "kitty"
     , borderWidth = 1
     }

@@ -21,12 +21,53 @@ in
     firefox
   ];
 
+  home.keyboard = {
+    layout = "is,us";
+    options = [ "grp:caps_toggle" ];
+  };
+
+  home.language = {
+    base        = "en_US-UTF-8";
+    time        = "en_GB-UTF-8";
+    collate     = "is_IS.UTF-8";
+    monetary    = "is_IS.UTF-8";
+    paper       = "is_IS.UTF-8";
+    name        = "is_IS.UTF-8";
+    address     = "is_IS.UTF-8";
+    telephone   = "is_IS-UTF-8";
+    measurement = "is_IS.UTF-8";
+  };
+
+  home.pointerCursor = {
+    package = pkgs.nordzy-cursor-theme;
+    name = "Nordzy-cursors";
+    size = 20;
+  };
+
+  home.sessionVariables = {
+    TERM = "xterm-kitty";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    BROWSER = "firefox";
+  };
+
+  fonts.fontconfig.enable = true;
+
   xdg.enable = true;
   xdg.configFile = {
     xmonad = { source = ./xmonad; recursive = true; };
     xmobar = { source = ./xmobar; recursive = true; };
     nvim   = { source = ./nvim;   recursive = true; };
   };
+
+  # services.picom = {
+  #   enable = true;
+  #   backend = "glx";
+  #   fade = true;
+  #   settings = {
+  #     blur.method = "dual-kawase";
+  #   };
+  # };
 
   xsession.windowManager.xmonad = {
     enable = true;
