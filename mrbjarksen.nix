@@ -60,14 +60,14 @@ in
     nvim   = { source = ./nvim;   recursive = true; };
   };
 
-  # services.picom = {
-  #   enable = true;
-  #   backend = "glx";
-  #   fade = true;
-  #   settings = {
-  #     blur.method = "dual-kawase";
-  #   };
-  # };
+  services.picom = {
+    enable = true;
+    backend = "glx";
+    fade = true;
+    settings = {
+      blur.method = "dual-kawase";
+    };
+  };
 
   xsession.windowManager.xmonad = {
     enable = true;
