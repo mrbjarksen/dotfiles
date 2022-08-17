@@ -13,6 +13,7 @@ in
 
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.packages = with pkgs; [
+    gh
     bat
     btop
     neovim
@@ -141,7 +142,6 @@ in
     };
     delta.enable = true;
   };
-  programs.gh.enable = true;
 
   programs.lsd = {
     enable = true;
