@@ -28,8 +28,8 @@ in
   };
 
   home.language = {
-    base        = "en_US-UTF-8";
-    time        = "en_GB-UTF-8";
+    base        = "en_US.UTF-8";
+    time        = "en_GB.UTF-8";
     collate     = "is_IS.UTF-8";
     monetary    = "is_IS.UTF-8";
     paper       = "is_IS.UTF-8";
