@@ -3,7 +3,7 @@
 let
   font = "JetBrainsMono Nerd Font";
   # theme = import ./themes/everblush;
-  xdg = attr: builtins.replaceStrings [ "~/" "/home/mrbjarksen/" ] [ "" "" ] config.xdg.${attr};
+  xdg = attr: builtins.replaceStrings [ "~/" config.home.homeDirectory ] [ "" "" ] config.xdg.${attr};
 in
 {
   home.username = "mrbjarken";
@@ -42,7 +42,9 @@ in
   home.pointerCursor = {
     package = pkgs.nordzy-cursor-theme;
     name = "Nordzy-cursors";
-    size = 20;
+    size = 15;
+    x11.enable = true;
+    gtk.enable = true;
   };
 
   home.sessionVariables = {
