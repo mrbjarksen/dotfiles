@@ -41,7 +41,7 @@ in
 
   home.pointerCursor = {
     package = pkgs.nordzy-cursor-theme;
-    name = "Nordzy-cursors";
+    name = "Nordzy-cursors-white";
     size = 15;
     x11.enable = true;
     gtk.enable = true;
