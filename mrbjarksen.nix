@@ -72,6 +72,13 @@ in
     };
   };
 
+  xsession = {
+    enable = true;
+    profilePath = "${xdg "configHome"}/X11/.xprofile";
+    scriptPath = "${xdg "configHome"}/X11/.xsession";
+  };
+  xresources.path = "{xdg "configHome"}/X11/.Xresources";
+
   xsession.windowManager.xmonad = {
     enable = true;
     enableContribAndExtras = true;
