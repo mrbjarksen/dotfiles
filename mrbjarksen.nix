@@ -158,7 +158,7 @@ in
   };
 
   programs.zathura = {
-    enable = true;
+    enable = false;
     options = {
       inherit font;
       adjust-open = "width";
