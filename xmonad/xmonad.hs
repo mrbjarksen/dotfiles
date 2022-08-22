@@ -4,7 +4,7 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 
 statusbar :: StatusBarConfig
-statusbar = statusBarProp "xmobar" (pure def)
+statusbar = statusBarProp "xmobar ~/.config/xmobar/xmobarrc" (pure def)
 
 settings = def
     { terminal = "kitty"
