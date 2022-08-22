@@ -63,5 +63,5 @@ Config
             [ "-t", "<skyConditionS> <tempC>°" ]
             18000
         ]
-    , template = "L } M { %cpu% %multicoretemp% %memory% | %wifi% %volume% %battery% | %date% %time%"
+    , template = "L } M { %cpu% %multicoretemp% %memory% | %battery% | %BIRK% %date% %time%"
     }

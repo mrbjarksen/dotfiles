@@ -3,7 +3,7 @@
 let
   font = "JetBrainsMono Nerd Font";
   # theme = import ./themes/everblush;
-  xdg = attr: builtins.replaceStrings [ "~/" config.home.homeDirectory ] [ "" "" ] config.xdg.${attr};
+  xdg = attr: builtins.replaceStrings [ "~/" "${config.home.homeDirectory}/" ] [ "" "" ] config.xdg.${attr};
 in
 {
   home.username = "mrbjarken";
