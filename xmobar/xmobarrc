@@ -1,9 +1,7 @@
 Config 
     { font = "xft:JetBrains Mono Nerd Font"
     , additionalFonts = ["xft:FontAwesome"]
-    , position = TopP 10 10
-    , border = TopBM 10
-    , borderWidth = 0
+    , position = Top
     , overrideRedirect = False
     , commands =
         [ Run Battery
