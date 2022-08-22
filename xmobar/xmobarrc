@@ -1,6 +1,6 @@
 Config 
     { font = "xft:JetBrains Mono Nerd Font"
-    , additionalFonts = ["xft:FontAwesome"]
+    , additionalFonts = ["xft:FontAwesome-9"]
     , position = Top
     , overrideRedirect = False
     , commands =

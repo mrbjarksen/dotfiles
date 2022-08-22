@@ -20,6 +20,7 @@ in
     xmobar
     nerdfonts
     firefox
+    font-awesome
   ];
 
   home.keyboard = {
