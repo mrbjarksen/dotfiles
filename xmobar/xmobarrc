@@ -59,6 +59,7 @@ Config
             ]
             [ "-t", "<skyConditionS>  <tempC>°" ]
             18000
+        , Run XMonadLog
         ]
     , template = "%XMonadLog% }{ %cpu% %memory% | %wi% %alsa:default:Master% %battery% | %BIRK% %date% %time% "
     }
