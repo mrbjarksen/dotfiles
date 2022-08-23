@@ -14,7 +14,7 @@ Config
             , "-o", ""
             , "-P"
             ]
-            50
+            10
         , Run Cpu ["-t", "\xe266 <total>%"] 10
         , Run MultiCoreTemp
             [ "-t", "<avgbar> <avg>°C"
