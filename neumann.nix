@@ -32,7 +32,7 @@
 
   networking.networkmanager.enable = true;
   
-  services.localtime.enable = true;
+  services.localtimed.enable = true;
 
   services.xserver = {
     enable = true;
@@ -85,5 +85,6 @@
     };
   };
 
+  programs.zsh.enable = true;
   environment.pathsToLink = [ "/share/zsh" ];
 }

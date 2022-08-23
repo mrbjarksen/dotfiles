@@ -69,6 +69,10 @@ in
     enable = true;
     backend = "glx";
     fade = true;
+    fadeDelta = 2;
+    activeOpacity = 0.9;
+    inactiveOpacity = 0.9;
+    menuOpacity = 0.9;
     settings = {
       blur.method = "dual-kawase";
     };
@@ -160,7 +164,7 @@ in
   };
 
   programs.zathura = {
-    enable = false;
+    enable = true;
     options = {
       inherit font;
       adjust-open = "width";
