@@ -1,6 +1,6 @@
 Config 
     { font = "xft:JetBrains Mono Nerd Font"
-    , additionalFonts = ["xft:Font Awesome"]
+    , additionalFonts = ["xft:Font Awesome 6 Free Regular", "xft:Material Icons"]
     , position = Top
     , overrideRedirect = False
     , commands =
@@ -39,8 +39,8 @@ Config
             ]
         , Run Wireless
             ""
-            [ "-t", "<fn=1><qualitybar></fn>"
-            , "-f", "\xf6aa\xf6ab\xf6ab\xf1eb"
+            [ "-t", "<fn=2><qualitybar></fn>"
+            , "-f", "\xe4ca\xe4d9\xe4d9\xe63e"
             , "-W", "0"
             ]
             10

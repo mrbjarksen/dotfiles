@@ -21,6 +21,7 @@ in
     nerdfonts
     firefox
     font-awesome
+    material-icons
   ];
 
   home.keyboard = {
