@@ -22,7 +22,7 @@
       system = "x86_64-linux";
       modules = [
         ({ ... }: { networking.hostName = "neumann"; })
-        # nixos-hardware.nixosModules.dell-xps-17-9700-intel
+        nixos-hardware.nixosModules.dell-xps-17-9700-intel
         ./neumann.nix
       ];
     };

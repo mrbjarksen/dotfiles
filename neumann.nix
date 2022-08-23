@@ -35,6 +35,8 @@
   
   services.localtimed.enable = true;
 
+  i18n.supportedLocales = [ "all" ];
+
   services.xserver = {
     enable = true;
     resolutions = [
