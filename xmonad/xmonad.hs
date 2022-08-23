@@ -7,6 +7,7 @@ statusbar :: StatusBarConfig
 statusbar = statusBarProp "xmobar ~/.config/xmobar/xmobarrc" $ pure def
   { ppCurrent = const "\xf111"
   , ppHidden = const "\xf10c"
+  , ppHiddenNoWindows = const "\xf10c"
   , ppOrder = take 1
   }
 
