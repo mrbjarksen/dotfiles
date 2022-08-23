@@ -30,12 +30,12 @@ Config
         , Run Alsa
             "default"
             "Master"
-            [ "-t", "<fc=#FFFFFF><status></fc>"
-            , "-f", "\xfa80\xfa7e\xfa7e\xfa7f\xfa7f\xfa7d"
+            [ "-t", "<fn=1><status></fn>"
+            , "-f", "\xf026\xf027\xf6a8\xf028\xfa7d"
             , "-W", "0"
             , "--"
             , "-O", "<volumebar> "
-            , "-o", "\xfc5d "
+            , "-o", "\xf6a9 "
             ]
         , Run Wireless
             ""
