@@ -30,7 +30,7 @@ Config
         , Run Alsa
             "default"
             "Master"
-            [ "-t", "<status>"
+            [ "-t", "<fc=#FFFFFF><status></fc>"
             , "-f", "\xfa80\xfa7e\xfa7e\xfa7f\xfa7f\xfa7d"
             , "-W", "0"
             , "--"
