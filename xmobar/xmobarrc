@@ -25,7 +25,7 @@ Config
             ]
             30
         , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB", "-d", "2", "--", "--scale", "1024"] 30
-        , Run Date "<fn=1>\xf073</fn>  %a %d %b %Y" "date" 864000
+        , Run Date "<fn=1>\xf783</fn> %a %d %b %Y" "date" 864000
         , Run Date "<fn=1>\xf017</fn> %H:%M:%S" "time" 10
         , Run Alsa
             "default"
