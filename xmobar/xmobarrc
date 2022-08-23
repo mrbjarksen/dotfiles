@@ -36,8 +36,8 @@ Config
             , "--"
             , "-O", "<volumebar> "
             , "-o", "\xf6a9 "
-            , "-c", ""
-            , "-C", ""
+            , "-c", "white"
+            , "-C", "white"
             ]
         , Run Wireless
             ""
