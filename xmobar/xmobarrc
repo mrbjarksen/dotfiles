@@ -5,12 +5,12 @@ Config
     , overrideRedirect = False
     , commands =
         [ Run Battery
-            [ "-t", "<leftbar>  <acstatus> <left>"
+            [ "-t", "<leftbar>  <acstatus><left>"
             , "-f", "\xf244\xf243\xf243\xf242\xf242\xf241\xf241\xf240"
             , "-W", "0"
             , "--"
-            , "-O", "\xf0e7"
-            , "-i", "\xf141"
+            , "-O", "\xf0e7 "
+            , "-i", "\xf141 "
             , "-o", ""
             , "-P"
             ]
