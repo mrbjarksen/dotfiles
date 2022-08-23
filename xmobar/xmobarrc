@@ -5,7 +5,7 @@ Config
     , overrideRedirect = False
     , commands =
         [ Run Battery
-            [ "-t", "<leftbar> <fn=1><acstatus></fn> <left>"
+            [ "-t", "<leftbar> <acstatus> <left>"
             , "-f", "\xf244\xf243\xf243\xf242\xf242\xf241\xf241\xf240"
             , "-W", "0"
             , "--"
@@ -31,7 +31,7 @@ Config
             "default"
             "Master"
             [ "-t", "<status>"
-            , "-f", "\xfa7e\xfa7f\xfa7d"
+            , "-f", "\xfa7e\xfa7f\xfa7f\xfa7d"
             , "-W", "0"
             , "--"
             , "-O", "<volumebar> "
