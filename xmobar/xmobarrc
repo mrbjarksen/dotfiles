@@ -5,8 +5,8 @@ Config
     , overrideRedirect = False
     , commands =
         [ Run Battery
-            [ "-t", "<fn=1><leftbar></fn> <fn=1><acstatus></fn> <left>"
-            , "-f", "\xf244\xe0b1\xf243\xf242\xf242\xf241\xf241\xf240"
+            [ "-t", "<leftbar> <fn=1><acstatus></fn> <left>"
+            , "-f", "\xf244\xf243\xf243\xf242\xf242\xf241\xf241\xf240"
             , "-W", "0"
             , "--"
             , "-O", " \xf0e7"
