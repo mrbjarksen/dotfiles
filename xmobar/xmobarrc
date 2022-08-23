@@ -30,8 +30,8 @@ Config
         , Run Alsa
             "default"
             "Master"
-            [ "-t", "<fn=1><status></fn>"
-            , "-f", "\xf026\xf027\xf6a8\xf028\xfa7d"
+            [ "-t", "<status>"
+            , "-f", "\xfa80\xfa7e\xfa7e\xfa7f\xfa7f\xfa7d"
             , "-W", "0"
             , "--"
             , "-O", "<volumebar> "
