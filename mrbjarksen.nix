@@ -70,11 +70,12 @@ in
     backend = "glx";
     fade = true;
     fadeDelta = 2;
-    activeOpacity = 0.9;
-    inactiveOpacity = 0.9;
-    menuOpacity = 0.9;
+    activeOpacity = 0.95;
+    inactiveOpacity = 0.95;
+    menuOpacity = 0.95;
     settings = {
       blur.method = "dual-kawase";
+      blur.strength = 20;
     };
   };
 
