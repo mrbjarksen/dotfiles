@@ -5,7 +5,7 @@ Config
     , overrideRedirect = False
     , commands =
         [ Run Battery
-            [ "-t", "<leftbar> <acstatus><left>"
+            [ "-t", "<leftbar>  <acstatus> <left>"
             , "-f", "\xf244\xf243\xf243\xf242\xf242\xf241\xf241\xf240"
             , "-W", "0"
             , "--"
@@ -24,7 +24,7 @@ Config
             , "--maxtemp", "80"
             ]
             10
-        , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB%"] 10
+        , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB"] 10
         , Run Date "\xf073  %a %d %b %Y" "date" 864000
         , Run Date "\xf017 %H:%M:%S" "time" 10
         , Run Alsa
@@ -57,7 +57,7 @@ Config
             , ("cloudy", "\xe312")
             , ("fair", "\x32b")
             ]
-            [ "-t", "<skyConditionS> <tempC>°" ]
+            [ "-t", "<skyConditionS>  <tempC>°" ]
             18000
         ]
     , template = "%XMonadLog% }{ %cpu% %multicoretemp% %memory% | %battery% | %BIRK% %date% %time% "
