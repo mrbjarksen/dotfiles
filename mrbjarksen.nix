@@ -76,10 +76,10 @@ in
 
   xsession = {
     enable = true;
-    # profilePath = "${xdg "configHome"}/X11/.xprofile";
-    # scriptPath = "${xdg "configHome"}/X11/.xsession";
+    profilePath = "${xdg "configHome"}/X11/.xprofile";
+    scriptPath = "${xdg "configHome"}/X11/.xsession";
   };
-  # xresources.path = "${config.xdg.configHome}/X11/.Xresources";
+  xresources.path = "${config.xdg.configHome}/X11/.Xresources";
 
   xsession.windowManager.xmonad = {
     enable = true;
@@ -136,7 +136,7 @@ in
       source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
       ZVM_VI_ESCAPE_BINDKEY=jk
 
-      source ${pkgs.zsh-bd}/share/zsh-bd/zsh-bd.plugin.zsh
+      source ${pkgs.zsh-bd}/share/zsh-bd/bd.plugin.zsh
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
