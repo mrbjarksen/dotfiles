@@ -14,6 +14,7 @@
   };
 
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.loader = {
     efi = {
