@@ -31,11 +31,11 @@ Config
             "default"
             "Master"
             [ "-t", "<status>"
-            , "-f", "\xfa80\xfa7e\xfa7e\xfa7f\xfa7f\xfa7d"
+            , "-f", "\xfa7e\xfa7f\xfa7d"
             , "-W", "0"
             , "--"
             , "-O", "<volumebar> "
-            , "-o", "\xf6a9 "
+            , "-o", "\xfc5d "
             , "-c", "white"
             , "-C", "white"
             ]
