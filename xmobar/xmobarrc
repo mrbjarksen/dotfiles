@@ -24,7 +24,7 @@ Config
             , "--maxtemp", "80"
             ]
             10
-        , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB"] 10
+        , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB", "-d", "2", "--", "--scale" "1024"] 10
         , Run Date "\xf073  %a %d %b %Y" "date" 864000
         , Run Date "\xf017 %H:%M:%S" "time" 10
         , Run Alsa
