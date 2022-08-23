@@ -15,7 +15,7 @@ Config
             , "-P"
             ]
             10
-        , Run Cpu ["-t", "\xe266 <total>%"] 30
+        , Run Cpu ["-t", "<fn=1>\xf2db</fn> <total>%"] 30
         , Run MultiCoreTemp
             [ "-t", "<avgbar> <avg>°C"
             , "-f", "\xf2cb\xf2ca\xf2ca\xf2c9\xf2c9\xf2c8\xf2c8\xf2c7"
@@ -25,7 +25,7 @@ Config
             ]
             30
         , Run Memory ["-t", "<fn=1>\xf538</fn> <used> GiB", "-d", "2", "--", "--scale", "1024"] 30
-        , Run Date "\xf073  %a %d %b %Y" "date" 864000
+        , Run Date "<fn=1>\xf073</fn>  %a %d %b %Y" "date" 864000
         , Run Date "<fn=1>\xf017</fn> %H:%M:%S" "time" 10
         , Run Alsa
             "default"
@@ -57,7 +57,7 @@ Config
             , ("cloudy", "\xe312")
             , ("fair", "\x32b")
             ]
-            [ "-t", "<skyConditionS>  <tempC>°" ]
+            ["-t", "<skyConditionS>  <tempC>°"]
             18000
         , Run XMonadLog
         ]
