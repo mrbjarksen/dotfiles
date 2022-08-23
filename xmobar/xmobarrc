@@ -5,12 +5,12 @@ Config
     , overrideRedirect = False
     , commands =
         [ Run Battery
-            [ "-t", "<leftbar>  <acstatus><left>"
+            [ "-t", "<leftbar> <acstatus> <left>"
             , "-f", "\xf244\xf243\xf243\xf242\xf242\xf241\xf241\xf240"
             , "-W", "0"
             , "--"
-            , "-O", "\xf0e7 "
-            , "-i", "\xf141 "
+            , "-O", " \xf0e7"
+            , "-i", " \xf141"
             , "-o", ""
             , "-P"
             ]
@@ -60,5 +60,5 @@ Config
             [ "-t", "<skyConditionS>  <tempC>°" ]
             18000
         ]
-    , template = "%XMonadLog% }{ %cpu% %multicoretemp% %memory% | %battery% | %BIRK% %date% %time% "
+    , template = "%XMonadLog% }{ %cpu% %memory% | %wi% %battery% | %BIRK% %date% %time% "
     }
