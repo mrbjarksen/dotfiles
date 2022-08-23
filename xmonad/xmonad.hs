@@ -16,4 +16,4 @@ settings = def
   }
 
 main :: IO ()
-main = xmonad . ewmhFullscreen . ewmh . withSB statusbar $ settings 
+main = xmonad . ewmhFullscreen . ewmh . withEasySB statusbar defToggleStrutsKey $ settings 
