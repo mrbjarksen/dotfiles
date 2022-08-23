@@ -1,6 +1,6 @@
 Config 
     { font = "xft:JetBrains Mono Nerd Font"
-    , additionalFonts = ["xft:Font Awesome 6 Free Regular", "xft:Material Icons"]
+    , additionalFonts = ["xft:Font Awesome 6 Free Solid", "xft:Material Icons"]
     , position = Top
     , overrideRedirect = False
     , commands =
