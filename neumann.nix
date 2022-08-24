@@ -43,6 +43,7 @@
       { x = 1920; y = 1200; } # 2k   16:10
     ];
   };
+  services.xserver.windowManager.xmonad.enable = true;
 
   services.xserver.displayManager.lightdm = {
     enable = true;
