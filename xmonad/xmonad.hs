@@ -3,7 +3,7 @@ import XMonad.Hooks.EwmhDesktops (ewmhFullscreen, ewmh)
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Util.Cursor (setDefaultCursor)
-import Graphics.X11 (xC_left_ptr)
+-- import Graphics.X11 (xC_left_ptr)
 
 statusbar :: StatusBarConfig
 statusbar = statusBarProp "xmobar ~/.config/xmobar/xmobarrc" $ pure def
@@ -17,6 +17,6 @@ main :: IO ()
 main = xmonad . ewmhFullscreen . ewmh . withEasySB statusbar defToggleStrutsKey $ def
   { terminal = "kitty"
   , borderWidth = 1
-  , startupHook = setDefaultCursor xC_left_ptr
+  -- , startupHook = setDefaultCursor xC_left_ptr
   }
 
