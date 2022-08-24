@@ -42,8 +42,8 @@ in
   };
 
   home.pointerCursor = {
-    package = pkgs.nordzy-cursor-theme;
-    name = "Nordzy-cursors-white";
+    package = pkgs.nur.repos.ambroisie.vimix-cursors;
+    name = "Vimix-cursors";
     size = 15;
     x11.enable = true;
     gtk.enable = true;
@@ -70,8 +70,8 @@ in
     backend = "glx";
     fade = true;
     fadeDelta = 2;
-    activeOpacity = 0.95;
-    inactiveOpacity = 0.95;
+    activeOpacity = 0.5;
+    inactiveOpacity = 0.5;
     menuOpacity = 0.95;
     settings = {
       blur.method = "dual-kawase";
@@ -138,9 +138,12 @@ in
       bindkey -- '^[[A' up-line-or-beginning-search
       bindkey -- '^[[B' down-line-or-beginning-search
 
-      source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-      ZVM_VI_ESCAPE_BINDKEY=jk
+      function zvm_config() {
+        ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+        ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+      }
 
+      source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
       source ${pkgs.zsh-bd}/share/zsh-bd/bd.plugin.zsh
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
 
