@@ -69,22 +69,22 @@ in
     enable = true;
     backend = "glx";
     fade = true;
-    fadeDelta = 2;
-    activeOpacity = 0.5;
-    inactiveOpacity = 0.5;
+    fadeDelta = 1;
+    activeOpacity = 0.8;
+    inactiveOpacity = 0.8;
     menuOpacity = 0.95;
     settings = {
       blur.method = "dual-kawase";
-      blur.strength = 20;
+      blur.strength = 1;
     };
   };
 
   xsession = {
     enable = true;
-    profilePath = "${xdg "configHome"}/X11/.xprofile";
-    scriptPath = "${xdg "configHome"}/X11/.xsession";
+    # profilePath = "${xdg "configHome"}/X11/.xprofile";
+    # scriptPath = "${xdg "configHome"}/X11/.xsession";
   };
-  xresources.path = "${config.xdg.configHome}/X11/.Xresources";
+  # xresources.path = "${config.xdg.configHome}/X11/.Xresources";
 
   xsession.windowManager.xmonad = {
     enable = true;
