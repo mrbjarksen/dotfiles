@@ -13,10 +13,10 @@ in
 
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.packages = with pkgs; [
-    rg
     gh
     bat
     btop
+    ripgrep
     neovim
     xmobar
     nerdfonts
