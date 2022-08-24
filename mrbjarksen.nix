@@ -46,7 +46,7 @@ in
     package = pkgs.nur.repos.ambroisie.vimix-cursors;
     name = "Vimix-cursors";
     # size = 15;
-    x11.enable = true;
+    # x11.enable = true;
     # gtk.enable = true;
   };
 
