@@ -6,7 +6,7 @@ import XMonad.Util.Cursor (setDefaultCursor)
 -- import Graphics.X11 (xC_left_ptr)
 
 statusbar :: StatusBarConfig
-statusbar = statusBarProp "xmobar ~/.config/xmobar/xmobarrc" $ pure def
+statusbar = statusBarProp "xmobar" $ pure def
   { ppCurrent = const "\xf111"
   , ppHidden = const "\xf10c"
   , ppHiddenNoWindows = const "\xf10c"

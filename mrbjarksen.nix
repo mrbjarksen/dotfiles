@@ -62,7 +62,6 @@ in
   xdg.enable = true;
   xdg.configFile = {
     xmonad = { source = ./xmonad; recursive = true; };
-    xmobar = { source = ./xmobar; recursive = true; };
     nvim   = { source = ./nvim;   recursive = true; };
   };
 
@@ -91,11 +90,15 @@ in
     enable = true;
     enableContribAndExtras = true;
   };
+  programs.xmobar = {
+    enable = true;
+    extraConfig = builtins.readFile ./xmobar/xmobarrc;
+  };
 
   programs.kitty = {
     enable = true;
     font.name = font;
-    font.size = 19;
+    font.size = 9;
     settings = {
       disable_ligatures = "cursor";
       cursor_shape = "beam";
