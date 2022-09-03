@@ -67,15 +67,15 @@ in
 
   services.picom = {
     enable = true;
-    backend = "glx";
+    # backend = "glx";
     fade = true;
     fadeDelta = 1;
-    activeOpacity = 0.8;
+    activeOpacity = 0.99;
     inactiveOpacity = 0.8;
-    menuOpacity = 0.95;
+    menuOpacity = 0.99;
     settings = {
       blur.method = "dual-kawase";
-      blur.strength = 1;
+      blur.strength = 20;
     };
   };
 
