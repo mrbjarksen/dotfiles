@@ -14,7 +14,7 @@ import XMonad.Hooks.Place
 
 import XMonad.Layout.TwoPanePersistent
 import XMonad.Layout.Spacing (spacingWithEdge)
-import XMonad.Layout.LayoutHints (layoutHintsWithPlacement)
+import XMonad.Layout.LayoutHints (layoutHintsToCenter)
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
 
 import qualified XMonad.Actions.ConstrainedResize as CR
@@ -169,7 +169,7 @@ userLayoutHook = draggingVisualizer . addGaps . respectHints
         delta   = 3/100
         rename name = renamed [Replace name]
         addGaps = spacingWithEdge 10
-        respectHints = layoutHintsWithPlacement (0.5, 0.5)
+        respectHints = layoutHintsToCenter
 
 userHandleEventHook = handleEventHook def
 userLogHook = logHook def
