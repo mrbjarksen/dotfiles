@@ -1,5 +1,5 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = table.insert(require'nvim-config.plugins.ft-setup'.treesitter:values(), 'query'),
+  ensure_installed = 'all',
   highlight = { enable = true, additional_vim_regex_highlighting = false },
   incremental_selection = {
     enable = true,
@@ -48,9 +48,9 @@ require'nvim-treesitter.configs'.setup {
       },
     },
   },
-  autotags = { enable = true },
+  autotag = { enable = true },
   endwise = { enable = true },
-  context_commentstring = { enable = true },
+  context_commentstring = { enable = true, enable_autocmd = false },
   matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
 }
 

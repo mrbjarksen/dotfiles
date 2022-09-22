@@ -46,22 +46,24 @@ return {
   end,
 
   diagnostic = function ()
-    map('n', '<Leader>dd', vim.diagnostic.open_float,   { desc = "View diagnostics in floating window" })
     map('n', '<Leader>dq', vim.diagnostic.setqflist,    { desc = "View diagnostics in quickfix list"   })
-    map('',  '[d',         vim.diagnostic.goto_prev,    { desc = "Go to previous diagnostic"           })
-    map('',  ']d',         vim.diagnostic.goto_next,    { desc = "Go to next diagnostic"               })
     map('n', '<Leader>dv', funcs.toggle_diag_virt_text, { desc = "Toggle virtual text for diagnostics" })
     map('n', '<Leader>du', funcs.toggle_diag_underline, { desc = "Toggle underline for diagnostics"    })
+
+    map('n', '<Leader>dd', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], { desc = "View diagnostics on line"  })
+    map('',  '[d',         [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]],  { desc = "Go to previous diagnostic" })
+    map('',  ']d',         [[<Cmd>Lspsaga diagnostic_jump_next<CR>]],  { desc = "Go to next diagnostic"     })
   end,
 
   lsp = function (bufnr)
-    map('n', 'gD',    vim.lsp.buf.declaration,    { buffer = bufnr, desc = "View declerations of symbol"    })
-    map('n', 'gd',    vim.lsp.buf.definition,     { buffer = bufnr, desc = "View definitions of symbol"     })
-    map('n', 'gi',    vim.lsp.buf.implementation, { buffer = bufnr, desc = "View implementations of symbol" })
-    map('n', 'gr',    vim.lsp.buf.references,     { buffer = bufnr, desc = "View references of symbol"      })
-    map('n', 'K',     vim.lsp.buf.hover,          { buffer = bufnr, desc = "Hover over symbol"              })
     map('n', '<C-K>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = "View signature help for symbol" })
     map('n', 'gqq',   vim.lsp.buf.formatting,     { buffer = bufnr, desc = "Format document"                })
+
+    map('n', '<Leader>lf', [[<Cmd>Lspsaga lsp_finder<CR>]],      { buffer = bufnr, desc = "Find symbol uses"          })
+    map('n', 'gd',         [[<Cmd>Lspsaga peek_definition<CR>]], { buffer = bufnr, desc = "Peek definition of symbol" })
+    map('n', 'gr',         [[<Cmd>Lspsaga rename<CR>]],          { buffer = bufnr, desc = "Rename symbol"             })
+    map('n', 'K',          [[<Cmd>Lspsaga hover_doc<CR>]],       { buffer = bufnr, desc = "Hover over symbol"         })
+    map('n', '<Leader>ca', [[<Cmd>Lspsaga code_action<CR>]],     { buffer = bufnr, desc = "View code action"          })
   end,
 
   telescope = function ()
@@ -82,9 +84,10 @@ return {
 
   neo_tree = function ()
     map('n', '<Leader>tt', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
+    map('n', '<Leader>tf', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
     map('n', '<Leader>tb', '<Cmd>Neotree buffers right reveal<CR>',      { desc = "Open buffer tree"      })
     map('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>',          { desc = "Open git status tree"  })
-    map('n', '<Leader>tg', '<Cmd>Neotree diagnostics bottom reveal<CR>', { desc = "Open diagnostics tree" })
+    map('n', '<Leader>td', '<Cmd>Neotree diagnostics bottom reveal<CR>', { desc = "Open diagnostics tree" })
     map('n', '<Leader>T',  '<Cmd>Neotree close<CR>',                     { desc = "Close trees"           })
   end,
 
@@ -123,6 +126,22 @@ return {
 
     map('ox', 'ih', gs.select_hunk, { buffer = bufnr })
     map('ox', 'ah', gs.select_hunk, { buffer = bufnr })
-  end
+  end,
+
+  zen = function ()
+    local zen = require 'true-zen'
+    map('n', '<Leader>za', zen.ataraxis,   { desc = "Toggle zen mode: ataraxis" })
+    map('n', '<Leader>zm', zen.minimalist, { desc = "Toggle zen mode: minimalist" })
+    map('n', '<Leader>zf', zen.focus,      { desc = "Toggle zen mode: focus" })
+
+    map('n', '<Leader>zn', function ()
+      zen.narrow(0, vim.api.nvim_buf_line_count(0))
+    end, { desc = "Toggle zen mode: narrow buffer" })
+    map('x', '<Leader>zn', function ()
+      zen.narrow(vim.fn.line 'v', vim.fn.line '.')
+    end, { desc = "Toggle zen mode: narrow range" })
+
+    map('n', '<Leader>zt', '<Cmd>Twilight<CR>', { desc = "Toggle twilight mode" })
+  end,
 }
 

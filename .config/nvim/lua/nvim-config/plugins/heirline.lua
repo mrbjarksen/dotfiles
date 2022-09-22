@@ -109,6 +109,9 @@ local FileName = {
     if not conditions.width_percent_below(#filename, 0.25) or vim.bo.filetype == 'help' then
       filename = vim.fn.fnamemodify(self.filename, ':t')
     end
+    if vim.w.neo_tree_preview == 1 then
+      filename = "[" .. filename .. "]"
+    end
     return filename
   end,
 }

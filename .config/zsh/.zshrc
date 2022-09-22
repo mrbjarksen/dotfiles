@@ -11,7 +11,6 @@ setopt AUTO_CD
 setopt LIST_PACKED
 setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
-setopt EXTENDED_GLOB
 
 # Color theme for `ls' (through `vivid')
 LS_COLORS=$(vivid generate one-dark)
@@ -47,10 +46,10 @@ function keymap-str () {
 
 # ------ Completion ------ #
 
-# autoload -Uz compinit
-# compinit
-#
-# zstyle ':completion:*' menu select
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' menu select
 
 
 # ------ History ------ #

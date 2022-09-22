@@ -9,6 +9,8 @@ Wishlist:
   - Faster indent lines
   - Faster stay-in-place
   - Zen mode?
+  - Lazy load eyeliner.nvim
+  - splitjoin.vim replacement
 ]]
 
 local packer = require 'packer'
@@ -29,7 +31,7 @@ packer.init {
   profile = { enable = true },
 }
 
-packer.startup(function()
+packer.startup(function ()
   -- Packer
   use {
     'wbthomason/packer.nvim',
@@ -62,10 +64,6 @@ packer.startup(function()
           override[files].icon = icon
         end
       end
-      -- if override.default_icon then
-      --   local normal_fg = vim.api.nvim_get_hl_by_name('Normal', true).foreground
-      --   override.default_icon.color = ('#%x'):format(normal_fg)
-      -- end
       require'nvim-web-devicons'.setup {
         override = override,
         default = true,
@@ -73,35 +71,53 @@ packer.startup(function()
     end
   }
   use { 'MunifTanjim/nui.nvim', module = 'nui' }
+  -- use {
+  --   'edluffy/hologram.nvim',
+  --   config = function ()
+  --     require'hologram'.setup {
+  --       auto_display = true,
+  --     }
+  --   end
+  -- }
 
   -- Startup
   use 'nathom/filetype.nvim'
-  use { 'lewis6991/impatient.nvim', module = 'impatient' }
+  -- use 'lewis6991/impatient.nvim'
   use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
   -- use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
 
-  -- Completion
+  -- Mason
   use {
     {
-      'hrsh7th/nvim-cmp',
-      module = 'cmp',
+      'williamboman/mason.nvim',
+      cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
       config = function ()
-        require 'nvim-config.plugins.completion'
-      end,
+        require'mason'.setup {
+          ui = {
+            border = 'rounded',
+            icons = {
+              package_installed = require'nvim-config.icons'.misc.success,
+              package_pending = require'nvim-config.icons'.misc.working,
+              package_uninstalled = require'nvim-config.icons'.misc.error,
+            }
+          }
+        }
+      end
     },
-    { 'L3MON4D3/LuaSnip',         module = 'luasnip'                           },
-    { 'hrsh7th/cmp-nvim-lua',     event  = 'InsertEnter',                      },
-    { 'saadparwaiz1/cmp_luasnip', event  = 'InsertEnter'                       },
-    { 'hrsh7th/cmp-nvim-lsp',     module = 'cmp_nvim_lsp'                      },
-    { 'hrsh7th/cmp-buffer',       event  = { 'InsertEnter', 'CmdlineEnter /' } },
-    { 'hrsh7th/cmp-path',         event  = { 'InsertEnter', 'CmdlineEnter :' } },
-    { 'hrsh7th/cmp-calc',         event  = 'InsertEnter'                       },
-    { 'hrsh7th/cmp-cmdline',      event  = 'CmdlineEnter :'                    },
-    { 
-      'petertriho/cmp-git',
-      ft = { 'gitcommit', 'octo' }, 
+    {
+      'williamboman/mason-lspconfig.nvim',
+      wants = 'mason.nvim',
+      module = 'mason-lspconfig',
+      cmd = { 'LspInstall', 'LspUninstall' },
+    },
+    {
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      wants = 'mason-lspconfig.nvim',
+      cmd = { 'MasonToolsInstall', 'MasonToolsUpdate' },
       config = function ()
-        require'cmp_git'.setup()
+        require'mason-tool-installer'.setup {
+          ensure_installed = require'nvim-config.plugins.lsp.servers'.packages
+        }
       end
     },
   }
@@ -110,10 +126,19 @@ packer.startup(function()
   use {
     {
       'neovim/nvim-lspconfig',
-      ft = require'nvim-config.plugins.ft-setup'.lsp:filetypes(),
+      ft = require'nvim-config.plugins.lsp.servers'.fts,
+      wants = 'mason-lspconfig.nvim',
       config = function ()
         require 'nvim-config.plugins.lsp'
       end,
+    },
+    {
+      'glepnir/lspsaga.nvim',
+      after = 'nvim-lspconfig',
+      cmd = 'Lspsaga',
+      config = function ()
+        require 'nvim-config.plugins.lsp.lspsaga'
+      end
     },
     {
       'j-hui/fidget.nvim',
@@ -134,14 +159,9 @@ packer.startup(function()
     {
       'nvim-treesitter/nvim-treesitter',
       module = 'nvim-treesitter',
-      ft = require'nvim-config.plugins.ft-setup'.treesitter:filetypes(),
-      -- cmd = {
-      --   'TSInstall', 'TSInstallSync', 'TSInstallInfo', 'TSUpdate', 'TSUpdateSync',
-      --   'TSUninstall', 'TSBufEnable', 'TSBufDisable', 'TSBufToggle', 'TSEnable',
-      --   'TSDisable', 'TSToggle', 'TSModuleInfo', 'TSEditQuery', 'TSEditQueryUserAfter',
-      -- },
+      event = 'BufRead',
       run = function()
-        require('nvim-treesitter.install').update({ with_sync = true })
+        require('nvim-treesitter.install').update { with_sync = true }
       end,
       config = function ()
         require 'nvim-config.plugins.treesitter'
@@ -149,22 +169,20 @@ packer.startup(function()
     },
     {
       'nvim-treesitter/playground',
-      cond = function ()
-        return vim.g.loaded_nvim_treesitter
-      end,
+      after = 'nvim-treesitter',
       keys = '<Leader>k',
       cmd = {
         'TSPlaygroundToggle',
         'TSHighlightCapturesUnderCursor'
       },
       config = function ()
-        vim.keymap.set('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>', { noremap = true, silent = true })
+        require'nvim-config.keymaps'.map('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
       end
     },
-    { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
-    { 'windwp/nvim-ts-autotag',                      after = 'nvim-treesitter' },
-    { 'RRethy/nvim-treesitter-endwise',              after = 'nvim-treesitter' },
-    { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
+    { 'nvim-treesitter/nvim-treesitter-textobjects', after  = 'nvim-treesitter'          },
+    { 'windwp/nvim-ts-autotag',                      after  = 'nvim-treesitter'          },
+    { 'RRethy/nvim-treesitter-endwise',              after  = 'nvim-treesitter'          },
+    { 'JoosepAlviste/nvim-ts-context-commentstring', module = 'ts_context_commentstring' },
   }
 
   -- Telescope
@@ -203,6 +221,59 @@ packer.startup(function()
     },
   }
 
+  -- Neo-tree
+  use {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v2.x',
+    module = 'neo-tree',
+    cmd = 'Neotree',
+    keys = '<Leader>t',
+    setup = function ()
+      vim.g.neo_tree_remove_legacy_commands = 1
+    end,
+    config = function ()
+      require 'nvim-config.plugins.neo-tree'
+    end
+  }
+  -- use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
+  use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics', branch = 'native-open-and-preview' }
+  -- use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
+
+  -- Completion
+  use {
+    {
+      'hrsh7th/nvim-cmp',
+      module = 'cmp',
+      config = function ()
+        require 'nvim-config.plugins.completion'
+      end,
+    },
+    { 'L3MON4D3/LuaSnip',         module = 'luasnip'                             },
+    { 'hrsh7th/cmp-nvim-lua',     event  = 'InsertEnter',                        },
+    { 'saadparwaiz1/cmp_luasnip', event  = 'InsertEnter'                         },
+    { 'hrsh7th/cmp-nvim-lsp',     module = 'cmp_nvim_lsp'                        },
+    { 'hrsh7th/cmp-buffer',       event  = { 'InsertEnter', 'CmdlineEnter /,?' } },
+    { 'hrsh7th/cmp-path',         event  = { 'InsertEnter', 'CmdlineEnter :'   } },
+    { 'hrsh7th/cmp-calc',         event  = 'InsertEnter'                         },
+    { 'hrsh7th/cmp-cmdline',      event  = 'CmdlineEnter :'                      },
+    {
+      'petertriho/cmp-git',
+      ft = { 'gitcommit', 'octo' },
+      config = function ()
+        require'cmp_git'.setup()
+      end
+    },
+  }
+
+  -- Auto-pairs
+  use {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = function ()
+      require 'nvim-config.plugins.nvim-autopairs'
+    end
+  }
+
   -- use {
   --   'gbprod/stay-in-place.nvim',
   --   keys = { '<', '>', '=' },
@@ -221,35 +292,7 @@ packer.startup(function()
     end
   }
 
-  -- Neo-tree
-  use {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    module = 'neo-tree',
-    cmd = 'Neotree',
-    keys = '<Leader>t',
-    setup = function ()
-      vim.g.neo_tree_remove_legacy_commands = 1
-    end,
-    config = function ()
-      require 'nvim-config.plugins.neo-tree'
-    end
-  }
-  use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
-  -- use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
-
   -- Git and GitHub
-  use {
-    'tpope/vim-fugitive',
-    cmd = {
-      'G', 'Git',
-      'Ggrep', 'Glgrep', 'Gclog', 'Gllog', 'Gcd', 'Glcd',
-      'Gedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gpedit', 'Gdrop',
-      'Gread', 'Gwrite', 'Gwq',
-      'Gdiffsplit', 'Gvdiffsplit', 'Ghdiffsplit',
-      'GMove', 'GRename', 'GDelete', 'GRemove', 'GUnlink', 'GBrowse',
-    }
-  }
   use {
     'lewis6991/gitsigns.nvim',
     module = 'gitsigns',
@@ -270,20 +313,51 @@ packer.startup(function()
     end
   }
   use {
+    'sindrets/diffview.nvim',
+    wants = 'plenary.nvim',
+    cmd = {
+      'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose', 'DiffviewToggleFiles',
+      'DiffviewFocusFiles', 'DiffviewRefresh', 'DiffviewLog',
+    },
+    config = function ()
+      local actions = require 'diffview.actions'
+      require'diffview'.setup {
+        enhanced_diff_hl = true,
+        icons = {
+          folder_closed = require'nvim-config.icons'.filesystem.closed_folder,
+          folder_open = require'nvim-config.icons'.filesystem.open_folder,
+        },
+        signs = {
+          fold_closed = require'nvim-config.icons'.misc.collapsed,
+          fold_open = require'nvim-config.icons'.misc.expanded,
+          done = require'nvim-config.icons'.misc.success,
+        },
+        view = { merge_tool = { layout = 'diff4_mixed' } },
+        keymaps = {
+          view = {
+            ['<C-N>'] = actions.select_next_entry,
+            ['<C-P>'] = actions.select_prev_entry,
+          },
+          file_panel = {
+            ['<C-N>'] = actions.select_next_entry,
+            ['<C-P>'] = actions.select_prev_entry,
+          },
+          file_history_panel = {
+            ['<C-N>'] = actions.select_next_entry,
+            ['<C-P>'] = actions.select_prev_entry,
+            ['<C-A-d>'] = false,
+            ['g<C-D>'] = actions.open_in_diffview,
+          }
+        }
+      }
+    end
+  }
+  use {
     'pwntester/octo.nvim',
     cmd = 'Octo',
     config = function ()
       require'octo'.setup()
       require'nvim-treesitter.parsers'.filetype_to_parsername.octo = 'markdown'
-    end
-  }
-
-  -- Auto-pairs
-  use {
-    'windwp/nvim-autopairs',
-    event = 'InsertCharPre',
-    config = function ()
-      require 'nvim-config.plugins.nvim-autopairs'
     end
   }
 
@@ -302,44 +376,38 @@ packer.startup(function()
   -- Theming
   use {
     'folke/tokyonight.nvim',
-    event = 'ColorSchemePre tokyonight',
+    -- event = 'ColorSchemePre tokyonight*',
     config = function ()
       vim.o.termguicolors = true
+      require'tokyonight'.setup {
+        style = 'night',
+        terminal_colors = false,
+        styles = {
+          keywords = {},
+        },
+        sidebars = { 'qf', 'help', 'man', 'CompetiTest' },
+        on_highlights = function (hl, c)
+          hl.TSVariable = { fg = c.fg, style = {} }
 
-      vim.g.tokyonight_style = 'night'
-      vim.g.tokyonight_terminal_colors = false
-      vim.g.tokyonight_italic_keywords = false
-      vim.g.tokyonight_sidebars = { 'neo-tree', 'qf', 'help', 'man' }
+          hl.Folded = { bg = 'NONE' }
+          hl.WinSeparatorSB = { bg = c.bg_sidebar, fg = c.bg }
+          hl.EndOfBufferSB = { bg = c.bg_sidebar, fg = c.bg_sidebar }
 
-      vim.api.nvim_create_augroup('tokyonight_overrides', { clear = true })
-      vim.api.nvim_create_autocmd('ColorScheme', {
-        group = 'tokyonight_overrides',
-        pattern = 'tokyonight',
-        callback = function ()
-          vim.cmd [[
-            highlight TSVariable guifg=#c0caf5
+          hl.NeoTreeRootName = hl.NvimTreeRootFolder
+          hl.NeoTreeGitModified = hl.NvimTreeGitDirty
+          hl.NeoTreeGitAdded = hl.NvimTreeGitNew
+          hl.NeoTreeGitDeleted = hl.NvimTreeGitDeleted
+          hl.NeoTreeIndentMarker = hl.NvimTreeIndentMarker
+          hl.NeoTreeImageFile = hl.NvimTreeImageFile
+          hl.NeoTreeSymbolicLinkTarget = hl.NvimTreeSymlink
+          hl.NeoTreeMessage = hl.Comment
+          hl.NeoTreeDimText = { fg = c.comment }
 
-            highlight Folded guibg=NONE
-
-            highlight! link LeapMatch LightspeedShortcut
-            highlight! link LeapLabelPrimary LightspeedLabel
-            highlight! link LeapLabelSecondary LightspeedLabelDistant
-            highlight! link LeapBackdrop LightspeedGreyWash
-
-            highlight! link NeoTreeNormal NvimTreeNormal
-            highlight! link NeoTreeNormalNC NvimTreeNormalNC
-            highlight! link NeoTreeRootName NvimTreeRootFolder
-            highlight! link NeoTreeGitModified NvimTreeGitDirty
-            highlight! link NeoTreeGitAdded NvimTreeGitNew
-            highlight! link NeoTreeGitDeleted NvimTreeGitDeleted
-            highlight! link NeoTreeIndentMarker NvimTreeIndentMarker
-            highlight! link NeoTreeImageFile NvimTreeImageFile
-            highlight! link NeoTreeSymbolicLinkTarget NvimTreeSymlink
-            highlight! link NeoTreeMessage Comment
-            highlight! NeoTreeDimText ctermfg=14 guifg=#565f89
-          ]]
+          hl.CompetiTestCorrect = { fg = c.green }
+          hl.CompetiTestWarning = { fg = c.yellow }
+          hl.CompetiTestWrong = { fg = c.red }
         end
-      })
+      }
     end
   }
   use {
@@ -349,14 +417,12 @@ packer.startup(function()
       require 'nvim-config.plugins.heirline'
     end
   }
-
   -- use {
   --   'lukas-reineke/indent-blankline.nvim',
-  --   after = 'tokyonight.nvim',
   --   config = function ()
   --     require'indent_blankline'.setup {
   --       use_treesitter = true,
-  --       indent_level = 50,
+  --       -- indent_level = 50,
   --       show_trailing_blankline_indent = false,
   --       show_end_of_line = true,
   --       show_current_context = true,
@@ -365,12 +431,80 @@ packer.startup(function()
   --   end
   -- }
   use {
+    'stevearc/dressing.nvim',
+    module = 'dressing',
+    setup = function ()
+      vim.ui.input = function (...)
+        require'dressing'
+        vim.ui.input(...)
+      end
+
+      vim.ui.select = function (...)
+        require'dressing'
+        vim.ui.select(...)
+      end
+    end,
+    config = function ()
+      require'dressing'.setup {
+        input = {
+          insert_only = false,
+          win_blend = 0,
+        },
+        select = {
+          backend = { 'telescope' },
+        }
+      }
+    end
+  }
+  use {
     'rcarriga/nvim-notify',
     module = 'notify',
+    cmd = 'Notifications',
     setup = function ()
       vim.notify = function (...)
         require'notify'(...)
       end
+    end
+  }
+
+  -- Zen mode
+  use {
+    'Pocco81/true-zen.nvim',
+    keys = '<Leader>z',
+    cmd = { 'TZAtaraxis', 'TZMinimalist', 'TZNarrow', 'TZFocus' },
+    config = function ()
+      require'true-zen'.setup {
+        ataraxis = {
+          minimum_writing_area = { width = 80 },
+          quit_untoggles = false,
+        },
+        narrow = { folds_style = 'invisible' },
+        integrations = { twilight = true },
+      }
+      require'nvim-config.keymaps'.zen()
+    end
+  }
+  use {
+    'folke/twilight.nvim',
+    module = 'twilight',
+    cmd = { 'Twilight', 'TwilightEnable', 'TwilightDisable' },
+    config = function ()
+      require'twilight'.setup {
+        dimming = { inactive = true }
+      }
+    end
+  }
+
+  -- Competitive programming
+  use {
+    'xeluxee/competitest.nvim',
+    cmd = {
+      'CompetiTestAdd', 'CompetiTestEdit', 'CompetiTestDelete',
+      'CompetiTestConvert', 'CompetiTestRun', 'CompetiTestRunNC',
+      'CompetiTestRunNE', 'CompetiTestReceive',
+    },
+    config = function ()
+      require 'nvim-config.plugins.competitest'
     end
   }
 
@@ -395,8 +529,12 @@ packer.startup(function()
       }
     end
   }
+  use {
+    'itchyny/vim-haskell-indent',
+    ft = { 'haskell', 'lhaskell' },
+  }
 
-  -- Leap
+  -- Movement
   use {
     'ggandor/leap.nvim',
     keys = {
@@ -415,29 +553,48 @@ packer.startup(function()
       require'leap'.set_default_keymaps()
     end
   }
+  use {
+    'jinh0/eyeliner.nvim',
+    -- keys = { 'f', 'F', 't', 'T' },
+    config = function ()
+      require'eyeliner'.setup {
+        highlight_on_key = true,
+      }
+      vim.cmd [[hi! EyelinerPrimary gui=underline guifg=NONE]]
+      vim.cmd [[hi! EyelinerSecondary gui=underline guifg=NONE]]
+    end
+  }
+  -- use {
+  --   'kevinhwang91/nvim-hlslens',
+  --   config = function ()
+  --     require'hlslens'.setup {
+  --       calm_down = true,
+  --       override_lens = function (_, pos_list, _, idx, _)
+  --         return ("[%d/%d]"):format(idx, #pos_list)
+  --       end
+  --     }
+  --     for _, key in ipairs { 'n', 'N', '*', '#', 'g*', 'g#' } do
+  --       require'nvim-config.keymaps'.map('n', key,
+  --         ([[<Cmd>execute('normal! ' . v:count1 . '%s')<CR>]]):format(key)
+  --         .. [[<Cmd>lua require'hlslens'.start()<CR>]]
+  --       )
+  --     end
+  --   end
+  -- }
+  use { 'romainl/vim-cool', event = 'CmdlineEnter /,?' }
 
   -- Project management
   use {
-    -- {
-      'rmagatti/auto-session',
-      cmd = { 'SaveSession', 'RestoreSession', 'RestoreSessionFromFile', 'DeleteSession' },
-      event = 'VimLeavePre',
-      config = function ()
-        require'auto-session'.setup {
-          log_level = 'error',
-          auto_restore_enabled = false,
-          auto_session_use_git_branch = true,
-        }
-      end
-    -- },
-    -- {
-    --   'rmagatti/session-lens',
-    --   after = 'telescope.nvim',
-    --   config = function ()
-    --     require'session-lens'.setup()
-    --     require'telescope'.load_extension 'session-lens'
-    --   end
-    -- }
+    'rmagatti/auto-session',
+    cmd = { 'SaveSession', 'RestoreSession', 'RestoreSessionFromFile', 'DeleteSession' },
+    config = function ()
+      require'auto-session'.setup {
+        log_level = 'error',
+        auto_save_enabled = false,
+        auto_restore_enabled = false,
+        auto_session_use_git_branch = true,
+      }
+    end
   }
   use {
     'airblade/vim-rooter',
@@ -446,50 +603,15 @@ packer.startup(function()
       vim.g.rooter_patterns = { '.git', '>LaTeX', '>.config' }
     end
   }
-  -- use {
-  --   'ahmedkhalf/project.nvim',
-  --   config = function ()
-  --     require'project_nvim'.setup {
-  --       patterns = { '>LaTeX', '>.config' },
-  --       silent_chdir = false,
-  --     }
-  --   end
-  -- }
-  -- use {
-  --   'olimorris/persisted.nvim',
-  --   event = 'VimLeavePre',
-  --   cmd = {
-  --     'SessionStart', 'SessionStop', 'SessionSave', 'SessionLoad',
-  --     'SessionLoadLast', 'SessionDelete', 'SessionToggle',
-  --   },
-  --   after = 'telescope.nvim',
-  --   config = function ()
-  --     require'persisted'.setup {
-  --       use_git_branch = true,
-  --       telescope = {
-  --         before_source = function()
-  --           pcall(vim.cmd, "%bdelete")
-  --         end,
-  --         after_source = function(session)
-  --           pcall(vim.cmd, "git checkout " .. session.branch)
-  --         end,
-  --       },
-  --     }
-  --     if packer_plugins['telescope.nvim'].loaded then
-  --       require'telescope'.load_extension 'persisted'
-  --     end
-  --   end
-  -- }
 
   -- QoL
   use { 'tpope/vim-characterize', keys = 'ga' }
-  use { 'junegunn/vim-slash', event = 'CmdlineEnter /' }
   use {
     'junegunn/vim-easy-align',
     cmd = 'EasyAlign',
     keys = 'gl',
     config = function ()
-      vim.keymap.set({ 'n', 'x' }, 'gl', '<Plug>(EasyAlign)', { noremap = true, silent = true })
+      require'nvim-config.keymaps'.map('nx', 'gl', '<Plug>(EasyAlign)')
     end
   }
   use {
@@ -514,12 +636,14 @@ packer.startup(function()
     'numToStr/Comment.nvim',
     keys = 'gc',
     config = function ()
-      require'Comment'.setup()
+      require'Comment'.setup {
+        pre_hook = require'ts_context_commentstring.integrations.comment_nvim'.create_pre_hook()
+      }
     end
   }
   use {
     'booperlv/nvim-gomove',
-    keys = { '<A-h>', '<A-j>', '<A-k>', '<A-l>' },
+    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
     config = function ()
       require'gomove'.setup {
         move_past_end_col = true
@@ -537,5 +661,35 @@ packer.startup(function()
       }
     end
   }
+  use {
+    'monaqa/dial.nvim',
+    keys = {
+      { 'n',  '<C-a>' },
+      { 'n',  '<C-x>' },
+      { 'v',  '<C-a>' },
+      { 'v',  '<C-a>' },
+      { 'v', 'g<C-x>' },
+      { 'v', 'g<C-x>' },
+    },
+    config = function ()
+      require 'nvim-config.plugins.dial'
+    end
+  }
+  use {
+    'AckslD/nvim-trevJ.lua',
+    keys = 'U',
+    config = function ()
+      require'nvim-config.keymaps'.map('n', 'U', require'trevj'.format_at_cursor)
+      require'trevj'.setup()
+    end
+  }
+  -- use {
+  --   'AndrewRadev/splitjoin.vim',
+  --   keys = { 'J', 'U' },
+  --   setup = function ()
+  --     vim.g.splitjoin_split_mapping = 'U'
+  --     vim.g.splitjoin_join_mapping = 'J'
+  --   end
+  -- }
 end)
 

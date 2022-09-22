@@ -13,7 +13,7 @@ require 'nvim-config.diagnostic'
 
 vim.api.nvim_create_autocmd('BufEnter', {
   group = vim.api.nvim_create_augroup('set_colorscheme', { clear = true }),
-  command = [[colorscheme tokyonight]],
+  command = [[colorscheme tokyonight-night]],
   nested = true,
   once = true,
 })

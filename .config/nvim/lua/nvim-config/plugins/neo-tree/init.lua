@@ -18,6 +18,7 @@ require'neo-tree'.setup {
       handler = function ()
         vim.opt.guicursor:append 'n:Cursorline'
         vim.wo.scrolloff = 1
+        -- vim.notify "neo_tree_buffer_enter"
       end
     },
     {
@@ -25,9 +26,9 @@ require'neo-tree'.setup {
       handler = function ()
         vim.opt.guicursor:remove 'n:Cursorline'
         vim.wo.scrolloff = 3
+        -- vim.notify "neo_tree_buffer_leave"
       end
     },
-    -- { event = 'file_opened', handler = function () require'neo-tree.sources.manager'.close 'filesystem' end },
   },
   default_component_configs = {
     indent = {
@@ -68,6 +69,9 @@ require'neo-tree'.setup {
       ['R'] = 'refresh',
       ['q'] = 'close_window' ,
       ['?'] = 'show_help',
+      ['F'] = { 'toggle_preview', config = { use_float = true } },
+      ['P'] = { 'toggle_preview', config = { use_float = false } },
+      ['<Esc>'] = 'revert_preview',
     }
   },
   filesystem = {
