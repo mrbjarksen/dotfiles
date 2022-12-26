@@ -61,8 +61,8 @@ npairs.add_rules {
 -- LaTeX
 npairs.add_rules {
   Rule('$', '$', 'tex')
-    :with_pair(function (opt) return select(2, opt.line:gsub('%$', '')) % 2 == 0 end)
-    :with_move(function (opt) return opt.char == '$' end),
+    :with_pair(function (opt) return select(2, (' ' .. opt.line):gsub('[^\\]%$', '')) % 2 == 0 end)
+    :with_move(function (opt) return opt.char == '$' and not conds.before_text('\\') end),
   Rule('\\(', '\\)', 'tex'),
   Rule('\\[', '\\]', 'tex'),
   Rule('`', "'", 'tex'),

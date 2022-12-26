@@ -57,7 +57,7 @@ return {
 
   lsp = function (bufnr)
     map('n', '<C-K>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = "View signature help for symbol" })
-    map('n', 'gqq',   vim.lsp.buf.formatting,     { buffer = bufnr, desc = "Format document"                })
+    map('n', 'gqq',   vim.lsp.buf.format,         { buffer = bufnr, desc = "Format document"                })
 
     map('n', '<Leader>lf', [[<Cmd>Lspsaga lsp_finder<CR>]],      { buffer = bufnr, desc = "Find symbol uses"          })
     map('n', 'gd',         [[<Cmd>Lspsaga peek_definition<CR>]], { buffer = bufnr, desc = "Peek definition of symbol" })

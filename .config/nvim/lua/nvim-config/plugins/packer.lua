@@ -90,6 +90,7 @@ packer.startup(function ()
   use {
     {
       'williamboman/mason.nvim',
+      -- module = 'mason',
       cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
       config = function ()
         require'mason'.setup {
@@ -106,19 +107,20 @@ packer.startup(function ()
     },
     {
       'williamboman/mason-lspconfig.nvim',
-      wants = 'mason.nvim',
       module = 'mason-lspconfig',
+      -- wants = 'mason.nvim',
+      -- after = 'mason.nvim',
+      -- module = 'mason-lspconfig',
+      wants = 'mason.nvim',
       cmd = { 'LspInstall', 'LspUninstall' },
     },
     {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      wants = 'mason-lspconfig.nvim',
+      -- wants = 'mason-lspconfig.nvim',
+      -- after = 'mason.nvim',
+      wants = 'mason.nvim',
+      module = 'mason-tool-installer',
       cmd = { 'MasonToolsInstall', 'MasonToolsUpdate' },
-      config = function ()
-        require'mason-tool-installer'.setup {
-          ensure_installed = require'nvim-config.plugins.lsp.servers'.packages
-        }
-      end
     },
   }
 
@@ -126,8 +128,14 @@ packer.startup(function ()
   use {
     {
       'neovim/nvim-lspconfig',
-      ft = require'nvim-config.plugins.lsp.servers'.fts,
-      wants = 'mason-lspconfig.nvim',
+      -- ft = require'nvim-config.plugins.mason'.fts,
+      -- wants = 'mason-lspconfig.nvim',
+      cmds = { 'LspInfo', 'LspStart', 'LspStop', 'LspRestart' },
+      event = 'BufEnter',
+      cond = function  ()
+        local fts = require'nvim-config.plugins.mason'.lsp_fts
+        return vim.tbl_contains(fts, vim.bo.filetype)
+      end,
       config = function ()
         require 'nvim-config.plugins.lsp'
       end,
@@ -224,7 +232,8 @@ packer.startup(function ()
   -- Neo-tree
   use {
     'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    -- branch = 'v2.x',
+    branch = 'main',
     module = 'neo-tree',
     cmd = 'Neotree',
     keys = '<Leader>t',
@@ -236,9 +245,8 @@ packer.startup(function ()
     end
   }
   -- use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
-  use { 'mrbjarksen/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics', branch = 'native-open-and-preview' }
-  -- use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
-
+  use { '~/neo-tree-diagnostics.nvim', module = 'neo-tree.sources.diagnostics' }
+--
   -- Completion
   use {
     {
@@ -584,18 +592,18 @@ packer.startup(function ()
   use { 'romainl/vim-cool', event = 'CmdlineEnter /,?' }
 
   -- Project management
-  use {
-    'rmagatti/auto-session',
-    cmd = { 'SaveSession', 'RestoreSession', 'RestoreSessionFromFile', 'DeleteSession' },
-    config = function ()
-      require'auto-session'.setup {
-        log_level = 'error',
-        auto_save_enabled = false,
-        auto_restore_enabled = false,
-        auto_session_use_git_branch = true,
-      }
-    end
-  }
+  -- use {
+  --   'rmagatti/auto-session',
+  --   cmd = { 'SaveSession', 'RestoreSession', 'RestoreSessionFromFile', 'DeleteSession' },
+  --   config = function ()
+  --     require'auto-session'.setup {
+  --       log_level = 'error',
+  --       auto_save_enabled = false,
+  --       auto_restore_enabled = false,
+  --       auto_session_use_git_branch = true,
+  --     }
+  --   end
+  -- }
   use {
     'airblade/vim-rooter',
     event = 'BufEnter',

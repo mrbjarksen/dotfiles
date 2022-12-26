@@ -1,5 +1,5 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
+capabilities = require'cmp_nvim_lsp'.default_capabilities(capabilities)
 
 -- Set rounded borders
 local win = require 'lspconfig.ui.windows'
@@ -10,8 +10,8 @@ win.default_opts = function (options)
   return opts
 end
 
-local servers = require'nvim-config.plugins.lsp.servers'.servers
-for _, server in pairs(servers) do
+local servers = require'nvim-config.plugins.mason'.servers
+for _, server in ipairs(servers) do
   local config_ok, config = pcall(require, 'nvim-config.plugins.lsp.servers.' .. server)
   if not config_ok then config = {} end
 
@@ -19,15 +19,15 @@ for _, server in pairs(servers) do
   config.on_attach = function (client, bufnr)
     require'nvim-config.keymaps'.lsp(bufnr)
 
-    if client.resolved_capabilities.document_range_formatting then
+    if client.server_capabilities.documentRangeFormattingProvider then
       vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
     end
 
-    if client.resolved_capabilities.goto_definition or client.resolved_capabilities.workspace_symbol then
+    if client.server_capabilities.definitionProvider or client.server_capabilities.workspaceSymbolProvider then
       vim.api.nvim_buf_set_option(bufnr, 'tagfunc', 'v:lua.vim.lsp.tagfunc')
     end
 
-    if client.resolved_capabilities.document_highlight then
+    if client.server_capabilities.documentHighlightProvider then
       vim.api.nvim_create_augroup('lsp_document_highlight', { clear = false })
       vim.api.nvim_clear_autocmds { buffer = bufnr, group = 'lsp_document_highlight' }
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {

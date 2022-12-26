@@ -122,6 +122,7 @@ require'neo-tree'.setup {
     },
   },
   diagnostics = {
+    autopreview = true,
     renderers = {
       file = {
         { 'indent' },
@@ -138,12 +139,6 @@ require'neo-tree'.setup {
         { 'message' },
       },
     },
-    window = {
-      mappings = {
-        -- ['p'] = 'preview',
-        -- ['P'] = 'revert_preview',
-      }
-    }
   }
 }
 
