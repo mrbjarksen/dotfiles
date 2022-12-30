@@ -1,20 +1,21 @@
--- Make sure plugins are set up
-if require 'nvim-config.plugins' then return end
+local leader = '<Space>'
+vim.keymap.set('', leader, '')
+vim.g.mapleader = vim.api.nvim_replace_termcodes(leader, true, true, true)
 
--- require'nvim-config.functions'.enhance_startup(function ()
-require 'nvim-config.qol'
+require 'nvim-config.plugins'
 
 require 'nvim-config.options'
-
-require'nvim-config.keymaps':set_leader()
 require'nvim-config.keymaps'.basic()
-
+require 'nvim-config.qol'
 require 'nvim-config.diagnostic'
 
-vim.api.nvim_create_autocmd('BufEnter', {
+vim.api.nvim_create_autocmd('UIEnter', {
   group = vim.api.nvim_create_augroup('set_colorscheme', { clear = true }),
-  command = [[colorscheme tokyonight-night]],
+  callback = function ()
+    if not pcall(vim.cmd, [[colorscheme tokyonight-night]]) then
+      vim.cmd [[colorscheme habamax]]
+    end
+  end,
   nested = true,
   once = true,
 })
--- end)

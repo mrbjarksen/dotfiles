@@ -19,13 +19,6 @@ local map = function (modes, lhs, rhs, opts)
 end
 
 return {
-  leader = '<Space>',
-
-  set_leader = function (self)
-    vim.keymap.set('', self.leader, '')
-    vim.g.mapleader = vim.api.nvim_replace_termcodes(self.leader, true, true, true)
-  end,
-
   default_opts = default_opts,
   map = map,
 

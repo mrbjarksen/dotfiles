@@ -96,9 +96,9 @@ local dial_ft = function (op)
   end
 end
 
-map('n',  '<C-a>', dial_ft 'inc_normal', { expr = true })
-map('n',  '<C-x>', dial_ft 'dec_normal', { expr = true })
-map('v',  '<C-a>', dial_ft 'inc_visual', { expr = true })
-map('v',  '<C-x>', dial_ft 'dec_visual', { expr = true })
-map('v', 'g<C-a>', dial_ft 'inc_gvisual', { expr = true })
-map('v', 'g<C-x>', dial_ft 'dec_gvisual', { expr = true })
+map('n',  '<C-a>', dial_ft 'inc_normal',  { expr = true })
+map('n',  '<C-x>', dial_ft 'dec_normal',  { expr = true })
+map('v',  '<C-a>', dial_ft 'inc_visual',  { expr = true })
+map('v',  '<C-x>', dial_ft 'dec_visual',  { expr = true })
+map('x', 'g<C-a>', dial_ft 'inc_gvisual', { expr = true })
+map('x', 'g<C-x>', dial_ft 'dec_gvisual', { expr = true })

@@ -1,7 +1,19 @@
 require'nvim-treesitter.configs'.setup {
   -- ensure_installed = 'all',
+  ensure_installed = {
+    -- Util
+    'comment', 'diff', 'git_rebase', 'gitattributes', 'gitcommit', 'help', 'query', 'regex',
+    -- Common
+    'bash', 'c', 'cpp', 'haskell', 'latex', 'lua', 'markdown', 'markdown_inline', 'nix', 'python', 'vim',
+    -- Less common
+    'html', 'css', 'javascript', 'typescript', 'tsx', 'json', 'json5', 'jsonc', 'hjson', 'jsonnet',
+    'toml', 'yaml', 'dockerfile', 'bibtex', 'java', 'scheme',
+    -- Misc
+    'awk', 'ebnf', 'elixir', 'fennel', 'http', 'julia', 'llvm', 'make', 'r', 'rst', 'sql',
+  },
   auto_install = true,
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  highlight = { enable = true, additional_vim_regex_highlighting = true },
+  indent = { enable = true },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -11,7 +23,6 @@ require'nvim-treesitter.configs'.setup {
       scope_incremental = 'as',
     }
   },
-  indent = { enable = true },
   textobjects = {
     select = {
       enable = true,
@@ -19,9 +30,9 @@ require'nvim-treesitter.configs'.setup {
       keymaps = {
         ['af'] = '@function.outer',
         ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
-        ['aC'] = '@comment.outer',
+        ['aC'] = '@class.outer',
+        ['iC'] = '@class.inner',
+        ['ac'] = '@comment.outer',
       }
     },
     move = {
@@ -59,11 +70,12 @@ require'nvim-treesitter.configs'.setup {
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 99
-vim.api.nvim_create_autocmd('BufRead', {
-  callback = function()
-    vim.api.nvim_create_autocmd('BufWinEnter', {
-      once = true,
-      command = 'normal! zx'
-    })
-  end
-})
+-- vim.api.nvim_buf_create_augroup('recalc_treesitter_folds', { clear = true })
+-- vim.api.nvim_create_autocmd('BufRead', {
+--   callback = function()
+--     vim.api.nvim_create_autocmd('BufWinEnter', {
+--       once = true,
+--       command = 'normal! zx'
+--     })
+--   end
+-- })

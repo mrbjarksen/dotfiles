@@ -1,13 +1,18 @@
 -- QoL
 vim.opt.mouse      = 'a'
-vim.opt.number     = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.whichwrap  = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true, [']'] = true }
-vim.opt.showmode   = false
-vim.opt.lazyredraw = true
+-- vim.opt.lazyredraw = true
 vim.opt.ruler      = false
-vim.opt.conceallevel = 2
+
+-- Visuals
+vim.opt.number        = true
+vim.opt.termguicolors = true
+vim.opt.showmode      = false
+vim.opt.conceallevel  = 2
+-- vim.opt.cmdheight     = 0
+vim.opt.cursorline    = true
 
 -- Scrolloff
 vim.opt.scrolloff     = 3
@@ -30,7 +35,6 @@ vim.opt.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop)
 vim.opt.fillchars   = { eob = '│', fold = ' ', diff = '╱' }
 vim.opt.listchars   = { tab = '>-', space = '⸱', nbsp = '+', eol = '↴' }
 vim.opt.wrap        = false
---vim.opt.showbreak   = '> '
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
 
