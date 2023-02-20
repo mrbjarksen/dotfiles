@@ -12,6 +12,7 @@ M.insured = {
     marksman = true,
     bashls = true,
     rust_analyzer = true,
+    julials = false,
   },
   dap = {},
   linters = {},
@@ -56,11 +57,12 @@ end
 
 M.check = function ()
   local server_to_package = require'mason-lspconfig.mappings.server'.lspconfig_to_package
+  local package_to_server = require'mason-lspconfig.mappings.server'.package_to_lspconfig
 
   local insured_pkgs = {}
-  for _, type in ipairs { 'lsp', 'dap', 'linters', 'formatters' } do
-    for pkg, include in pairs(M.insured[type]) do
-      if type == 'lsp' then pkg = server_to_package[pkg] end
+  for _, pkg_type in ipairs { 'lsp', 'dap', 'linters', 'formatters' } do
+    for pkg, include in pairs(M.insured[pkg_type]) do
+      if pkg_type == 'lsp' then pkg = server_to_package[pkg] end
       insured_pkgs[pkg] = include
     end
   end
@@ -69,7 +71,9 @@ M.check = function ()
 
   for _, pkg in ipairs(installed_pkgs) do
     if insured_pkgs[pkg] == nil then
-      vim.notify("Mason: package `" .. pkg .. "` is installed but not insured", vim.log.levels.WARN)
+      local lsp_msg = package_to_server[pkg] or ""
+      if lsp_msg ~= "" then lsp_msg = " (server `" .. lsp_msg .. "`)" end
+      vim.notify("Mason: package `" .. pkg .. "`" .. lsp_msg .. " is installed but not insured", vim.log.levels.WARN)
     end
   end
 

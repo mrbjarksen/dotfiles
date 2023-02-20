@@ -5,14 +5,15 @@ vim.opt.splitright = true
 vim.opt.whichwrap  = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true, [']'] = true }
 -- vim.opt.lazyredraw = true
 vim.opt.ruler      = false
+vim.opt.splitkeep  = 'topline'
 
 -- Visuals
-vim.opt.number        = true
 vim.opt.termguicolors = true
-vim.opt.showmode      = false
-vim.opt.conceallevel  = 2
--- vim.opt.cmdheight     = 0
+vim.opt.number        = true
 vim.opt.cursorline    = true
+vim.opt.conceallevel  = 2
+vim.opt.showmode      = false
+-- vim.opt.cmdheight     = 0
 
 -- Scrolloff
 vim.opt.scrolloff     = 3
@@ -20,7 +21,9 @@ vim.opt.sidescrolloff = 3
 
 -- Tabs and Indents
 vim.opt.shiftwidth  = 4
+vim.opt.shiftround  = true
 vim.opt.expandtab   = true
+vim.opt.softtabstop = -1
 vim.opt.smartindent = true
 
 -- Search

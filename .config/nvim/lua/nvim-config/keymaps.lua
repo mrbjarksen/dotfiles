@@ -75,15 +75,6 @@ return {
     map('n', '<Leader>fj', builtin.jumplist,                  { desc = "Find jumps"                            })
   end,
 
-  neo_tree = function ()
-    map('n', '<Leader>tt', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
-    map('n', '<Leader>tf', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
-    map('n', '<Leader>tb', '<Cmd>Neotree buffers right reveal<CR>',      { desc = "Open buffer tree"      })
-    map('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>',          { desc = "Open git status tree"  })
-    map('n', '<Leader>td', '<Cmd>Neotree diagnostics bottom reveal<CR>', { desc = "Open diagnostics tree" })
-    map('n', '<Leader>T',  '<Cmd>Neotree close<CR>',                     { desc = "Close trees"           })
-  end,
-
   gitsigns = function (bufnr)
     local gs = require 'gitsigns'
 

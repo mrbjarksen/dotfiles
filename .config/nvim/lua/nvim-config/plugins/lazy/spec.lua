@@ -18,6 +18,42 @@ local load_on_event_if = function (plugin, event, cond, callback)
 end
 
 return {
+  {
+    -- 'mrbjarksen/shifty.nvim',
+    dir = '~/shifty.nvim',
+    enabled = false,
+    cmd = 'Shifty',
+    keys = {
+      { '<', mode = { 'n', 'x' } },
+      { '>', mode = { 'n', 'x' } },
+      { '=', mode = { 'n', 'x' } },
+
+      { '<C-D>', mode = 'i' },
+      { '<C-T>', mode = 'i' },
+      { '<C-F>', mode = 'i' },
+
+      { '<Tab>', mode = 'i' },
+      { '<C-I>', mode = 'i' },
+      { '<BS>',  mode = 'i' },
+      { '<C-H>', mode = 'i' },
+
+      { 'o', mode = 'n' },
+      { 'O', mode = 'n' },
+      { '<CR>', mode = 'i' },
+    },
+    opts = {
+      defaults = {
+        expandtab = true,
+        shiftwidth = 4,
+        softtabstop = -1,
+      },
+      by_ft = {
+        lua = 2,
+        vim = 8,
+      },
+    },
+  },
+
   -- Utilities
   { 'nvim-lua/plenary.nvim' },
   {
@@ -54,7 +90,7 @@ return {
   {
     'williamboman/mason.nvim',
     cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
-    config = {
+    opts = {
       ui = {
         border = 'rounded',
         icons = {
@@ -69,7 +105,7 @@ return {
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     cmd = { 'MasonToolsInstall', 'MasonToolsUpdate' },
-    event = 'User LazyCheck',
+    event = 'VeryLazy',
     config = function()
       require'mason-tool-installer'.setup {
         ensure_installed = require'nvim-config.plugins.mason'.get_ensured(),
@@ -98,6 +134,8 @@ return {
       })
     end),
     config = function ()
+      require 'mason'
+      require'mason-lspconfig'.setup()
       require 'nvim-config.plugins.lsp'
     end,
   },
@@ -124,32 +162,47 @@ return {
     build = function()
       require'nvim-treesitter.install'.update { with_sync = true }
     end,
-    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
-    -- init = load_on_event_if('nvim-treesitter', 'BufRead', true),
-    event = 'FileType',
+    -- dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
+    init = load_on_event_if('nvim-treesitter', 'FileType', true),
+    -- event = 'FileType',
     config = function ()
       require 'nvim-config.plugins.treesitter'
     end,
   },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    -- event = 'FileType',
     keys = {
       { 'a', mode = { 'x', 'o' } },
       { 'i', mode = { 'x', 'o' } },
       { '[', mode = { 'n', 'x', 'o' } },
       { ']', mode = { 'n', 'x', 'o' } },
     },
+    config = function ()
+      vim.cmd.TSEnable 'textobjects.move'
+      vim.cmd.TSEnable 'textobjects.select'
+    end,
   },
-  { 'windwp/nvim-ts-autotag', event = 'InsertEnter' },
-  { 'RRethy/nvim-treesitter-endwise', event = 'InsertEnter' },
+  {
+    'windwp/nvim-ts-autotag',
+    event = 'InsertEnter',
+    config = function ()
+      vim.cmd.TSEnable 'autotag'
+    end,
+  },
+  {
+    'RRethy/nvim-treesitter-endwise',
+    event = 'InsertEnter',
+    config = function ()
+      vim.cmd.TSEnable 'endwise'
+    end,
+  },
   { 'JoosepAlviste/nvim-ts-context-commentstring' },
   {
     'nvim-treesitter/playground',
     keys = '<Leader>k',
     cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' },
     config = function ()
-      require'nvim-config.keymaps'.map('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
+      vim.keymap.set('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
     end,
   },
 
@@ -188,18 +241,18 @@ return {
   { 'mrbjarksen/neo-tree-diagnostics.nvim' },
 
   -- Completion
-  { 'hrsh7th/nvim-cmp', config = function () require 'nvim-config.plugins.cmp' end              },
-  { 'L3MON4D3/LuaSnip', config = function () require'luasnip'.config.setup({}) end              },
-  { 'saadparwaiz1/cmp_luasnip',            event = 'InsertEnter'                                },
-  { 'doxnit/cmp-luasnip-choice',           event = 'InsertEnter', config = { auto_open = true } },
-  { 'hrsh7th/cmp-nvim-lsp'                                                                      },
-  { 'hrsh7th/cmp-nvim-lsp-signature-help', event = 'InsertEnter'                                },
-  { 'hrsh7th/cmp-buffer',                  event = { 'InsertEnter', 'CmdlineEnter /,?' }        },
-  { 'hrsh7th/cmp-path',                    event = { 'InsertEnter', 'CmdlineEnter :'   }        },
-  { 'hrsh7th/cmp-calc',                    event = 'InsertEnter'                                },
-  { 'hrsh7th/cmp-cmdline',                 event = 'CmdlineEnter :'                             },
-  { 'hrsh7th/cmp-nvim-lua',                event = 'InsertEnter'                                },
-  { 'hrsh7th/cmp-git',                     event = 'InsertEnter', config = true                 },
+  { 'hrsh7th/nvim-cmp', config = function () require 'nvim-config.plugins.cmp' end            },
+  { 'L3MON4D3/LuaSnip', config = function () require'luasnip'.config.setup({}) end            },
+  { 'saadparwaiz1/cmp_luasnip',            event = 'InsertEnter'                              },
+  { 'doxnit/cmp-luasnip-choice',           event = 'InsertEnter', opts = { auto_open = true } },
+  { 'hrsh7th/cmp-nvim-lsp'                                                                    },
+  { 'hrsh7th/cmp-nvim-lsp-signature-help', event = 'InsertEnter'                              },
+  { 'hrsh7th/cmp-buffer',                  event = { 'InsertEnter', 'CmdlineEnter /,?' }      },
+  { 'hrsh7th/cmp-path',                    event = { 'InsertEnter', 'CmdlineEnter :'   }      },
+  { 'hrsh7th/cmp-calc',                    event = 'InsertEnter'                              },
+  { 'hrsh7th/cmp-cmdline',                 event = 'CmdlineEnter :'                           },
+  { 'hrsh7th/cmp-nvim-lua',                event = 'InsertEnter'                              },
+  { 'hrsh7th/cmp-git',                     event = 'InsertEnter', config = true               },
 
   -- Auto-pairs
   {
@@ -220,25 +273,6 @@ return {
       { 'ih',        mode = { 'o', 'x' } },
       { 'ah',        mode = { 'o', 'x' } },
     },
-    -- event = 'BufWinEnter',
-    -- cond = function ()
-    --   local wins = vim.api.nvim_tabpage_list_wins(0)
-    --
-    --   for _, winid in ipairs(wins) do
-    --     local bufnr = vim.api.nvim_win_get_buf(winid)
-    --     local path = vim.api.nvim_buf_get_name(bufnr)
-    --     vim.fn.system {
-    --       'git', '-C', vim.fs.dirname(path), 'ls-files', '--error-unmatch', vim.fs.basename(path)
-    --     }
-    --     if vim.v.shell_error == 0 then return true end
-    --   end
-    --
-    --   return false
-    -- end,
-    -- init = function ()
-    --   vim.api.nvim_create_augroup('load_gitsigns', { clear = true })
-    --   vim.api.nvim_create_autocmd('Buf')
-    -- end
     init = load_on_event_if('gitsigns.nvim', { 'BufRead', 'BufWritePost' }, function (a)
       local dir = vim.fs.dirname(a.file)
       local base = vim.fs.basename(a.file)
@@ -290,16 +324,50 @@ return {
     end,
   },
   {
+    'Everblush/everblush.nvim',
+    event = 'ColorSchemePre everblush',
+    config = true,
+  },
+  {
     'rebelot/heirline.nvim',
-    event = 'UIEnter',
+    init = load_on_event_if('heirline.nvim', 'UIEnter', true),
+    -- event = 'UIEnter',
     config = function ()
       require 'nvim-config.plugins.heirline'
     end,
   },
   {
+    'mawkler/modicator.nvim',
+    -- init = load_on_event_if('modicator.nvim', 'UIEnter', true),
+    event = 'ModeChanged',
+    config = function ()
+      local fg = require'modicator'.get_highlight_fg
+      require'modicator'.setup {
+        show_warnings = false,
+        highlights = {
+          modes = {
+            ['v']  = { foreground = fg 'VisualMode' },
+            ['V']  = { foreground = fg 'VisualMode' },
+            [''] = { foreground = fg 'VisualMode' },
+            ['s']  = { foreground = fg 'SelectMode' },
+            ['S']  = { foreground = fg 'SelectMode' },
+            [''] = { foreground = fg 'SelectMode' },
+            ['i']  = { foreground = fg 'InsertMode' },
+            ['R']  = { foreground = fg 'ReplaceMode' },
+            ['c']  = { foreground = fg 'CommandMode' },
+            ['r']  = { foreground = fg 'InputMode' },
+            ['!']  = { foreground = fg 'ExternalMode' },
+            ['t']  = { foreground = fg 'TerminalMode' },
+          },
+        },
+      }
+    end,
+  },
+  {
     'lukas-reineke/indent-blankline.nvim',
     init = load_on_event_if('indent-blankline.nvim', 'UIEnter', true),
-    config = {
+    -- event = 'VeryLazy',
+    opts = {
       buftype_exclude = { 'terminal', 'nofile' },
       filetype_exclude = { 'qf', 'help', 'man', 'neo-tree', 'CompetiTest' },
       use_treesitter = false,
@@ -328,7 +396,7 @@ return {
         vim.ui.select(...)
       end
     end,
-    config = {
+    opts = {
       input = {
         insert_only = false,
         win_blend = 0,
@@ -375,7 +443,7 @@ return {
   {
     'folke/twilight.nvim',
     cmd = { 'Twilight', 'TwilightEnable', 'TwilightDisable' },
-    config = {
+    opts = {
       dimming = { inactive = true }
     },
   },
@@ -404,7 +472,7 @@ return {
   {
     'lukas-reineke/headlines.nvim',
     ft = { 'markdown', 'rmd', 'norg', 'org' },
-    config = {
+    opts = {
       markdown = {
         dash_string = '━',
         quote_string = '▌',
@@ -433,11 +501,12 @@ return {
   },
   {
     'jinh0/eyeliner.nvim',
-    keys = { 'f', 't', 'F', 'T' },
+    -- keys = { 'f', 't', 'F', 'T' },
+    lazy = false,
     config = function ()
       require'eyeliner'.setup { highlight_on_key = true }
-      vim.cmd [[hi! EyelinerPrimary gui=underline guifg=NONE]]
-      vim.cmd [[hi! EyelinerSecondary gui=underline guifg=NONE]]
+      vim.cmd.highlight { args = { 'EyelinerPrimary', 'gui=underline', 'guifg=NONE' }, bang = true }
+      vim.cmd.highlight { args = { 'EyelinerSecondary', 'gui=underline', 'guifg=NONE' }, bang = true }
     end,
   },
   { 'romainl/vim-cool', event = 'CmdlineEnter /,?' },
@@ -448,12 +517,22 @@ return {
     event = 'VeryLazy',
     config = function ()
       vim.g.rooter_patterns = { '.git', '>LaTeX', '>.config' }
-      vim.cmd [[Rooter]]
+      vim.cmd.Rooter()
     end,
+  },
+
+  -- Documentation
+  {
+    'danymat/neogen',
+    cmd = 'Neogen',
+    opts = {
+      snippet_engine = 'luasnip',
+    },
   },
 
   -- QoL
   { 'tpope/vim-characterize', keys = 'ga' },
+  -- { 'tpope/vim-sleuth', lazy = false },
   {
     'junegunn/vim-easy-align',
     cmd = 'EasyAlign',
@@ -480,7 +559,7 @@ return {
       { 'gs', mode = 'x' }, { 'gS', mode = 'x' },
       { '<C-G>s', mode = 'i' }, { '<C-G>S', mode = 'i' },
     },
-    config = {
+    opts = {
       keymaps = {
         visual = 'gs',
       },
@@ -533,7 +612,7 @@ return {
   {
     'max397574/better-escape.nvim',
     event = 'InsertEnter',
-    config = {
+    opts = {
       mapping = { 'jk', 'kj' },
       timeout = 100,
       keys = '<Esc>',

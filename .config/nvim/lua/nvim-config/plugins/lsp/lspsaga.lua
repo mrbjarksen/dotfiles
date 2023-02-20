@@ -1,4 +1,4 @@
-require'lspsaga'.init_lsp_saga {
+require'lspsaga'.setup {
   border_style = 'rounded',
   diagnostic_header = require'nvim-config.icons'.diagnostic,
   code_action_icon = ' ',

@@ -282,4 +282,6 @@ StatusLine = utils.insert(StatusLine,
   Info, Percent, Cursor
 )
 
-require'heirline'.setup(StatusLine)
+require'heirline'.setup {
+  statusline = StatusLine
+}

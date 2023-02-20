@@ -13,7 +13,7 @@ end
 local servers = require'mason-lspconfig'.get_installed_servers()
 for _, server in ipairs(servers) do
   local config_ok, config = pcall(require, 'nvim-config.plugins.lsp.servers.' .. server)
-  if not config_ok then config = {} end
+  if not config_ok or type(config) ~= "table" then config = {} end
 
   config.capabilities = capabilities
   config.on_attach = function (client, bufnr)

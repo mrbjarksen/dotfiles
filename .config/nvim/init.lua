@@ -12,8 +12,8 @@ require 'nvim-config.diagnostic'
 vim.api.nvim_create_autocmd('UIEnter', {
   group = vim.api.nvim_create_augroup('set_colorscheme', { clear = true }),
   callback = function ()
-    if not pcall(vim.cmd, [[colorscheme tokyonight-night]]) then
-      vim.cmd [[colorscheme habamax]]
+    if not pcall(vim.cmd.colorscheme, 'tokyonight-night') then
+      vim.cmd.colorscheme 'slate'
     end
   end,
   nested = true,

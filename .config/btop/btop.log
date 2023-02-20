@@ -6,3 +6,60 @@ btop++ needs an interactive shell to run.
 2022/04/01 (22:21:06) | ===> btop++ v.1.2.5
 2022/04/01 (22:21:06) | ERROR: No tty detected!
 btop++ needs an interactive shell to run.
+
+2023/02/10 (22:32:17) | ===> btop++ v.1.2.13
+2023/02/10 (22:32:17) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:32:28) | ERROR: Stall in Runner thread, restarting!
+
+2023/02/10 (22:39:08) | ===> btop++ v.1.2.13
+2023/02/10 (22:39:08) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:40:08) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:40:20) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:40:35) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:40:42) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:40:48) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:41:02) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:41:28) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:41:39) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:42:05) | ERROR: Stall in Runner thread, restarting!
+
+2023/02/10 (22:51:55) | ===> btop++ v.1.2.13
+2023/02/10 (22:51:55) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:52:09) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:52:25) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:52:38) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (22:52:45) | ERROR: Stall in Runner thread, restarting!
+
+2023/02/10 (23:01:52) | ===> btop++ v.1.2.13
+2023/02/10 (23:01:52) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:02:03) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:02:12) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:02:23) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:02:34) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:03:11) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:03:47) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:03:59) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:04:45) | ERROR: Stall in Runner thread, restarting!
+
+2023/02/10 (23:44:29) | ===> btop++ v.1.2.13
+2023/02/10 (23:44:29) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:46:02) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:46:40) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:47:03) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:47:32) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:47:45) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:47:58) | ERROR: Stall in Runner thread, restarting!
+2023/02/10 (23:49:23) | WARNING: Failed to join _runner thread on exit!
+
+2023/02/11 (00:47:28) | ===> btop++ v.1.2.13
+2023/02/11 (00:47:28) | ERROR: Stall in Runner thread, restarting!
+2023/02/11 (00:48:05) | WARNING: Failed to join _runner thread on exit!
+
+2023/02/11 (01:14:04) | ===> btop++ v.1.2.13
+2023/02/11 (01:14:04) | ERROR: Stall in Runner thread, restarting!
+2023/02/11 (01:14:23) | ERROR: Stall in Runner thread, restarting!
+2023/02/11 (01:14:36) | WARNING: Failed to join _runner thread on exit!
+
+2023/02/11 (01:16:59) | ===> btop++ v.1.2.13
+2023/02/11 (01:16:59) | ERROR: Stall in Runner thread, restarting!
+2023/02/11 (01:28:25) | WARNING: Failed to join _runner thread on exit!

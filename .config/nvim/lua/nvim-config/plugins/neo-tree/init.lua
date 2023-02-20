@@ -142,4 +142,10 @@ require'neo-tree'.setup {
   }
 }
 
-require'nvim-config.keymaps'.neo_tree()
+vim.keymap.set('n', '<Leader>tt', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
+vim.keymap.set('n', '<Leader>tf', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
+vim.keymap.set('n', '<Leader>tb', '<Cmd>Neotree buffers right reveal<CR>',      { desc = "Open buffer tree"      })
+vim.keymap.set('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>',          { desc = "Open git status tree"  })
+vim.keymap.set('n', '<Leader>td', '<Cmd>Neotree diagnostics bottom reveal<CR>', { desc = "Open diagnostics tree" })
+vim.keymap.set('n', '<Leader>T',  '<Cmd>Neotree close<CR>',                     { desc = "Close trees"           })
+

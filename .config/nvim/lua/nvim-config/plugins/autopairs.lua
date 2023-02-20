@@ -42,8 +42,8 @@ end
 -- Lua
 local end_appropriate = function (opts)
   return conds.before_text'do'(opts)
-    or conds.before_regex('if .+ then$', -1)(opts)
-    or conds.before_regex('function[^()]*%([^()]*%)$', -1)(opts)
+    or conds.before_regex('if .+ then', -1)(opts)
+    or conds.before_regex('function[^()]*%([^()]*%)', -1)(opts)
 end
 
 npairs.add_rules {
@@ -67,3 +67,16 @@ npairs.add_rules {
   Rule('\\[', '\\]', 'tex'),
   Rule('`', "'", 'tex'),
 }
+
+-- Julia
+local endwise = require'nvim-autopairs.ts-rule'.endwise
+npairs.add_rules {
+  Rule('do', 'end', 'julia'):end_wise(),
+  Rule('begin', 'end', 'julia'):end_wise(),
+  -- Rule('', 'end', 'julia'):end_wise(conds.before_regex 'if.*'),
+  -- Rule('', 'end', 'julia'):end_wise(conds.before_regex 'function[^()]*%([^()]*%)'),
+  endwise('if .*$', 'end', 'julia', 'if_statement'),
+  endwise('for .*$', 'end', 'julia', 'for_statement'),
+  endwise('function.*%(.*%)$', 'end', 'julia', 'function_definition'),
+}
+
