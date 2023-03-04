@@ -9,7 +9,7 @@ local load_on_event_if = function (plugin, event, cond, callback)
           if cond == true or cond(a) then
             require'lazy'.load { plugins = { plugin }, wait = true }
             if callback ~= nil then callback(a) end
-            vim.api.nvim_del_augroup_by_id(group)
+            pcall(vim.api.nvim_del_augroup_by_id, group)
           end
         end)
       end
@@ -239,6 +239,7 @@ return {
     end,
   },
   { 'mrbjarksen/neo-tree-diagnostics.nvim' },
+  -- { dir = '~/neo-tree-diagnostics.nvim' },
 
   -- Completion
   { 'hrsh7th/nvim-cmp', config = function () require 'nvim-config.plugins.cmp' end            },

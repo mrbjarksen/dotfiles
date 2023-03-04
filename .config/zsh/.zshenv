@@ -5,6 +5,8 @@ XDG_STATE_HOME=$HOME/.local/state
 XDG_DATA_DIRS=/usr/local/share:/usr/share
 XDG_CONFIG_DIRS=/etc/xdg
 
+QT_SCALE_FACTOR=2
+
 TERM=xterm-kitty
 VISUAL=nvim
 EDITOR=nvim

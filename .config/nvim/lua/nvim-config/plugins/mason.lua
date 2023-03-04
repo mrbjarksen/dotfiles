@@ -2,7 +2,7 @@ local M = {}
 
 M.insured = {
   lsp = {
-    sumneko_lua = true,
+    lua_ls = true,
     pyright = true,
     texlab = true,
     tsserver = true,
@@ -62,7 +62,7 @@ M.check = function ()
   local insured_pkgs = {}
   for _, pkg_type in ipairs { 'lsp', 'dap', 'linters', 'formatters' } do
     for pkg, include in pairs(M.insured[pkg_type]) do
-      if pkg_type == 'lsp' then pkg = server_to_package[pkg] end
+      if pkg_type == 'lsp' and server_to_package[pkg] then pkg = server_to_package[pkg] end
       insured_pkgs[pkg] = include
     end
   end

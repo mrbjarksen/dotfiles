@@ -122,7 +122,7 @@ require'neo-tree'.setup {
     },
   },
   diagnostics = {
-    autopreview = true,
+    auto_preview = true,
     renderers = {
       file = {
         { 'indent' },
