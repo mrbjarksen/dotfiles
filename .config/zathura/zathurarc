@@ -1,0 +1,17 @@
+set font "JetBrains Mono Nerd Font"
+
+set continuous-hist-save true
+set selection-clipboard clipboard
+
+set window-title-basename true
+set statusbar-home-tilde true
+
+set page-cache-size 20
+set page-thumbnail-size 67108864 # 64M
+
+# set dbus-raise-window false
+
+set adjust-open width
+set guioptions ""
+
+include themes/tokyonight

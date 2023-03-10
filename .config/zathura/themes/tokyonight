@@ -1,0 +1,49 @@
+set adjust-open best-fit
+set guioptions s
+
+set page-padding 2
+
+set recolor true
+set recolor-keephue true
+set recolor-reverse-video true
+
+set recolor-darkcolor "#c0caf5"
+set recolor-lightcolor "#1a1b26"
+
+set default-bg "#1a1b26"
+set default-fg "#c0caf5"
+
+map z set "default-bg \#1a1b26"
+map Z set "default-bg \#16161e"
+
+set statusbar-bg "#16161e"
+set statusbar-fg "#c0caf5"
+
+set inputbar-bg "#16161e"
+set inputbar-fg "#c0caf5"
+
+set completion-bg "#16161e"
+set completion-fg "#c0caf5"
+set completion-group-bg "#16161e"
+set completion-group-fg "#c0caf5"
+set completion-highlight-bg "#343a55"
+set completion-highlight-fg "#c0caf5"
+
+set notification-bg "#16161e"
+set notification-fg "#0db9d7"
+set notification-error-bg "#16161e"
+set notification-error-fg "#db4b4b"
+set notification-warning-bg "#16161e"
+set notification-warning-fg "#e0af68"
+
+set highlight-color "#3d59a1"
+set highlight-fg "#3d59a1"
+set highlight-active-color "#ff9e64"
+
+set render-loading-bg "#16161e"
+set render-loading-fg "#c0caf5"
+
+set index-bg "#16161e"
+set index-fg "#c0caf5"
+set index-active-bg "#292e42"
+set index-active-fg "#c0caf5"
