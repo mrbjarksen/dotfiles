@@ -100,3 +100,11 @@ for _, search in ipairs { '/', '?' } do
     sources = { { name = 'buffer', option = { keyword_pattern = [[\k\+]] } } }
   })
 end
+
+if vim.api.nvim_get_mode().mode == 'c' then
+  local type = vim.fn.getcmdtype()
+  if vim.tbl_contains({':', '/', '?'}, type) then
+    local keys = vim.api.nvim_replace_termcodes([[<Esc>]] .. type, true, false, true)
+    vim.api.nvim_feedkeys(keys, 'nt', false)
+  end
+end

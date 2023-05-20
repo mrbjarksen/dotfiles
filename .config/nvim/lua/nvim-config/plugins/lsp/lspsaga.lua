@@ -1,7 +1,7 @@
 require'lspsaga'.setup {
   border_style = 'rounded',
   diagnostic_header = require'nvim-config.icons'.diagnostic,
-  code_action_icon = ' ',
+  code_action_icon = '󰌵 ',
   code_action_lightbulb = { sign = false },
   finder_action_keys = {
     open = '<CR>',

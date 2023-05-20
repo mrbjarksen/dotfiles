@@ -18,6 +18,8 @@ local load_on_event_if = function (plugin, event, cond, callback)
 end
 
 return {
+  { "folke/trouble.nvim", cmd = "Trouble" },
+
   {
     -- 'mrbjarksen/shifty.nvim',
     dir = '~/shifty.nvim',
@@ -371,7 +373,7 @@ return {
     opts = {
       buftype_exclude = { 'terminal', 'nofile' },
       filetype_exclude = { 'qf', 'help', 'man', 'neo-tree', 'CompetiTest' },
-      use_treesitter = false,
+      use_treesitter = true,
       use_treesitter_scope = false,
       show_trailing_blankline_indent = false,
       show_end_of_line = true,
@@ -465,7 +467,8 @@ return {
   -- Languages
   {
     'lervag/vimtex',
-    ft = 'tex',
+    -- ft = 'tex',
+    lazy = false,
     config = function ()
       vim.g.vimtex_view_method = 'zathura'
     end,
@@ -667,5 +670,10 @@ return {
   --     vim.g.splitjoin_split_mapping = 'U'
   --     vim.g.splitjoin_join_mapping = 'J'
   --   end
-  -- }
+  -- },
+
+  {
+    'Eandrju/cellular-automaton.nvim',
+    cmd = 'CellularAutomaton',
+  },
 }

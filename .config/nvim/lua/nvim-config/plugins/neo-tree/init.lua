@@ -42,6 +42,12 @@ require'neo-tree'.setup {
       folder_empty  = require'nvim-config.icons'.filesystem.empty_folder,
     },
   },
+  renderers = {
+    message = {
+      { 'indent', with_markers = true },
+      { 'name', highlight = 'NeoTreeMessage' },
+    },
+  },
   window = {
     mappings = {
       ['s'] = function (state) local s = vim.deepcopy(state); s.tree = nil; vim.notify(vim.inspect(s)) end,
