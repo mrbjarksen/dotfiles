@@ -18,6 +18,7 @@ require'neo-tree'.setup {
       handler = function ()
         vim.opt.guicursor:append 'n:Cursorline'
         vim.wo.scrolloff = 1
+        -- vim.notify "neo_tree_buffer_enter"
       end
     },
     {
@@ -25,9 +26,9 @@ require'neo-tree'.setup {
       handler = function ()
         vim.opt.guicursor:remove 'n:Cursorline'
         vim.wo.scrolloff = 3
+        -- vim.notify "neo_tree_buffer_leave"
       end
     },
-    -- { event = 'file_opened', handler = function () require'neo-tree.sources.manager'.close 'filesystem' end },
   },
   default_component_configs = {
     indent = {
@@ -39,6 +40,12 @@ require'neo-tree'.setup {
       folder_closed = require'nvim-config.icons'.filesystem.closed_folder,
       folder_open   = require'nvim-config.icons'.filesystem.open_folder,
       folder_empty  = require'nvim-config.icons'.filesystem.empty_folder,
+    },
+  },
+  renderers = {
+    message = {
+      { 'indent', with_markers = true },
+      { 'name', highlight = 'NeoTreeMessage' },
     },
   },
   window = {
@@ -68,8 +75,9 @@ require'neo-tree'.setup {
       ['R'] = 'refresh',
       ['q'] = 'close_window' ,
       ['?'] = 'show_help',
-      ['P'] = 'preview',
-      ['<C-P>'] = 'revert_preview',
+      ['F'] = { 'toggle_preview', config = { use_float = true } },
+      ['P'] = { 'toggle_preview', config = { use_float = false } },
+      ['<Esc>'] = 'revert_preview',
     }
   },
   filesystem = {
@@ -120,6 +128,7 @@ require'neo-tree'.setup {
     },
   },
   diagnostics = {
+    auto_preview = true,
     renderers = {
       file = {
         { 'indent' },
@@ -136,13 +145,13 @@ require'neo-tree'.setup {
         { 'message' },
       },
     },
-    window = {
-      mappings = {
-        -- ['p'] = 'preview',
-        -- ['P'] = 'revert_preview',
-      }
-    }
   }
 }
 
-require'nvim-config.keymaps'.neo_tree()
+vim.keymap.set('n', '<Leader>tt', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
+vim.keymap.set('n', '<Leader>tf', '<Cmd>Neotree filesystem reveal<CR>',         { desc = "Open file tree"        })
+vim.keymap.set('n', '<Leader>tb', '<Cmd>Neotree buffers right reveal<CR>',      { desc = "Open buffer tree"      })
+vim.keymap.set('n', '<Leader>tg', '<Cmd>Neotree git_status float<CR>',          { desc = "Open git status tree"  })
+vim.keymap.set('n', '<Leader>td', '<Cmd>Neotree diagnostics bottom reveal<CR>', { desc = "Open diagnostics tree" })
+vim.keymap.set('n', '<Leader>T',  '<Cmd>Neotree close<CR>',                     { desc = "Close trees"           })
+

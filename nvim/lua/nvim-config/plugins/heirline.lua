@@ -12,6 +12,88 @@ require'heirline'.load_colors {
   none = '#1a1b26',
 }
 
+---- Embedded command line ----
+--[[
+local Popup = require 'nui.popup'
+
+local cmdline_ns = vim.api.nvim_create_namespace 'cmdline'
+local cmdline = {
+  -- ns = vim.api.nvim_create_namespace 'cmdline',
+  levels = {},
+  context = {},
+  popup = Popup {
+    border = {
+      padding = { 0, 1 },
+      style = 'none',
+      text = {},
+      ns_id = cmdline_ns,
+    },
+    relative = 'win',
+    -- enter = true,
+    enter = false,
+    focusable = false,
+    buf_options = {
+      modifiable = false,
+      readonly = true,
+    },
+  },
+}
+
+-- local render_cmdline = function ()
+--   if 
+-- end
+
+vim.ui_attach(cmdline_ns, { ext_cmdline = true }, function (event, ...)
+  if event == 'cmdline_show' then
+    local content, pos, firstc, prompt, indent, level = ...
+    local line = firstc .. prompt .. (' '):rep(indent)
+    for _, part in ipairs(content) do
+      line = line .. part[2]
+    end
+    for i = #cmdline.levels + 1, level - 1 do cmdline.levels[i] = {} end
+    cmdline.levels[level] = { str = line, pos = pos }
+    if level < #cmdline.levels then
+      for i = level + 1, #cmdline.levels do
+        cmdline.levels[i] = nil
+      end
+    end
+  elseif event == 'cmdline_pos' then
+    local pos, level = ...
+    cmdline.levels[level].pos = pos
+  elseif event == 'cmdline_special_char' then
+    local c, shift, level = ...
+    local line = cmdline.levels[level]
+    local right
+    if shift then right = line.pos else right = line.pos + 1 end
+    line.str = table.concat { line.str:sub(1, line.pos), c, line.str:sub(right) }
+  elseif event == 'cmdline_hide' then
+    cmdline.levels[#cmdline.levels] = nil
+  elseif event == 'cmdline_block_show' then
+    local lines = ...
+    local lines_strs = {}
+    for i, line in ipairs(lines) do
+      lines_strs[i] = ''
+      for _, part in ipairs(line) do
+        lines_strs[i] = lines_strs[i] .. part[2]
+      end
+    end
+    cmdline.context = lines_strs
+  elseif event == 'cmdline_block_append' then
+    local line = ...
+    local line_str = ''
+    for _, part in ipairs(line) do
+      line_str = line_str .. part[2]
+    end
+    cmdline.context[#cmdline.context+1] = line_str
+  elseif event == 'cmdline_block_hide' then
+    cmdline.context = {}
+  else
+    return
+  end
+  render_cmdline()
+end)
+--]]
+
 ---- Mode indicator ----
 
 local Mode = {
@@ -20,7 +102,10 @@ local Mode = {
   end,
   init = function (self)
     if not self.once then
-      vim.api.nvim_create_autocmd("ModeChanged", { command = 'redrawstatus' })
+      vim.api.nvim_create_autocmd("ModeChanged", {
+        pattern = '*:*o*',
+        command = 'redrawstatus',
+      })
       self.once = true
     end
   end,
@@ -77,9 +162,14 @@ local Mode = {
       ['t'] = 'green',
     },
   },
-  provider = function (self) return " " .. self.mode_names[self.mode] .. " " end,
+  provider = function (self)
+    -- if self.mode == 'c' then
+      -- return " " .. require'noice'.api.status.command.get() .. " "
+    -- end
+    return " " .. self.mode_names[self.mode] .. " "
+  end,
   hl = function (self) return { fg = 'black', bg = self.mode_colors[self.mode:sub(1, 1)] } end,
-  update = 'ModeChanged',
+  update = { 'ModeChanged', 'BufEnter', 'CmdlineLeave' },
 }
 
 ---- File information ----
@@ -108,6 +198,9 @@ local FileName = {
     if filename == '' then return '[No Name]' end
     if not conditions.width_percent_below(#filename, 0.25) or vim.bo.filetype == 'help' then
       filename = vim.fn.fnamemodify(self.filename, ':t')
+    end
+    if vim.w.neo_tree_preview == 1 then
+      filename = "[" .. filename .. "]"
     end
     return filename
   end,
@@ -140,7 +233,7 @@ File = utils.insert(File, FileRO, FileIcon, FileName, FileModified)
 local Percent = {
   provider = ' %3p%% ',
   hl = function ()
-    if not conditions.is_active() then return { fg = '#3b4261', bg = 'none' } end
+    if not conditions.is_active() then return { fg = 'blue_faded', bg = 'none' } end
     return { fg = 'blue', bg = 'blue_faded' }
   end
 }
@@ -189,4 +282,6 @@ StatusLine = utils.insert(StatusLine,
   Info, Percent, Cursor
 )
 
-require'heirline'.setup(StatusLine)
+require'heirline'.setup {
+  statusline = StatusLine
+}
