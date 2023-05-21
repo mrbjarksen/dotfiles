@@ -2,7 +2,7 @@
 
 let
   font = "JetBrainsMono Nerd Font";
-  # theme = import ./themes/everblush;
+  theme = import ./themes/tokyonight.nix;
   xdg = attr: builtins.replaceStrings [ "~/" "${config.home.homeDirectory}/" ] [ "" "" ] config.xdg.${attr};
 in
 {
@@ -10,6 +10,7 @@ in
   home.homeDirectory = "/home/mrbjarksen";
   home.stateVersion = "22.05";
   programs.home-manager.enable = true;
+  home.enableNixpkgsReleaseCheck = true;
 
   home.sessionPath = [ "$HOME/.local/bin" ];
   home.packages = with pkgs; [
@@ -55,6 +56,8 @@ in
     EDITOR = "nvim";
     VISUAL = "nvim";
     BROWSER = "firefox";
+
+    NVIM_DEFAULT_THEME = theme.nvim.name;
   };
 
   fonts.fontconfig.enable = true;
@@ -142,11 +145,6 @@ in
       bindkey -- '^[[A' up-line-or-beginning-search
       bindkey -- '^[[B' down-line-or-beginning-search
 
-      function zvm_config() {
-        ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-        ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-      }
-
       source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
       source ${pkgs.zsh-bd}/share/zsh-bd/bd.plugin.zsh
       source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
@@ -158,7 +156,7 @@ in
   programs.git = {
     enable = true;
     userName = "Bjarki Baldursson Harksen";
-    userEmail = "bjarki31@gmail.com";
+    userEmail = "bjarki@harksen.is";
     extraConfig = {
       init = { defaultBranch = "main"; };
       url = { "https://github.com/" = { insteadOf = [ "gh:" "github:" ]; }; };
@@ -166,22 +164,36 @@ in
     delta.enable = true;
   };
 
-  programs.lsd = {
+  programs.exa = {
     enable = true;
     enableAliases = true;
+    git = true;
+    extraOptions = [
+      "--classify" # -F
+      "--extended" # -@
+    ];
   };
 
   programs.zathura = {
     enable = true;
     options = {
       inherit font;
-      adjust-open = "width";
-      recolor-keephue = true;
-      recolor-reverse-video = true;
-      statusbar-home-tilde = true;
-      guioptions = "";
+      
       continuous-hist-save = true;
       selection-clipboard = "clipboard";
-    };
+      
+      window-title-basename = true;
+      statusbar-home-tilde = true;
+
+      page-cache-size = 20;
+      page-thumbnail-size = 67108864; # 64M
+      
+      adjust-open = "width";
+      guioptions = "";
+
+      recolor-keephue = true;
+      recolor-reverse-video = true;
+    } // (if theme ? zathura.options then theme.zathura.options else {});
+    mappings = if theme ? zathura.mappings then theme.zathura.mappings else {};
   };
 }
