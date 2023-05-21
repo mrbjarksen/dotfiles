@@ -1,0 +1,42 @@
+{
+    "rules": [
+        {
+            "pattern": {
+                "feature": "true",
+                "matches": ""
+            },
+            "profile": "profile_6b8b4567"
+        }
+    ],
+    "profiles": [
+        {
+            "name": "profile_6b8b4567",
+            "settings": [
+                {
+                    "key": "GLSyncToVblank",
+                    "value": true
+                },
+                {
+                    "key": "GLGSYNCAllowed",
+                    "value": true
+                },
+                {
+                    "key": "GLSyncDisplayDevice",
+                    "value": "DP-3"
+                },
+                {
+                    "key": "GLSharpenEnable",
+                    "value": true
+                },
+                {
+                    "key": "GLSharpenValue",
+                    "value": 50
+                },
+                {
+                    "key": "GLSharpenIgnoreFilmGrain",
+                    "value": 17
+                }
+            ]
+        }
+    ]
+}
