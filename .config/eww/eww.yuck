@@ -136,7 +136,7 @@
       : (EWW_BATTERY.BAT0.capacity > 20 ? ""
         : EWW_BATTERY.BAT0.capacity > 10 ? ""
         : "")})
-    (more-info :on {battery-hover || EWW_BATTERY.BAT0.status != "Not charging"}
+    (more-info :on {battery-hover || EWW_BATTERY.BAT0.status == "Charging" || EWW_BATTERY.BAT0.status == "Discharging"}
       (info "${EWW_BATTERY.BAT0.capacity}%"))
     (more-info :on battery-hover :cond {battery-time != "N/A"} :transition "slideleft"
       (box :space-evenly false
