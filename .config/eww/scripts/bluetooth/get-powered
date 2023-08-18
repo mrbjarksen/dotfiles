@@ -1,0 +1,30 @@
+#! /usr/bin/sh
+
+MAC=$(bluetoothctl list | grep '\[default\]$' | cut -d ' ' -f 2)
+
+case $(bluetoothctl show $MAC | sed -n "s/^.*Powered: \(.*\)$/\1/p") in
+    yes) echo "true";;
+    no) echo "false";;
+esac
+
+# report() {
+#     case $(echo "$1" | sed -n "s/^.*Controller $MAC Powered: \(.*\)$/\1/p") in
+#         yes) echo "true";;
+#         no) echo "false";;
+#     esac
+# }
+
+# bluetoothctl | while read -r line; do
+#     # report "$line"
+#     case $line in
+#         *"Controller $MAC Powered: yes") echo "true";;
+#         *"Controller $MAC Powered: no") echo "false";;
+#     esac
+# done
+
+# dbus-monitor --system --profile "type='signal',sender='org.bluez',path='/org/bluez/hci0',interface='org.freedesktop.DBus.Properties',member='PropertiesChanged'" | while read -r line; do
+#     case $(bluetoothctl show $MAC | sed -n "s/^.*Powered: \(.*\)$/\1/p") in
+#         yes) echo "true";;
+#         no) echo "false";;
+#     esac
+# done

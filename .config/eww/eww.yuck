@@ -1,0 +1,367 @@
+(defwindow upper-bar
+  :monitor 0
+  :geometry (geometry
+    :x 0 :y 0
+    :width "100%" :height 40
+    :anchor "top center")
+  :stacking "bg"
+  :exclusive false
+  :focusable false
+  (box :class "bar" :space-evenly false
+    (workspace-group :halign "start")
+    (group :halign "end"
+      (brightness)
+      (battery)
+      (wifi)
+      (bluetooth)
+      (keyboard-layout)
+      (weather)
+      (date)
+      (time)
+      (power))))
+
+(defwindow lower-bar
+  :monitor 0
+  :geometry (geometry
+    :x 0 :y 0
+    :width "100%" :height 40
+    :anchor "bottom center")
+  :stacking "bg"
+  :exclusive false
+  :focusable false
+  (box :class "bar" :space-evenly false
+    (group :halign "start"
+      (todo "Switch to XMonad")
+      (todo "Active windows")
+      (todo "Layout indicator")
+      (todo "Weather cache")
+      (todo "Integrate dunst")
+      (todo "Integrate rofi")
+      (todo "Accurate clock icon")
+      (todo "Interaction!")
+      (todo "Volume")
+      (todo "Bluetooth"))
+    (group :halign "end"
+      (temp)
+      (cpu)
+      (ram)
+      (disk))))
+
+(defwidget todo []
+  (box :class "todo" :space-evenly false :spacing 5
+    (box)
+    (children)))
+
+(defvar reveal-all false)
+
+(defwidget group [?halign]
+  (box :class "group" :halign halign :hexpand true :spacing 10 :space-evenly false (children)))
+
+(defwidget component [name ?type ?hover ?only-info ?inactive ?disabled]
+  (eventbox
+    :onhover {(hover ?: false) ? `${EWW_CMD} update ${name}-hover=true` : ""}
+    :onhoverlost {(hover ?: false) ? `${EWW_CMD} update ${name}-hover=false` : ""}
+    (box :space-evenly false
+      :class "${name} component ${type ?: 'normal'} ${(disabled ?: false) ? 'disabled' : ''}"
+      (children))))
+
+(defwidget icon [?class]
+  (box :class "icon ${class}"
+    :height 20 :width 20
+    (children)))
+
+(defwidget info [?visible ?space-evenly ?spacing ?class]
+  (box :class "info ${class}"
+    :visible {visible ?: true}
+    :space-evenly {space-evenly ?: false}
+    :spacing {spacing ?: 0}
+    (children)))
+
+(defwidget more-info [on ?cond ?hide ?with-all ?transition ?duration ?class]
+  (revealer :class class
+    :reveal {(hide ?: false)
+      ? !((on || (reveal-all && (with-all ?: true))) && (cond ?: true))
+      :   (on || (reveal-all && (with-all ?: true))) && (cond ?: true)}
+    :transition {transition ?: "slideright"}
+    :duration {duration ?: "300ms"}
+    (children)))
+
+(defpoll time-data :interval "0.1s"
+  :initial '{"hour": "--", "min": "--", "sec": "--"}'
+  `date +'{"hour": "%H", "min": "%M", "sec": "%S"}'`)
+
+(defvar time-hover false)
+
+(defwidget time []
+  (component :name "time" :hover true :type "static"
+    (icon "")
+    (info
+      "${time-data.hour}:${time-data.min}"
+      (more-info :on time-hover :duration "200ms"
+          ":${time-data.sec}"))))
+        ;; (label :width 40 :justify "left" :text ":${dt.sec}")))))
+
+(defpoll date-data :interval "60s"
+  :initial '{"day": "--", "month": "--", "year": "--", "weekday": "--", "short_day": "--", "long_suffix": "--"}'
+  `date +'{"day": "%d", "month": "%m", "year": "%y", "weekday": "%A", "short_day": "%-d", "long_suffix": "of %B, %Y"}'`)
+
+(defvar date-hover false)
+
+(defwidget date []
+  (component :name "date" :hover true :type "static"
+    (icon "")
+    (more-info :on date-hover :cond {date-data.day != "--"} :hide true :class "info"
+      "${date-data.day}/${date-data.month}")
+    (more-info :on date-hover :cond {date-data.day != "--"} :duration "400ms" :class "info"
+      "${date-data.weekday}, ${date-data.short_day}${
+        (date-data.day >= 10 && date-data.day < 20)
+        || date-data.day % 10 > 3 ? 'th' : ['th', 'st', 'nd', 'rd'][date-data.day % 10]
+      } ${date-data.long_suffix}")))
+
+(defvar battery-hover false)
+
+(defpoll battery-time :interval "10s"
+  :initial "N/A"
+  `acpi -b | grep "^Battery 0" | grep -oE "[0-9]{2}:[0-9]{2}" || echo "N/A"`)
+
+(defwidget battery []
+  (component :name "battery" :hover true
+    :type {EWW_BATTERY.BAT0.status != "Discharging" ? "good"
+            : EWW_BATTERY.BAT0.capacity > 20 ? "normal" 
+            : EWW_BATTERY.BAT0.capacity > 10 ? "warning"
+            : "critical"}
+    (icon
+      {EWW_BATTERY.BAT0.status == "Charging"
+      ? (EWW_BATTERY.BAT0.capacity > 20 ? "" : "")
+      : (EWW_BATTERY.BAT0.capacity > 20 ? ""
+        : EWW_BATTERY.BAT0.capacity > 10 ? ""
+        : "")})
+    (more-info :on {battery-hover || EWW_BATTERY.BAT0.status != "Not charging"}
+      (info "${EWW_BATTERY.BAT0.capacity}%"))
+    (more-info :on battery-hover :cond {battery-time != "N/A"} :transition "slideleft"
+      (box :space-evenly false
+        (icon "")
+        (info {battery-time})))))
+
+(defvar cpu-hover false)
+
+(defwidget cpu []
+  (component :name "cpu" :hover true
+    :type {EWW_CPU.avg < 20 ? "normal" : EWW_CPU.avg < 50 ? "warning" : "critical"}
+    (icon "")
+    (info "${round(EWW_CPU.avg, 0)}%")
+    (more-info :on cpu-hover :transition "slideleft"
+      (box :space-evenly false
+        (icon "")
+        (info "${round(
+          (EWW_CPU.cores[0].freq + EWW_CPU.cores[1].freq + EWW_CPU.cores[2].freq + EWW_CPU.cores[3].freq +
+            EWW_CPU.cores[4].freq + EWW_CPU.cores[5].freq + EWW_CPU.cores[6].freq + EWW_CPU.cores[7].freq +
+            EWW_CPU.cores[8].freq + EWW_CPU.cores[9].freq + EWW_CPU.cores[10].freq + EWW_CPU.cores[11].freq)
+          / 12000, 1)} GHz")))))
+;; slow down icon for lower speeds and MHz for under 1 GHz
+
+(defvar ram-hover false)
+
+(defwidget ram []
+  (component :name "ram" :hover true
+    :type {EWW_RAM.used_mem / 1073741824 < 10 ? "normal" : EWW_RAM.used_mem / 1073741824 < 20 ? "warning" : "critical"}
+    (icon "")
+    (info :spacing {ram-hover || reveal-all ? 3 : 0}
+      "${round(EWW_RAM.used_mem / 1073741824, 1)} GiB"
+      (more-info :on ram-hover
+        "/ ${round(EWW_RAM.total_mem / 1073741824, 1)} GiB"))))
+
+(defwidget temp []
+  (component :name "temp"
+    :type {EWW_TEMPS.DELL_DDV_CPU < 50 ? "normal" : EWW_TEMPS.DELL_DDV_CPU < 80 ? "warning" : "critical"}
+    (icon {EWW_TEMPS.DELL_DDV_CPU < 50 ? "" : EWW_TEMPS.DELL_DDV_CPU < 80 ? "" : ""})
+    (info "${EWW_TEMPS.DELL_DDV_CPU}°C")))
+
+(deflisten wlan0
+  :initial '{"connection": "", "state": "unknown", "signal": ""}'
+  `~/.config/eww/scripts/get-network-status`)
+
+(defvar wifi-hover false)
+
+(defwidget wifi []
+  (component :name "wifi" :hover true :disabled {wlan0.state == "disconnected"}
+    (icon
+      {wlan0.state == "disconnected" ? ""
+      : wlan0.state != "connected" || wlan0.signal == "" ? ""
+      : wlan0.signal == 0 ? ""
+      : wlan0.signal <= 25 ? ""
+      : wlan0.signal <= 50 ? ""
+      : wlan0.signal <= 75 ? ""
+      : ""})
+    (more-info :on wifi-hover :cond {wlan0.connection != ""}
+      (info :class {wlan0.state != "connected" ? "inactive" : ""}
+        {wlan0.connection}))))
+
+(deflisten active-keyboard-layout
+  :initial ""
+  `~/.config/eww/scripts/get-active-keyboard-layout`)
+
+(defvar keyboard-hover false)
+
+(defwidget keyboard-layout []
+  (component :name "keyboard" :hover true :type "static"
+    (icon {active-keyboard-layout == "" ? "" : ""})
+    (box :visible {active-keyboard-layout != ""} :space-evenly false
+      (button :onclick `hyprctl switchxkblayout at-translated-set-2-keyboard 0 > /dev/null`
+        (more-info :on {keyboard-hover || active-keyboard-layout == "IS"} :with-all false
+          :transition "slideright" :duration "200ms"
+          :class 'info ${active-keyboard-layout != "IS" ? "inactive" : ""}'
+            "IS"))
+      (button :onclick `hyprctl switchxkblayout at-translated-set-2-keyboard 1 > /dev/null`
+        (more-info :on {keyboard-hover || active-keyboard-layout == "US"} :with-all false
+          :transition "slideleft" :duration "200ms"
+          :class 'info ${active-keyboard-layout != "US" ? "inactive" : ""}'
+            "US")))))
+
+(defvar disk-hover false)
+
+(defwidget disk []
+  (component :name "disk" :hover true
+    :type {EWW_DISK["/"].free < 128000000000 ? "critical" : EWW_DISK["/"].free < 256000000000 ? "warning" : "normal"}
+    (icon "")
+    (info :spacing {disk-hover || reveal-all ? 3 : 0}
+      "${round(EWW_DISK["/"].free / 1000000000, 0)} GB"
+      (more-info :on disk-hover
+          "/ ${round(EWW_DISK["/"].total / 1000000000, 0)} GB"))))
+
+(defpoll current-weather :interval "5m"
+  :initial ""
+  `curl -sf "https://api.open-meteo.com/v1/forecast?latitude=64.1123&longitude=-21.913&current_weather=true" | jq '.current_weather'`)
+
+(defvar weather-hover false)
+
+(defwidget weather []
+  (component :name "weather" :hover true :type "static"
+    (icon {current-weather == "" ? ""
+      : current-weather.weathercode <=  1 ? (current-weather.is_day != 0 ? "" : "")
+      : current-weather.weathercode ==  2 ? (current-weather.is_day != 0 ? "" : "")
+      : current-weather.weathercode ==  3 ? ""
+      : current-weather.weathercode <= 48 ? (current-weather.is_day != 0 ? "" : "")
+      : current-weather.weathercode <= 57 ? ""
+      : current-weather.weathercode <= 67 ? ""
+      : current-weather.weathercode <= 77 ? ""
+      : current-weather.weathercode <= 82 ? ""
+      : current-weather.weathercode <= 86 ? ""
+      : current-weather.weathercode <= 99 ? ""
+      : ""})
+    (info :visible {current-weather != ""} "${current-weather.temperature}°C")
+    (more-info :on weather-hover :cond {current-weather != ""} :transition "slideleft"
+      (box :space-evenly false
+        (icon {current-weather.winddirection <= 22.5 || current-weather.winddirection > 337.5 ? ""
+          : current-weather.winddirection <= 67.5 ? ""
+          : current-weather.winddirection <= 112.5 ? ""
+          : current-weather.winddirection <= 157.5 ? ""
+          : current-weather.winddirection <= 202.5 ? ""
+          : current-weather.winddirection <= 247.5 ? ""
+          : current-weather.winddirection <= 292.5 ? ""
+          : current-weather.winddirection <= 337.5 ? ""
+          : ""
+        })
+        (info "${round(current-weather.windspeed/3.6, 1)} m/s")))))
+
+(deflisten workspaces
+  :initial "[]"
+  `~/.config/eww/scripts/get-workspaces`)
+
+(deflisten active-workspace
+  :initial ""
+  `~/.config/eww/scripts/get-active-workspace`)
+
+(defwidget workspace [id empty]
+  (button :class "workspace ${id == active-workspace ? 'active' : ''} ${empty ? 'empty' : ''}"
+    :width 20 :height 20
+    :onclick `hyprctl dispatch workspace ${id}`
+    {id == 1 ? "" : id == 2 ? "" : id == 3 ? "" : id == 4 ? "" : id == 5 ? ""
+      : id == 6 ? "" : id == 7 ? "" : id == 8 ? "" : id == 9 ? "" : id == 10 ? "" : ""}))
+
+(defwidget workspace-group [?halign]
+  (box :class "group" :spacing 10 :halign halign
+    (label :text "${active-workspace}" :visible false)
+    (for ws in workspaces
+      (workspace :id {ws.id} :empty {ws.windows == 0}))))
+
+(defvar brightness-hover false)
+
+(deflisten current-brightness
+  :initial '{"value": 0, "recent": false}'
+  `~/.config/eww/scripts/get-brightness`)
+
+(defwidget brightness []
+  (component :name "brightness" :hover true
+    (icon "")
+    (more-info :on {brightness-hover || current-brightness.recent}
+      :transition "slideleft" :duration "400ms"
+      (scale :class "slider"
+        :value {current-brightness.value}
+        :min 0 :max 401 :round-digits 0
+        :onchange `brightnessctl set {} > /dev/null`))))
+
+(defpoll bluetooth-powered :interval "2s"
+  :initial false
+  `~/.config/eww/scripts/bluetooth/get-powered`)
+
+(defpoll bluetooth-connected :interval "2s"
+  :initial false
+  `if [ -n "$(bluetoothctl devices Connected)" ]; then echo "true"; else echo "false"; fi`)
+
+(defwidget bluetooth []
+  (component :name "bluetooth" :disabled {!bluetooth-powered}
+    (button :timeout "500ms"
+      :onclick `bluetoothctl power ${bluetooth-powered ? "off" : "on"} > /dev/null && ${EWW_CMD} update bluetooth-powered=${!bluetooth-powered}`
+      (icon {bluetooth-connected ? "" : ""}))))
+
+;; (defpoll bluetooth-paired :interval "30s"
+;;   :initial "[]"
+;;   `bluetoothctl devices Paired | awk '{ printf "\\"%s\\"\\n", $2 }' | jq -sc`)
+;;
+;; (defpoll bluetooth-info :interval "2s"
+;;   :initial "{}"
+;;   `~/.config/eww/scripts/bluetooth/get-info`)
+;;
+;; (defvar bluetooth-hover false)
+;;
+;; (defwidget bluetooth []
+;;   (component :name "bluetooth" :hover true :disabled {!bluetooth-powered}
+;;     (icon "")
+;;     (label :visible false :text {bluetooth-info})
+;;     (box :space-evenly false
+;;       (for device in bluetooth-paired
+;;         (more-info :with-all false :duration "200ms"
+;;           :on {bluetooth-hover || bluetooth-info[device].connected}
+;;           :class {bluetooth-info[device].connected ? "" : "inactive"}
+;;           (box :width 20 :height 20
+;;             { bluetooth-info[device].icon == "audio-card"        ? ""
+;;             : bluetooth-info[device].icon == "audio-headphones"  ? ""
+;;             : bluetooth-info[device].icon == "audio-headset"     ? ""
+;;             : bluetooth-info[device].icon == "camera-photo"      ? ""
+;;             : bluetooth-info[device].icon == "camera-video"      ? ""
+;;             : bluetooth-info[device].icon == "computer"          ? ""
+;;             : bluetooth-info[device].icon == "input-gaming"      ? ""
+;;             : bluetooth-info[device].icon == "input-keyboard"    ? ""
+;;             : bluetooth-info[device].icon == "input-mouse"       ? ""
+;;             : bluetooth-info[device].icon == "input-tablet"      ? ""
+;;             : bluetooth-info[device].icon == "modem"             ? ""
+;;             : bluetooth-info[device].icon == "multimedia-player" ? ""
+;;             : bluetooth-info[device].icon == "network-wireless"  ? ""
+;;             : bluetooth-info[device].icon == "phone"             ? ""
+;;             : bluetooth-info[device].icon == "printer"           ? ""
+;;             : bluetooth-info[device].icon == "scanner"           ? ""
+;;             : bluetooth-info[device].icon == "video-display"     ? ""
+;;             : ""}))))))
+
+(defvar power-hover false)
+
+(defwidget power []
+  (component :name "power" :type "none" :hover true
+    (button :class "shutdown" :onclick `systemctl poweroff` (icon ""))
+    (more-info :on power-hover :with-all false :transition "slideleft" :duration "500ms"
+      (box :space-evenly false :spacing 5 ""
+        (button :class "reboot" :onclick `systemctl reboot` (icon ""))
+        (button :class "logout" :onclick `loginctl kill-session self` (icon ""))
+        (button :class "lock" :onclick `loginctl lock-session` (icon ""))
+        (button :class "suspend" :onclick `systemctl suspend` (icon ""))))))

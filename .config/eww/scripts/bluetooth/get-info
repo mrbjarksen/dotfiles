@@ -1,0 +1,9 @@
+#! /usr/bin/sh
+
+for device in $(bluetoothctl devices Paired | cut -d ' ' -f 2); do
+    info=$(bluetoothctl info $device)
+    alias=$(echo "$info" | sed -n 's/^\s*Alias: \(.*\)$/\1/p')
+    icon=$(echo "$info" | sed -n 's/^\s*Icon: \(.*\)$/\1/p')
+    connected=$(echo "$info" | sed -n 's/^\s*Connected: \(.*\)$/\1/p' | sed 's/yes/true/; s/no/false/')
+    echo "{\"$device\": {\"alias\": \"$alias\", \"icon\": \"$icon\", \"connected\": \"$connected\"}}"
+done | jq --slurp --compact-output 'add'

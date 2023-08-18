@@ -1,0 +1,169 @@
+@use "sass:map";
+
+$base-background: #16161e;
+// $base-background: #1a1b26;
+// $base-background: #000000;
+$background: (
+    "static": #272538,
+    // "normal": #292e42,
+    "normal": #24293b,
+    "good": #272d2d,
+    "warning": #2e2a2d,
+    "critical": #2d202a,
+);
+$accent: (
+    "static": #9d7cd8,
+    "normal": #7aa2f7,
+    "good": #9ece6a,
+    "warning": #e0af68,
+    "critical": #db4b4b,
+);
+$inactive: (
+    "static": #5c4c7f,
+    "normal": #4a5f8f,
+    "good": #5c7548,
+    "warning": #7d6547,
+    "critical": #7b3339,
+);
+$hover: (
+    "static": #2e2a41,
+    "normal": #282f45,
+    "good": #2e3630,
+    "warning": #383130,
+    "critical": #37222c,
+);
+
+* { all: unset; }
+
+.bar {
+    font-family: remixicon, Manrope;
+    font-size: 12px;
+    background-color: rgba($base-background, 0);
+    .group {
+        background-color: $base-background;
+        padding: 10px;
+    }
+
+    .icon {
+        font-size: 16px;
+    }
+
+    .component, .icon, .workspace {
+        transition: background-color 400ms ease-out;
+        label {
+            transition: color 400ms ease-out;
+        }
+    }
+
+    .component, .icon, .workspace, .info, button, .slider, highlight {
+        border-radius: 2px;
+    }
+    .info {
+        padding: 0px 5px;
+    }
+
+    .slider {
+        margin-left: 2px;
+        min-width: 60px;
+        highlight {
+            min-height: 20px;
+            transition: min-width 1000ms ease-out;
+        }
+    }
+
+    button {
+        transition: background-color 100ms ease-out;
+        .info label {
+            transition: color 50ms ease-out;
+        }
+    }
+
+    .todo {
+        transition: transform 200ms;
+        padding: 0px 7px;
+        border-radius: 10px 2px 2px 10px;
+        background-color: #1a1b26;
+        color: #565f89;
+        :first-child {
+            min-height: 6px;
+            min-width: 6px;
+            border-radius: 3px;
+            margin: 7px 0px;
+            background-color: #565f89;
+        }
+        :hover {
+            -gtk-icon-transform: translateY(5px);
+            background-color: map.get($background, "normal");
+            color: map.get($accent, "normal");
+            :first-child {
+                background-color: map.get($accent, "normal")
+            }
+        }
+    }
+
+    .workspace {
+        &.active {
+            background-color: map.get($accent, "normal");
+            color: map.get($background, "normal");
+        }
+        &:not(.active) {
+            &.empty {
+                background-color: #1a1b26;
+                color: #565f89;
+            }
+            &:not(.empty) {
+                background-color: map.get($background, "normal");
+                color: map.get($accent, "normal");
+                &:hover {
+                    background-color: map.get($hover, "normal");
+                }
+            }
+        }
+    }
+}
+
+$power-item-type-map: (
+    "shutdown": "critical",
+    "reboot": "warning",
+    "logout": "good",
+    "lock": "normal",
+    "suspend": "static",
+);
+
+.power {
+    @each $item, $type in $power-item-type-map {
+        .#{$item} {
+            background-color: map.get($background, $type);
+            color: map.get($accent, $type);
+            &:hover {
+                background-color: map.get($accent, $type);
+                color: map.get($background, $type);
+            }
+        }
+    }
+}
+
+.component.disabled {
+    background-color: #1a1b26;
+    color: #565f89;
+}
+
+@each $type in "normal", "warning", "critical", "static", "good" {
+    .component.#{$type}:not(.disabled) {
+        background-color: map.get($background, $type);
+        color: map.get($accent, $type);
+        button:hover {
+            background-color: map.get($hover, $type);
+        }
+        .icon {
+            background-color: map.get($accent, $type);
+            color: map.get($background, $type);
+        }
+        .inactive {
+            color: map.get($inactive, $type);
+        }
+        .slider highlight {
+            background-color: map.get($accent, $type);
+        }
+    }
+}

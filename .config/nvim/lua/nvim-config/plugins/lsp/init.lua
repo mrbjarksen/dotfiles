@@ -10,7 +10,7 @@ win.default_opts = function (options)
   return opts
 end
 
-local servers = require'mason-lspconfig'.get_installed_servers()
+local servers = require'nvim-config.plugins.mason'.get_available_servers()
 for _, server in ipairs(servers) do
   local config_ok, config = pcall(require, 'nvim-config.plugins.lsp.servers.' .. server)
   if not config_ok or type(config) ~= "table" then config = {} end

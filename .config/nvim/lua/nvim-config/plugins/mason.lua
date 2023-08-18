@@ -4,6 +4,7 @@ M.insured = {
   lsp = {
     lua_ls = true,
     pyright = true,
+    pylyzer = false,
     texlab = true,
     tsserver = true,
     hls = false,
@@ -13,6 +14,7 @@ M.insured = {
     bashls = true,
     rust_analyzer = true,
     julials = false,
+    hls = false,
   },
   dap = {},
   linters = {},
@@ -31,6 +33,20 @@ M.get_ensured = function ()
   end
 
   return pkgs
+end
+
+M.get_available_servers = function ()
+  local servers = {}
+  
+  for server, _ in pairs(M.insured.lsp) do
+    servers[server] = true
+  end
+  
+  for _, server in ipairs(require'mason-lspconfig'.get_installed_servers()) do
+    servers[server] = true
+  end
+  
+  return vim.tbl_keys(servers)
 end
 
 local lsp_fts

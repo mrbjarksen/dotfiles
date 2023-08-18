@@ -230,12 +230,11 @@ return {
   -- Neo-tree
   {
     'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    branch = 'main',
+    -- branch = 'v3.x',
+    -- dir = '~/neo-tree.nvim',
     cmd = 'Neotree',
     keys = '<Leader>t',
-    init = function ()
-      vim.g.neo_tree_remove_legacy_commands = 1
-    end,
     config = function ()
       require 'nvim-config.plugins.neo-tree'
     end,
@@ -662,6 +661,11 @@ return {
     config = function ()
       vim.g.cursorhold_updatetime = 500
     end,
+  },
+  {
+    'nacro90/numb.nvim',
+    event = 'CmdlineEnter :',
+    config = true,
   },
   -- use {
   --   'AndrewRadev/splitjoin.vim',

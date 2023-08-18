@@ -101,7 +101,10 @@ require'neo-tree'.setup {
         [']g'] = 'next_git_modified',
       }
     },
-    follow_current_file = true,
+    follow_current_file = {
+      enabled = true,
+      leave_dirs_open = false,
+    },
     -- hijack_netrw_behavior = 'open_current',
     use_libuv_file_watcher = true,
   },

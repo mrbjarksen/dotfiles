@@ -1,0 +1,81 @@
+#! /usr/bin/bash
+
+# get_network_info() {
+#     nmcli --terse --fields SSID,SIGNAL,ACTIVE device wifi | \
+#         jq --raw-input '[inputs | capture("^(?<ssid>[^:]*):(?<signal>[0-9]*):(?<active>yes)")]' | \
+#         echo
+# }
+
+connection=""
+state="disconnected"
+signal=""
+
+get_wifi_signal() {
+    pattern="*:${connection//:/\\:}:"
+    nmcli --get-values IN-USE,SSID,SIGNAL device wifi | \
+        grep -F $pattern | sed "s/${pattern//\//\\\/}//"
+}
+
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+POLL_PID=""
+
+stop_poll() {
+    if [[ -n $POLL_PID ]]; then
+        kill $POLL_PID
+        POLL_PID=""
+    fi
+}
+
+start_poll() {
+    stop_poll
+    (while true; do update signal $(get_wifi_signal); sleep 20; done) &
+    POLL_PID=$!
+}
+
+report() {
+    echo "{\"connection\": \"$connection\", \"state\": \"$state\", \"signal\": \"$signal\"}"
+}
+
+update() {
+    if [[ $1 == "signal" ]]; then
+        signal=$2
+        report
+    else
+        stop_poll
+        if [[ $1 == "connection" && $2 != $connection ]]; then
+            connection=$2
+            report
+        elif [[ $1 == "state" && $2 != $state ]]; then
+            state=$2
+            if [[ $state == "disconnected" ]]; then
+                connection=""
+                signal=""
+            elif [[ $state == "connected" ]]; then
+                start_poll
+            fi
+            report
+        fi
+    fi
+}
+
+initial=$(nmcli --get-values GENERAL.CONNECTION,GENERAL.STATE device show wlan0 | sed 's/[0-9]* (\([a-z]*\).*/\1/')
+# connection=$(echo $initial | sed -n 1p)
+# state=$(echo $initial | sed -n 2p)
+connection=$(echo $initial | cut -d ' ' -f 1)
+state=$(echo $initial | cut -d ' ' -f 2)
+
+report
+
+if [[ $state == "connected" ]]; then
+    start_poll
+fi
+
+nmcli device monitor wlan0 | while read -r line; do
+    word=$(echo $line | awk '{print $2}')
+    if [[ $word == "using" ]]; then
+        update connection $(echo $line | sed "s/^wlan0: using connection '//; s/'$//")
+    else
+        update state $word
+    fi
+done

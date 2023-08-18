@@ -7,5 +7,5 @@ return {
       or util.root_pattern('*.cabal', 'package.yaml')(filepath)
       or util.root_pattern('.git')(filepath)
     )
-  end
+  end,
 }

@@ -1,0 +1,20 @@
+#! /usr/bin/bash
+
+WAIT_PID=""
+
+wait_and_see() {
+    if [[ $WAIT_PID != "" && $(ps -o ppid= $(ps -o ppid= $WAIT_PID)) == $$ ]]; then
+        kill $WAIT_PID
+    fi
+    (sleep 5; echo "{\"value\": $(brightnessctl get), \"recent\": false}") &
+    WAIT_PID=$!
+}
+
+echo "{\"value\": $(brightnessctl get), \"recent\": false}"
+acpi_listen | while read -r line; do
+    case $line in
+        video/brightness*)
+            (sleep 0.1; echo "{\"value\": $(brightnessctl get), \"recent\": true}") &
+            wait_and_see
+    esac
+done

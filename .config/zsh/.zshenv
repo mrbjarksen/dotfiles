@@ -13,5 +13,5 @@ EDITOR=nvim
 BROWSER=$(if [[ -n $DISPLAY ]]; then echo 'firefox'; else echo 'elinks'; fi)
 typeset -U PATH path
 
-path=($HOME/.local/bin $HOME/.ghcup/bin $HOME/.cabal/bin "$path[@]")
-export PATH
+export PATH="$HOME/.local/bin:$PATH"
+source $HOME/.ghcup/env
