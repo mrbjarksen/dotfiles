@@ -1,9 +1,10 @@
-#! /usr/bin/bash
+#! /usr/bin/sh
 
 WAIT_PID=""
 
 wait_and_see() {
-    if [[ $WAIT_PID != "" && $(ps -o ppid= $(ps -o ppid= $WAIT_PID)) == $$ ]]; then
+    grandparent=$(ps -o ppid= $(ps -o ppid= $WAIT_PID) | sed 's/\s//')
+    if [ "$grandparent" = "$$" ]; then
         kill $WAIT_PID
     fi
     (sleep 5; echo "{\"value\": $(brightnessctl get), \"recent\": false}") &
