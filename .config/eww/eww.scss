@@ -48,7 +48,7 @@ $hover: (
         font-size: 16px;
     }
 
-    .component, .icon, .workspace {
+    .component, .icon, .workspace, highlight {
         transition: background-color 400ms ease-out;
         label {
             transition: color 400ms ease-out;
@@ -67,7 +67,6 @@ $hover: (
         min-width: 60px;
         highlight {
             min-height: 20px;
-            transition: min-width 1000ms ease-out;
         }
     }
 
@@ -146,6 +145,9 @@ $power-item-type-map: (
 .component.disabled {
     background-color: #1a1b26;
     color: #565f89;
+    highlight {
+        background-color: #565f89;
+    }
 }
 
 @each $type in "normal", "warning", "critical", "static", "good" {

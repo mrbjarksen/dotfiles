@@ -10,6 +10,7 @@
   (box :class "bar" :space-evenly false
     (workspace-group :halign "start")
     (group :halign "end"
+      (volume)
       (brightness)
       (battery)
       (wifi)
@@ -39,7 +40,6 @@
       (todo "Integrate rofi")
       (todo "Accurate clock icon")
       (todo "Interaction!")
-      (todo "Volume")
       (todo "Bluetooth"))
     (group :halign "end"
       (temp)
@@ -300,6 +300,22 @@
         :value {current-brightness.value}
         :min 0 :max 401 :round-digits 0
         :onchange `brightnessctl set {} > /dev/null`))))
+
+(defvar volume-hover false)
+
+(deflisten current-volume
+  :initial '{"value": 0, "muted": false, "recent": false}'
+  `~/.config/eww/scripts/get-volume`)
+
+(defwidget volume []
+  (component :name "volume" :hover true :disabled {current-volume.muted}
+    (icon {current-volume.value == 0 || current-volume.muted ? "" : current-volume.value < 50 ? "" : ""})
+    (more-info :on {volume-hover || current-volume.recent}
+      :transition "slideleft" :duration "400ms"
+      (scale :class "slider"
+        :value {current-volume.value}
+        :min 0 :max 101 :round-digits 0
+        :onchange `wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%`))))
 
 (defpoll bluetooth-powered :interval "2s"
   :initial false
