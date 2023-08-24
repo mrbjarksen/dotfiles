@@ -379,5 +379,7 @@
       (box :space-evenly false :spacing 5 ""
         (button :class "reboot" :onclick `systemctl reboot` (icon ""))
         (button :class "logout" :onclick `loginctl kill-session self` (icon ""))
-        (button :class "lock" :onclick `loginctl lock-session` (icon ""))
-        (button :class "suspend" :onclick `systemctl suspend` (icon ""))))))
+        ;; (button :class "lock" :onclick `loginctl lock-session` (icon ""))
+        (button :class "lock" :onclick `loginctl lock-session` (icon ""))
+        ;; (button :class "suspend" :onclick `systemctl suspend` (icon ""))))))
+        (button :class "suspend" :onclick `systemctl suspend` (icon ""))))))
