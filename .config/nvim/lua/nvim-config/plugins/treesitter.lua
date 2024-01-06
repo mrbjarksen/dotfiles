@@ -62,7 +62,6 @@ require'nvim-treesitter.configs'.setup {
   },
   autotag = { enable = true },
   endwise = { enable = true },
-  context_commentstring = { enable = true, enable_autocmd = false },
   matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
 }
 

@@ -15,6 +15,7 @@ M.insured = {
     rust_analyzer = true,
     julials = false,
     hls = false,
+    elixirls = true,
   },
   dap = {},
   linters = {},

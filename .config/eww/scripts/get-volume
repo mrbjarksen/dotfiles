@@ -1,0 +1,35 @@
+#! /usr/bin/sh
+
+WAIT_PID=""
+
+report() {
+    info=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2> /dev/null)
+    while [ -z "$info" ]; do
+        info=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2> /dev/null)
+        sleep 0.1
+    done
+    value=$(echo "$info" | awk '{ print int($2*100) }')
+    case $info in
+        *"[MUTED]") echo "{\"value\": $value, \"muted\": true, \"recent\": $1}";;
+        *) echo "{\"value\": $value, \"muted\": false, \"recent\": $1}";;
+    esac
+}
+
+wait_and_see() {
+    grandparent=$(ps -o ppid= $(ps -o ppid= $WAIT_PID) | tr -d ' ')
+    echo "$grandparent, $$"
+    if [ "$grandparent" = "$$" ]; then
+        kill $WAIT_PID
+    fi
+    (sleep 5; report false) &
+    WAIT_PID=$!
+}
+
+wpctl status >> /dev/null
+report false
+acpi_listen | while read -r line; do
+    case $line in
+        button/volume*) (sleep 0.05; report true) & wait_and_see;;
+        button/mute*) (sleep 0.05; report false);;
+    esac
+done

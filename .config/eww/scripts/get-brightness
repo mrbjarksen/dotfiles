@@ -3,7 +3,7 @@
 WAIT_PID=""
 
 wait_and_see() {
-    grandparent=$(ps -o ppid= $(ps -o ppid= $WAIT_PID) | sed 's/\s//')
+    grandparent=$(ps -o ppid= $(ps -o ppid= $WAIT_PID) | tr -d ' ')
     if [ "$grandparent" = "$$" ]; then
         kill $WAIT_PID
     fi

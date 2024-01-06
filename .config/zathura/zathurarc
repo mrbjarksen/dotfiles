@@ -1,4 +1,4 @@
-set font "JetBrains Mono Nerd Font"
+set font "JetBrains Mono Nerd Font 8"
 
 set continuous-hist-save true
 set selection-clipboard clipboard

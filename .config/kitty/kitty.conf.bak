@@ -6,8 +6,9 @@
 #: individual font faces and even specify special fonts for particular
 #: characters.
 
-font_family      mononoki Nerd Font Mono
+#font_family      mononoki Nerd Font Mono
 #font_family      Fira Code Nerd Font
+font_family      JetBrainsMono Nerd Font
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
@@ -25,7 +26,8 @@ bold_italic_font auto
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size 19.0
+font_size 8.0
+# font_size 16.0
 
 #: Font size (in pts)
 
@@ -661,7 +663,7 @@ single_window_margin_width -1
 #: values set top, horizontal and bottom. Four values set top, right,
 #: bottom and left.
 
-window_padding_width 8.0
+# window_padding_width 8.0
 
 #: The window padding (in pts) (blank area between the text and the
 #: window border). A single value sets all four sides. Two values set
@@ -676,8 +678,7 @@ window_padding_width 8.0
 #: this option. Using a value of center means the cell area will be
 #: placed centrally. A value of top-left means the padding will be on
 #: only the bottom and right edges.
-
-active_border_color #779eeb
+# active_border_color #779eeb
 
 #: The color for the border of the active window. Set this to none to
 #: not draw borders around the active window.
@@ -2007,8 +2008,7 @@ resize_debounce_time 0.05
 
 
 # BEGIN_KITTY_THEME
-# 1984 Orwellian
+# Tokyo Night Day
 include current-theme.conf
 # END_KITTY_THEME
-
-cursor #cccccc
+# cursor #cccccc

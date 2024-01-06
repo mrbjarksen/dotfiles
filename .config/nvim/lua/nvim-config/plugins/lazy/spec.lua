@@ -161,9 +161,7 @@ return {
   -- Treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    build = function()
-      require'nvim-treesitter.install'.update { with_sync = true }
-    end,
+    build = require'nvim-treesitter.install'.update { with_sync = true },
     -- dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     init = load_on_event_if('nvim-treesitter', 'FileType', true),
     -- event = 'FileType',
@@ -198,7 +196,15 @@ return {
       vim.cmd.TSEnable 'endwise'
     end,
   },
-  { 'JoosepAlviste/nvim-ts-context-commentstring' },
+  {
+    'JoosepAlviste/nvim-ts-context-commentstring',
+    config = function ()
+      vim.g.skip_ts_context_commentstring_module = true
+      require'ts_context_commentstring'.setup {
+        enable_autocmd = false
+      }
+    end,
+  },
   {
     'nvim-treesitter/playground',
     keys = '<Leader>k',
@@ -342,41 +348,25 @@ return {
     'mawkler/modicator.nvim',
     -- init = load_on_event_if('modicator.nvim', 'UIEnter', true),
     event = 'ModeChanged',
-    config = function ()
-      local fg = require'modicator'.get_highlight_fg
-      require'modicator'.setup {
-        show_warnings = false,
-        highlights = {
-          modes = {
-            ['v']  = { foreground = fg 'VisualMode' },
-            ['V']  = { foreground = fg 'VisualMode' },
-            [''] = { foreground = fg 'VisualMode' },
-            ['s']  = { foreground = fg 'SelectMode' },
-            ['S']  = { foreground = fg 'SelectMode' },
-            [''] = { foreground = fg 'SelectMode' },
-            ['i']  = { foreground = fg 'InsertMode' },
-            ['R']  = { foreground = fg 'ReplaceMode' },
-            ['c']  = { foreground = fg 'CommandMode' },
-            ['r']  = { foreground = fg 'InputMode' },
-            ['!']  = { foreground = fg 'ExternalMode' },
-            ['t']  = { foreground = fg 'TerminalMode' },
-          },
-        },
-      }
-    end,
+    config = true,
   },
   {
     'lukas-reineke/indent-blankline.nvim',
     init = load_on_event_if('indent-blankline.nvim', 'UIEnter', true),
+    main = 'ibl',
     -- event = 'VeryLazy',
     opts = {
-      buftype_exclude = { 'terminal', 'nofile' },
-      filetype_exclude = { 'qf', 'help', 'man', 'neo-tree', 'CompetiTest' },
-      use_treesitter = true,
-      use_treesitter_scope = false,
-      show_trailing_blankline_indent = false,
-      show_end_of_line = true,
-      show_current_context = true,
+      scope = {
+        show_start = false,
+        show_end = false,
+      },
+      exclude = {
+        filetypes = { 'qf', 'help', 'man', 'neo-tree', 'CompetiTest' },
+        buftypes = { 'terminal', 'nofile', 'quickfix', 'prompt' },
+      },
+      -- show_trailing_blankline_indent = false,
+      -- show_end_of_line = true,
+      -- show_current_context = true,
     },
   },
   -- {
@@ -453,11 +443,7 @@ return {
   -- Competitive programming
   {
     'xeluxee/competitest.nvim',
-    cmd = {
-      'CompetiTestAdd', 'CompetiTestEdit', 'CompetiTestDelete',
-      'CompetiTestConvert', 'CompetiTestRun', 'CompetiTestRunNC',
-      'CompetiTestRunNE', 'CompetiTestReceive',
-    },
+    cmd = 'CompetiTest',
     config = function ()
       require 'nvim-config.plugins.competitest'
     end,

@@ -304,7 +304,7 @@
 (defvar volume-hover false)
 
 (deflisten current-volume
-  :initial '{"value": 0, "muted": false, "recent": false}'
+  :initial '{"value": 0, "muted": true, "recent": false}'
   `~/.config/eww/scripts/get-volume`)
 
 (defwidget volume []
