@@ -161,7 +161,9 @@ return {
   -- Treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    build = require'nvim-treesitter.install'.update { with_sync = true },
+    build = function ()
+      require'nvim-treesitter.install'.update{ with_sync = true }()
+    end,
     -- dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     init = load_on_event_if('nvim-treesitter', 'FileType', true),
     -- event = 'FileType',
