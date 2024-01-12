@@ -7,7 +7,7 @@ alias vim=nvim
 alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # Options
-setopt AUTO_CD 
+setopt AUTO_CD
 setopt LIST_PACKED
 setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
