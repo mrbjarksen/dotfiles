@@ -2008,7 +2008,7 @@ resize_debounce_time 0.05
 
 
 # BEGIN_KITTY_THEME
-# Tokyo Night Day
+# Adapta Nokto Maia
 include current-theme.conf
 # END_KITTY_THEME
 # cursor #cccccc

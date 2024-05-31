@@ -34,7 +34,7 @@ report_short_name() {
 report_short_name "$(hyprctl devices -j | jq -r '.keyboards | map(select(.main))[0].active_keymap')"
 
 prefix="activelayout>>at-translated-set-2-keyboard,"
-socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
     case $line in
         $prefix*) report_short_name "${line#$prefix}";;
     esac

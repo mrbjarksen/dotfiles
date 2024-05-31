@@ -8,7 +8,10 @@
   :exclusive false
   :focusable false
   (box :class "bar" :space-evenly false
-    (workspace-group :halign "start")
+    (group :halign "start" (box :spacing 10 :space-evenly false
+      (label :text "${active-workspace}" :visible false)
+      (label :text "${active-windows}" :visible false)
+      (for ws in workspaces (workspace :ws ws))))
     (group :halign "end"
       (volume)
       (brightness)
@@ -18,8 +21,7 @@
       (keyboard-layout)
       (weather)
       (date)
-      (time)
-      (power))))
+      (time))))
 
 (defwindow lower-bar
   :monitor 0
@@ -31,21 +33,26 @@
   :exclusive false
   :focusable false
   (box :class "bar" :space-evenly false
-    (group :halign "start"
-      (todo "Switch to XMonad")
-      (todo "Active windows")
-      (todo "Layout indicator")
-      (todo "Weather cache")
-      (todo "Integrate dunst")
-      (todo "Integrate rofi")
+    (group :halign "start" :spacing 5
+      (todo "Full-screen mode")
+      (todo "Cache weather")
+      (todo "Media info")
+      (todo "Notifications")
+      (todo "dunst")
+      (todo "tofi")
+      (todo "neovim")
+      (todo "Microphone/Camera/Screenshare")
+      (todo "Authentication")
       (todo "Accurate clock icon")
-      (todo "Interaction!")
+      (todo "Aligned icons")
+      (todo "Interaction")
       (todo "Bluetooth"))
     (group :halign "end"
       (temp)
       (cpu)
       (ram)
-      (disk))))
+      (disk)
+      (power))))
 
 (defwidget todo []
   (box :class "todo" :space-evenly false :spacing 5
@@ -54,13 +61,13 @@
 
 (defvar reveal-all false)
 
-(defwidget group [?halign]
-  (box :class "group" :halign halign :hexpand true :spacing 10 :space-evenly false (children)))
+(defwidget group [?halign ?spacing]
+  (box :class "group" :halign halign :hexpand true :spacing {spacing ?: 10} :space-evenly false (children)))
 
 (defwidget component [name ?type ?hover ?only-info ?inactive ?disabled]
   (eventbox
-    :onhover {(hover ?: false) ? `${EWW_CMD} update ${name}-hover=true` : ""}
-    :onhoverlost {(hover ?: false) ? `${EWW_CMD} update ${name}-hover=false` : ""}
+    :onhover {`${EWW_CMD} update ${name}-hover=${hover}`}
+    :onhoverlost {`${EWW_CMD} update ${name}-hover=false`}
     (box :space-evenly false
       :class "${name} component ${type ?: 'normal'} ${(disabled ?: false) ? 'disabled' : ''}"
       (children))))
@@ -83,7 +90,7 @@
       ? !((on || (reveal-all && (with-all ?: true))) && (cond ?: true))
       :   (on || (reveal-all && (with-all ?: true))) && (cond ?: true)}
     :transition {transition ?: "slideright"}
-    :duration {duration ?: "300ms"}
+    :duration {duration ?: "200ms"}
     (children)))
 
 (defpoll time-data :interval "0.1s"
@@ -97,7 +104,7 @@
     (icon "")
     (info
       "${time-data.hour}:${time-data.min}"
-      (more-info :on time-hover :duration "200ms"
+      (more-info :on time-hover
           ":${time-data.sec}"))))
         ;; (label :width 40 :justify "left" :text ":${dt.sec}")))))
 
@@ -112,7 +119,7 @@
     (icon "")
     (more-info :on date-hover :cond {date-data.day != "--"} :hide true :class "info"
       "${date-data.day}/${date-data.month}")
-    (more-info :on date-hover :cond {date-data.day != "--"} :duration "400ms" :class "info"
+    (more-info :on date-hover :cond {date-data.day != "--"} :duration "350ms" :class "info"
       "${date-data.weekday}, ${date-data.short_day}${
         (date-data.day >= 10 && date-data.day < 20)
         || date-data.day % 10 > 3 ? 'th' : ['th', 'st', 'nd', 'rd'][date-data.day % 10]
@@ -150,7 +157,7 @@
     :type {EWW_CPU.avg < 20 ? "normal" : EWW_CPU.avg < 50 ? "warning" : "critical"}
     (icon "")
     (info "${round(EWW_CPU.avg, 0)}%")
-    (more-info :on cpu-hover :transition "slideleft"
+    (more-info :on cpu-hover :transition "slideleft" :duration "300ms"
       (box :space-evenly false
         (icon "")
         (info "${round(
@@ -170,6 +177,8 @@
       "${round(EWW_RAM.used_mem / 1073741824, 1)} GiB"
       (more-info :on ram-hover
         "/ ${round(EWW_RAM.total_mem / 1073741824, 1)} GiB"))))
+
+(defvar temp-hover false)
 
 (defwidget temp []
   (component :name "temp"
@@ -250,10 +259,10 @@
       : current-weather.weathercode <= 99 ? ""
       : ""})
     (info :visible {current-weather != ""} "${current-weather.temperature}°C")
-    (more-info :on weather-hover :cond {current-weather != ""} :transition "slideleft"
+    (more-info :on weather-hover :cond {current-weather != ""} :transition "slideleft" :duration "300ms"
       (box :space-evenly false
         (icon {current-weather.winddirection <= 22.5 || current-weather.winddirection > 337.5 ? ""
-          : current-weather.winddirection <= 67.5 ? ""
+          : current-weather.winddirection <= 67.5 ? ""
           : current-weather.winddirection <= 112.5 ? ""
           : current-weather.winddirection <= 157.5 ? ""
           : current-weather.winddirection <= 202.5 ? ""
@@ -272,18 +281,48 @@
   :initial ""
   `~/.config/eww/scripts/get-active-workspace`)
 
-(defwidget workspace [id empty]
-  (button :class "workspace ${id == active-workspace ? 'active' : ''} ${empty ? 'empty' : ''}"
+(deflisten active-windows
+  :initial "{}"
+  `~/.config/eww/scripts/get-active-windows`)
+
+(defwidget workspace-header [id name]
+  (button :class "header"
     :width 20 :height 20
-    :onclick `hyprctl dispatch workspace ${id}`
+    :onclick `hyprctl dispatch workspace ${id} > /dev/null`
     {id == 1 ? "" : id == 2 ? "" : id == 3 ? "" : id == 4 ? "" : id == 5 ? ""
       : id == 6 ? "" : id == 7 ? "" : id == 8 ? "" : id == 9 ? "" : id == 10 ? "" : ""}))
 
-(defwidget workspace-group [?halign]
-  (box :class "group" :spacing 10 :halign halign
-    (label :text "${active-workspace}" :visible false)
-    (for ws in workspaces
-      (workspace :id {ws.id} :empty {ws.windows == 0}))))
+(defvar window-hover false)
+
+(defwidget window [win wsid]
+  (component :name "window" :hover {win.address} :type "none"
+    (button :onclick `hyprctl dispatch focuswindow address:${win.address} > /dev/null`
+      (box :space-evenly false
+        (label
+          :width 20 :height 20
+          :text {win.address == active-windows['${wsid}']
+            ? win.class == "kitty" ? ""
+              : win.class == "firefox" ? ""
+              : win.class == "org.pwmt.zathura" ? ""
+              : ""
+            : win.class == "kitty" ? ""
+              : win.class == "firefox" ? ""
+              : win.class == "org.pwmt.zathura" ? ""
+              : ""})
+        (more-info :class "title"
+          :on {window-hover == win.address}
+          :with-all {wsid == active-workspace && win.address == active-windows['${wsid}']}
+          {win.title})))))
+
+(defwidget windows [wins wsid]
+  (box :class "windows" :space-evenly false
+    (for win in wins (window :win win :wsid wsid))))
+
+(defwidget workspace [ws]
+  (box :class "workspace ${ws.workspace.id == active-workspace ? 'active' : ''}"
+    :space-evenly false
+    (workspace-header :id {ws.workspace.id} :name {ws.workspace.name})
+    (windows :wins {ws.windows} :wsid {ws.workspace.id})))
 
 (defvar brightness-hover false)
 
@@ -295,7 +334,7 @@
   (component :name "brightness" :hover true
     (icon "")
     (more-info :on {brightness-hover || current-brightness.recent}
-      :transition "slideleft" :duration "400ms"
+      :transition "slideleft" :duration "300ms"
       (scale :class "slider"
         :value {current-brightness.value}
         :min 0 :max 401 :round-digits 0
@@ -311,7 +350,7 @@
   (component :name "volume" :hover true :disabled {current-volume.muted}
     (icon {current-volume.value == 0 || current-volume.muted ? "" : current-volume.value < 50 ? "" : ""})
     (more-info :on {volume-hover || current-volume.recent}
-      :transition "slideleft" :duration "400ms"
+      :transition "slideleft" :duration "300ms"
       (scale :class "slider"
         :value {current-volume.value}
         :min 0 :max 101 :round-digits 0
@@ -324,6 +363,8 @@
 (defpoll bluetooth-connected :interval "2s"
   :initial false
   `if [ -n "$(bluetoothctl devices Connected)" ]; then echo "true"; else echo "false"; fi`)
+
+(defvar bluetooth-hover false)
 
 (defwidget bluetooth []
   (component :name "bluetooth" :disabled {!bluetooth-powered}
@@ -375,7 +416,7 @@
 (defwidget power []
   (component :name "power" :type "none" :hover true
     (button :class "shutdown" :onclick `systemctl poweroff` (icon ""))
-    (more-info :on power-hover :with-all false :transition "slideleft" :duration "500ms"
+    (more-info :on power-hover :with-all false :transition "slideleft" :duration "300ms"
       (box :space-evenly false :spacing 5 ""
         (button :class "reboot" :onclick `systemctl reboot` (icon ""))
         (button :class "logout" :onclick `loginctl kill-session self` (icon ""))

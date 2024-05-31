@@ -1,13 +1,13 @@
 #! /usr/bin/sh
 
 get_workspaces() {
-    WORKSPACE_WINDOWS=$(hyprctl workspaces -j | jq 'map({key: .id | tostring, value: .windows}) | from_entries')
-    seq 1 10 | jq --argjson windows "${WORKSPACE_WINDOWS}" --slurp -c 'map(tostring) | map({id: ., windows: ($windows[.]//0)})'
+    hyprctl clients -j | \
+      jq -rc 'group_by(.workspace.id) | map({workspace: .[0].workspace, windows: sort_by(.at) | map({address, class, title: .title | sub(" — Mozilla Firefox"; "")})})'
 }
 
 get_workspaces
-socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
     case $line in
-        movewindow*|openwindow*|closewindow*) get_workspaces
+        movewindow*|openwindow*|closewindow*|windowtitle*) get_workspaces
     esac
 done

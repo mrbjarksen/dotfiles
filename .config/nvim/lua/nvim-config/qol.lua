@@ -70,16 +70,33 @@ vim.api.nvim_create_autocmd('BufEnter', {
 })
 
 vim.api.nvim_create_augroup('vert_help', { clear = true })
-vim.api.nvim_create_autocmd('BufEnter', {
-  pattern = '*.txt',
+vim.api.nvim_create_autocmd('BufWinEnter', {
   group = 'vert_help',
-  callback = function ()
-    if vim.bo.buftype == 'help' and not vim.w.vert_help_done then
-      vim.cmd [[wincmd L]]
-      vim.w.vert_help_done = true
+  callback = function (a)
+    if vim.o.columns >= 200 and vim.bo[a.buf].buftype == 'help' then
+      vim.cmd [[wincmd L | vertical resize 82]]
     end
   end
 })
+-- vim.api.nvim_create_autocmd({ 'WinNew', 'WinClosed', 'WinResized', 'VimResized' }, {
+--   group = 'vert_help',
+--   callback = function ()
+--     for _, winid in ipairs(vim.api.nvim_list_wins()) do
+--       local bufnr = vim.api.nvim_win_get_buf(winid)
+--       if vim.bo[bufnr].buftype == 'help' or vim.bo[bufnr].filetype == 'man' then
+--         if vim.o.columns >= 170 then
+--           vim.api.nvim_win_call(winid, function ()
+--             vim.cmd [[wincmd L | vertical resize 81]]
+--           end)
+--         else
+--           vim.api.nvim_win_call(winid, function ()
+--             vim.cmd [[wincmd J]]
+--           end)
+--         end
+--       end
+--     end
+--   end
+-- })
 
 -- local update_foldtext = vim.api.nvim_create_augroup('update_foldtext', { clear = true })
 -- vim.api.nvim_create_autocmd('OptionSet', {

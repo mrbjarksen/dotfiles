@@ -1,19 +1,23 @@
 -- QoL
-vim.opt.mouse      = 'a'
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-vim.opt.whichwrap  = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true, [']'] = true }
+vim.opt.mouse       = 'a'
+vim.opt.splitbelow  = true
+vim.opt.splitright  = true
+vim.opt.whichwrap   = { ['b'] = true, ['<'] = true , ['>'] = true, ['['] = true, [']'] = true }
 -- vim.opt.lazyredraw = true
-vim.opt.ruler      = false
-vim.opt.splitkeep  = 'topline'
+vim.opt.ruler       = false
+vim.opt.splitkeep   = 'topline'
+vim.opt.equalalways = false
+vim.opt.mousemodel  = 'extend'
+vim.opt.diffopt:append 'linematch:60'
 
 -- Visuals
-vim.opt.termguicolors = true
+vim.opt.guicursor     = { 'i-c-ci:ver25', 'r-cr-o:hor20' }
 vim.opt.number        = true
-vim.opt.cursorline    = true
 vim.opt.conceallevel  = 2
 vim.opt.showmode      = false
 -- vim.opt.cmdheight     = 0
+-- vim.opt.showcmdloc    = 'statusline'
+-- vim.opt.laststatus    = 3
 
 -- Scrolloff
 vim.opt.scrolloff     = 3
@@ -31,12 +35,9 @@ vim.opt.ignorecase  = true
 vim.opt.smartcase   = true
 vim.opt.tagcase     = 'match'
 
--- Folds
-vim.opt.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').' ... '.trim(getline(v:foldend))]]
-
 -- Breaks and chars
-vim.opt.fillchars   = { eob = '│', fold = ' ', diff = '╱' }
-vim.opt.listchars   = { tab = '>-', space = '⸱', nbsp = '+', eol = '↴' }
+vim.opt.fillchars   = { eob = ' ', diff = '╱' }
+vim.opt.listchars   = { tab = '>-', space = '⸱', nbsp = '␠', eol = '↴' }
 vim.opt.wrap        = false
 vim.opt.breakindent = true
 vim.opt.linebreak   = true

@@ -14,19 +14,22 @@ require'neo-tree'.setup {
   use_default_mappings = false,
   event_handlers = {
     {
+      event = 'neo_tree_window_after_open',
+      handler = function (args)
+        vim.wo[args.winid].scrolloff = 1
+        vim.wo[args.winid].cursorline = true
+      end
+    },
+    {
       event = 'neo_tree_buffer_enter',
       handler = function ()
-        vim.opt.guicursor:append 'n:Cursorline'
-        vim.wo.scrolloff = 1
-        -- vim.notify "neo_tree_buffer_enter"
+        vim.opt.guicursor:append('n:Hidden')
       end
     },
     {
       event = 'neo_tree_buffer_leave',
       handler = function ()
-        vim.opt.guicursor:remove 'n:Cursorline'
-        vim.wo.scrolloff = 3
-        -- vim.notify "neo_tree_buffer_leave"
+        vim.opt.guicursor:remove('n:Hidden')
       end
     },
   },
@@ -103,7 +106,7 @@ require'neo-tree'.setup {
     },
     follow_current_file = {
       enabled = true,
-      leave_dirs_open = false,
+      leave_dirs_open = true,
     },
     -- hijack_netrw_behavior = 'open_current',
     use_libuv_file_watcher = true,
@@ -112,8 +115,6 @@ require'neo-tree'.setup {
     window = {
       mappings = {
         ['d'] = 'buffer_delete',
-        -- ['-'] = 'navigate_up',
-        -- ['+'] = 'set_root',
       }
     },
   },

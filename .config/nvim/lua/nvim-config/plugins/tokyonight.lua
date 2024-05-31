@@ -6,6 +6,16 @@ require'tokyonight'.setup {
   },
   sidebars = { 'qf', 'help', 'man', 'CompetiTest' },
   on_highlights = function (hl, c)
+    hl.Cursor = { reverse = true, fg = 'NONE', bg = 'NONE' }
+    hl.Hidden = { blend = 100, reverse = true }
+
+    hl.CursorLineNr = { fg = require'tokyonight.colors'.default.dark5 }
+
+    hl.TelescopePromptTitle = { link = 'TelescopeTitle' }
+    hl.TelescopePromptBorder = { link = 'TelescopeBorder' }
+
+    hl.IndentBlanklineContextChar = { link = '@keyword.function' }
+
     hl.TSVariable = { fg = c.fg, style = {} }
 
     hl.NormalMode = { fg = '#7aa2f7' }

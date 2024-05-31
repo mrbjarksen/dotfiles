@@ -18,8 +18,6 @@ local load_on_event_if = function (plugin, event, cond, callback)
 end
 
 return {
-  { "folke/trouble.nvim", cmd = "Trouble" },
-
   {
     -- 'mrbjarksen/shifty.nvim',
     dir = '~/shifty.nvim',
@@ -58,6 +56,7 @@ return {
 
   -- Utilities
   { 'nvim-lua/plenary.nvim' },
+  { 'MunifTanjim/nui.nvim' },
   {
     'nvim-tree/nvim-web-devicons',
     config = function ()
@@ -80,13 +79,6 @@ return {
       }
     end
   },
-  { 'MunifTanjim/nui.nvim' },
-  -- {
-  --   'edluffy/hologram.nvim',
-  --   config = {
-  --     auto_display = true,
-  --   },
-  -- },
 
   -- Mason
   {
@@ -138,24 +130,64 @@ return {
     config = function ()
       require 'mason'
       require'mason-lspconfig'.setup()
+      require 'fidget'
       require 'nvim-config.plugins.lsp'
     end,
   },
   {
-    'glepnir/lspsaga.nvim',
-    cmd = 'Lspsaga',
-    config = function ()
-      require 'nvim-config.plugins.lsp.lspsaga'
-    end,
-  },
-  {
     'j-hui/fidget.nvim',
-    config = {
-      text = {
-        spinner = 'circle_halves',
-        done = '',
+    opts = {
+      progress = {
+        display = {
+          done_icon = ' ',
+        },
       },
     },
+  },
+  {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    keys = { '<Leader>dl', '<Leader>dd' },
+    config = function ()
+      require'lsp_lines'.setup()
+
+      vim.diagnostic.config({ virtual_lines = false })
+
+      vim.keymap.set('n', '<Leader>dl', function ()
+        local diag_conf = vim.diagnostic.config()
+        if not diag_conf.virtual_lines or diag_conf.virtual_lines.only_current_line then
+          vim.diagnostic.config { virtual_lines = { highlight_whole_line = false } }
+        else
+          vim.diagnostic.config { virtual_lines = false }
+        end
+      end, { desc = "Toggle virtual lines for diagnostics" })
+
+      vim.keymap.set('n', '<Leader>dd', function ()
+        if not vim.diagnostic.config().virtual_lines then
+          vim.diagnostic.config {
+            virtual_lines = {
+              only_current_line = true,
+              highlight_whole_line = false,
+            }
+          }
+
+          local winid = vim.api.nvim_get_current_win()
+          local line = vim.api.nvim_win_get_cursor(winid)[1]
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+            callback = function ()
+              if vim.api.nvim_win_get_cursor(winid)[1] ~= line then
+                local diag_conf = vim.diagnostic.config()
+                if diag_conf.virtual_lines and diag_conf.virtual_lines.only_current_line then
+                  vim.diagnostic.config { virtual_lines = false }
+                end
+                return true
+              end
+            end
+          })
+        else
+          vim.diagnostic.config { virtual_lines = false }
+        end
+      end, { desc = "Show diagnostic (via virtual line)" })
+    end
   },
 
   -- Treesitter
@@ -205,14 +237,6 @@ return {
       require'ts_context_commentstring'.setup {
         enable_autocmd = false
       }
-    end,
-  },
-  {
-    'nvim-treesitter/playground',
-    keys = '<Leader>k',
-    cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' },
-    config = function ()
-      vim.keymap.set('n', '<Leader>k', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
     end,
   },
 
@@ -347,12 +371,6 @@ return {
     end,
   },
   {
-    'mawkler/modicator.nvim',
-    -- init = load_on_event_if('modicator.nvim', 'UIEnter', true),
-    event = 'ModeChanged',
-    config = true,
-  },
-  {
     'lukas-reineke/indent-blankline.nvim',
     init = load_on_event_if('indent-blankline.nvim', 'UIEnter', true),
     main = 'ibl',
@@ -411,6 +429,7 @@ return {
   },
   {
     'karb94/neoscroll.nvim',
+    enabled = false,
     keys = { '<C-U>', '<C-D>', '<C-B>', '<C-F>', 'zz', 'zt', 'zb' },
     config = function ()
       require 'nvim-config.plugins.neoscroll'
@@ -492,8 +511,7 @@ return {
   },
   {
     'jinh0/eyeliner.nvim',
-    -- keys = { 'f', 't', 'F', 'T' },
-    lazy = false,
+    keys = { 'f', 't', 'F', 'T' },
     config = function ()
       require'eyeliner'.setup { highlight_on_key = true }
       vim.cmd.highlight { args = { 'EyelinerPrimary', 'gui=underline', 'guifg=NONE' }, bang = true }
@@ -501,16 +519,6 @@ return {
     end,
   },
   { 'romainl/vim-cool', event = 'CmdlineEnter /,?' },
-
-  -- Project management
-  {
-    'airblade/vim-rooter',
-    event = 'VeryLazy',
-    config = function ()
-      vim.g.rooter_patterns = { '.git', '>LaTeX', '>.config' }
-      vim.cmd.Rooter()
-    end,
-  },
 
   -- Documentation
   {
@@ -557,50 +565,6 @@ return {
     },
   },
   {
-    'numToStr/Comment.nvim',
-    keys = { { 'gc', mode = { 'n', 'x' } } },
-    config = function ()
-      require'Comment'.setup {
-        pre_hook = require'ts_context_commentstring.integrations.comment_nvim'.create_pre_hook()
-      }
-    end,
-  },
-  {
-    'booperlv/nvim-gomove',
-    keys = {
-      { '<S-Left>', mode = { 'n', 'x' } }, { '<S-Down>',  mode = { 'n', 'x' } },
-      { '<S-Up>',   mode = { 'n', 'x' } }, { '<S-Right>', mode = { 'n', 'x' } },
-      { '<C-Left>', mode = { 'n', 'x' } }, { '<C-Down>',  mode = { 'n', 'x' } },
-      { '<C-Up>',   mode = { 'n', 'x' } }, { '<C-Right>', mode = { 'n', 'x' } },
-    },
-    config = function ()
-      require'gomove'.setup {
-        map_defaults = false,
-        move_past_end_col = true,
-      }
-
-      vim.keymap.set('n', '<S-Left>',  '<Plug>GoNSMLeft')
-      vim.keymap.set('n', '<S-Down>',  '<Plug>GoNSMDown')
-      vim.keymap.set('n', '<S-Up>',    '<Plug>GoNSMUp')
-      vim.keymap.set('n', '<S-Right>', '<Plug>GoNSMRight')
-
-      vim.keymap.set('x', '<S-Left>',  '<Plug>GoVSMLeft')
-      vim.keymap.set('x', '<S-Down>',  '<Plug>GoVSMDown')
-      vim.keymap.set('x', '<S-Up>',    '<Plug>GoVSMUp')
-      vim.keymap.set('x', '<S-Right>', '<Plug>GoVSMRight')
-
-      vim.keymap.set('n', '<C-Left>',  '<Plug>GoNSDLeft')
-      vim.keymap.set('n', '<C-Down>',  '<Plug>GoNSDDown')
-      vim.keymap.set('n', '<C-Up>',    '<Plug>GoNSDUp')
-      vim.keymap.set('n', '<C-Right>', '<Plug>GoNSDRight')
-
-      vim.keymap.set('x', '<C-Left>',  '<Plug>GoVSDLeft')
-      vim.keymap.set('x', '<C-Down>',  '<Plug>GoVSDDown')
-      vim.keymap.set('x', '<C-Up>',    '<Plug>GoVSDUp')
-      vim.keymap.set('x', '<C-Right>', '<Plug>GoVSDRight')
-    end,
-  },
-  {
     'max397574/better-escape.nvim',
     event = 'InsertEnter',
     opts = {
@@ -619,14 +583,6 @@ return {
     },
     config = function ()
       require 'nvim-config.plugins.dial'
-    end,
-  },
-  {
-    'AckslD/nvim-trevJ.lua',
-    keys = 'U',
-    config = function ()
-      require'nvim-config.keymaps'.map('n', 'U', require'trevj'.format_at_cursor)
-      require'trevj'.setup()
     end,
   },
   {
@@ -655,14 +611,6 @@ return {
     event = 'CmdlineEnter :',
     config = true,
   },
-  -- use {
-  --   'AndrewRadev/splitjoin.vim',
-  --   keys = { 'J', 'U' },
-  --   setup = function ()
-  --     vim.g.splitjoin_split_mapping = 'U'
-  --     vim.g.splitjoin_join_mapping = 'J'
-  --   end
-  -- },
 
   {
     'Eandrju/cellular-automaton.nvim',

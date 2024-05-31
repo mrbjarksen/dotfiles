@@ -1,7 +1,5 @@
 @use "sass:map";
 
-$base-background: #16161e;
-// $base-background: #1a1b26;
 // $base-background: #000000;
 $background: (
     "static": #272538,
@@ -10,6 +8,8 @@ $background: (
     "good": #272d2d,
     "warning": #2e2a2d,
     "critical": #2d202a,
+    "darker": #16161e,
+    "dark": #1a1b26,
 );
 $accent: (
     "static": #9d7cd8,
@@ -24,6 +24,7 @@ $inactive: (
     "good": #5c7548,
     "warning": #7d6547,
     "critical": #7b3339,
+    "dark": #565f89,
 );
 $hover: (
     "static": #2e2a41,
@@ -38,9 +39,8 @@ $hover: (
 .bar {
     font-family: remixicon, Manrope;
     font-size: 12px;
-    background-color: rgba($base-background, 0);
+
     .group {
-        background-color: $base-background;
         padding: 10px;
     }
 
@@ -49,14 +49,14 @@ $hover: (
     }
 
     .component, .icon, .workspace, highlight {
-        transition: background-color 400ms ease-out;
+        transition: background-color 200ms ease-out;
         label {
-            transition: color 400ms ease-out;
+            transition: color 200ms ease-out;
         }
     }
 
     .component, .icon, .workspace, .info, button, .slider, highlight {
-        border-radius: 2px;
+        border-radius: 3px;
     }
     .info {
         padding: 0px 5px;
@@ -80,42 +80,46 @@ $hover: (
     .todo {
         transition: transform 200ms;
         padding: 0px 7px;
-        border-radius: 10px 2px 2px 10px;
-        background-color: #1a1b26;
-        color: #565f89;
+        border-radius: 10px 3px 3px 10px;
+        background-color: map.get($background, "dark");
+        color: map.get($inactive, "dark");
         :first-child {
             min-height: 6px;
             min-width: 6px;
             border-radius: 3px;
             margin: 7px 0px;
-            background-color: #565f89;
+            background-color: map.get($inactive, "dark");
         }
         :hover {
-            -gtk-icon-transform: translateY(5px);
             background-color: map.get($background, "normal");
             color: map.get($accent, "normal");
             :first-child {
-                background-color: map.get($accent, "normal")
+                background-color: map.get($accent, "normal");
             }
         }
     }
 
     .workspace {
+        button:hover {
+            background-color: map.get($hover, "normal")
+        }
+        .title {
+            font-size: 11px;
+            padding: 0 5px 0 0;
+        }
         &.active {
-            background-color: map.get($accent, "normal");
-            color: map.get($background, "normal");
+            background-color: map.get($background, "normal");
+            color: map.get($accent, "normal");
+            .header {
+                background-color: map.get($accent, "normal");
+                color: map.get($background, "normal");
+            }
         }
         &:not(.active) {
-            &.empty {
-                background-color: #1a1b26;
-                color: #565f89;
-            }
-            &:not(.empty) {
+            background-color: map.get($background, "dark");
+            color: map.get($inactive, "dark");
+            .header:hover, button:hover {
                 background-color: map.get($background, "normal");
-                color: map.get($accent, "normal");
-                &:hover {
-                    background-color: map.get($hover, "normal");
-                }
             }
         }
     }
@@ -143,10 +147,10 @@ $power-item-type-map: (
 }
 
 .component.disabled {
-    background-color: #1a1b26;
-    color: #565f89;
+    background-color: map.get($background, "dark");
+    color: map.get($inactive, "dark");
     highlight {
-        background-color: #565f89;
+        background-color: map.get($inactive, "dark");
     }
 }
 

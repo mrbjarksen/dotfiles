@@ -19,14 +19,6 @@ for _, server in ipairs(servers) do
   config.on_attach = function (client, bufnr)
     require'nvim-config.keymaps'.lsp(bufnr)
 
-    if client.server_capabilities.documentRangeFormattingProvider then
-      vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
-    end
-
-    if client.server_capabilities.definitionProvider or client.server_capabilities.workspaceSymbolProvider then
-      vim.api.nvim_buf_set_option(bufnr, 'tagfunc', 'v:lua.vim.lsp.tagfunc')
-    end
-
     if client.server_capabilities.documentHighlightProvider then
       vim.api.nvim_create_augroup('lsp_document_highlight', { clear = false })
       vim.api.nvim_clear_autocmds { buffer = bufnr, group = 'lsp_document_highlight' }

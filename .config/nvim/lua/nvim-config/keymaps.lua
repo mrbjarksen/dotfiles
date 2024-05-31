@@ -39,24 +39,18 @@ return {
   end,
 
   diagnostic = function ()
-    map('n', '<Leader>dq', vim.diagnostic.setqflist,    { desc = "View diagnostics in quickfix list"   })
-    map('n', '<Leader>dv', funcs.toggle_diag_virt_text, { desc = "Toggle virtual text for diagnostics" })
-    map('n', '<Leader>du', funcs.toggle_diag_underline, { desc = "Toggle underline for diagnostics"    })
-
-    map('n', '<Leader>dd', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], { desc = "View diagnostics on line"  })
-    map('',  '[d',         [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]],  { desc = "Go to previous diagnostic" })
-    map('',  ']d',         [[<Cmd>Lspsaga diagnostic_jump_next<CR>]],  { desc = "Go to next diagnostic"     })
+    map('n', '<Leader>dq', vim.diagnostic.setqflist,     { desc = "View diagnostics in quickfix list"    })
+    map('n', '<Leader>dt', funcs.toggle_diag_virt_text,  { desc = "Toggle virtual text for diagnostics"  })
+    map('n', '<Leader>du', funcs.toggle_diag_underline,  { desc = "Toggle underline for diagnostics"     })
   end,
 
   lsp = function (bufnr)
     map('n', '<C-K>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = "View signature help for symbol" })
     map('n', 'gqq',   vim.lsp.buf.format,         { buffer = bufnr, desc = "Format document"                })
 
-    map('n', '<Leader>lf', [[<Cmd>Lspsaga lsp_finder<CR>]],      { buffer = bufnr, desc = "Find symbol uses"          })
-    map('n', 'gd',         [[<Cmd>Lspsaga peek_definition<CR>]], { buffer = bufnr, desc = "Peek definition of symbol" })
-    map('n', 'gr',         [[<Cmd>Lspsaga rename<CR>]],          { buffer = bufnr, desc = "Rename symbol"             })
-    map('n', 'K',          [[<Cmd>Lspsaga hover_doc<CR>]],       { buffer = bufnr, desc = "Hover over symbol"         })
-    map('n', '<Leader>ca', [[<Cmd>Lspsaga code_action<CR>]],     { buffer = bufnr, desc = "View code action"          })
+    map('n', 'gd',         vim.lsp.buf.definition,  { buffer = bufnr, desc = "Go to definition" })
+    map('n', 'gr',         vim.lsp.buf.rename,      { buffer = bufnr, desc = "Rename symbol"    })
+    map('n', '<Leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = "View code action" })
   end,
 
   telescope = function ()
@@ -82,13 +76,13 @@ return {
       if vim.wo.diff then return ']c' end
       vim.schedule(function () gs.next_hunk() end)
       return '<Ignore>'
-    end, { expr = true, desc = { "Jump to next hunk/change" } })
+    end, { expr = true, desc = 'Jump to next hunk/change' })
 
     map('n', '[c', function ()
       if vim.wo.diff then return '[c' end
       vim.schedule(function () gs.prev_hunk() end)
       return '<Ignore>'
-    end, { expr = true, desc = { "Jump to previous hunk/change" } })
+    end, { expr = true, desc = 'Jump to previous hunk/change' })
 
     local visual = function (func)
       return function ()
@@ -110,22 +104,6 @@ return {
 
     map('ox', 'ih', gs.select_hunk, { buffer = bufnr })
     map('ox', 'ah', gs.select_hunk, { buffer = bufnr })
-  end,
-
-  zen = function ()
-    local zen = require 'true-zen'
-    map('n', '<Leader>za', zen.ataraxis,   { desc = "Toggle zen mode: ataraxis" })
-    map('n', '<Leader>zm', zen.minimalist, { desc = "Toggle zen mode: minimalist" })
-    map('n', '<Leader>zf', zen.focus,      { desc = "Toggle zen mode: focus" })
-
-    map('n', '<Leader>zn', function ()
-      zen.narrow(0, vim.api.nvim_buf_line_count(0))
-    end, { desc = "Toggle zen mode: narrow buffer" })
-    map('x', '<Leader>zn', function ()
-      zen.narrow(vim.fn.line 'v', vim.fn.line '.')
-    end, { desc = "Toggle zen mode: narrow range" })
-
-    map('n', '<Leader>zt', '<Cmd>Twilight<CR>', { desc = "Toggle twilight mode" })
   end,
 }
 

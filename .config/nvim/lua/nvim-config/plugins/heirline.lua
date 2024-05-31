@@ -3,96 +3,104 @@ local utils = require 'heirline.utils'
 
 require'heirline'.load_colors {
   blue = '#7aa2f7',
-  blue_faded = '#3b4261',
+  blue_faded = '#24293b',
   green = '#9ece6a',
-  purple = '#bb9af7',
+  green_faded = '#272d2d',
+  purple = '#9d7cd8',
+  purple_faded = '#272538',
   red = '#f7768e',
+  red_faded = '#2d202a',
   black = '#16161e',
   white = '#c0caf5',
   none = '#1a1b26',
 }
 
 ---- Embedded command line ----
---[[
-local Popup = require 'nui.popup'
+-- local Popup = require 'nui.popup'
 
-local cmdline_ns = vim.api.nvim_create_namespace 'cmdline'
 local cmdline = {
-  -- ns = vim.api.nvim_create_namespace 'cmdline',
+  ns = vim.api.nvim_create_namespace 'cmdline',
   levels = {},
   context = {},
-  popup = Popup {
-    border = {
-      padding = { 0, 1 },
-      style = 'none',
-      text = {},
-      ns_id = cmdline_ns,
-    },
-    relative = 'win',
-    -- enter = true,
-    enter = false,
-    focusable = false,
-    buf_options = {
-      modifiable = false,
-      readonly = true,
-    },
-  },
+  -- popup = Popup {
+  --   border = {
+  --     padding = { 0, 1 },
+  --     style = 'none',
+  --     text = {},
+  --     ns_id = cmdline_ns,
+  --   },
+  --   relative = 'win',
+  --   -- enter = true,
+  --   enter = false,
+  --   focusable = false,
+  --   buf_options = {
+  --     modifiable = false,
+  --     readonly = true,
+  --   },
+  -- },
 }
 
 -- local render_cmdline = function ()
 --   if 
 -- end
 
-vim.ui_attach(cmdline_ns, { ext_cmdline = true }, function (event, ...)
-  if event == 'cmdline_show' then
-    local content, pos, firstc, prompt, indent, level = ...
-    local line = firstc .. prompt .. (' '):rep(indent)
-    for _, part in ipairs(content) do
-      line = line .. part[2]
-    end
-    for i = #cmdline.levels + 1, level - 1 do cmdline.levels[i] = {} end
-    cmdline.levels[level] = { str = line, pos = pos }
-    if level < #cmdline.levels then
-      for i = level + 1, #cmdline.levels do
-        cmdline.levels[i] = nil
-      end
-    end
-  elseif event == 'cmdline_pos' then
-    local pos, level = ...
-    cmdline.levels[level].pos = pos
-  elseif event == 'cmdline_special_char' then
-    local c, shift, level = ...
-    local line = cmdline.levels[level]
-    local right
-    if shift then right = line.pos else right = line.pos + 1 end
-    line.str = table.concat { line.str:sub(1, line.pos), c, line.str:sub(right) }
-  elseif event == 'cmdline_hide' then
-    cmdline.levels[#cmdline.levels] = nil
-  elseif event == 'cmdline_block_show' then
-    local lines = ...
-    local lines_strs = {}
-    for i, line in ipairs(lines) do
-      lines_strs[i] = ''
-      for _, part in ipairs(line) do
-        lines_strs[i] = lines_strs[i] .. part[2]
-      end
-    end
-    cmdline.context = lines_strs
-  elseif event == 'cmdline_block_append' then
-    local line = ...
-    local line_str = ''
-    for _, part in ipairs(line) do
-      line_str = line_str .. part[2]
-    end
-    cmdline.context[#cmdline.context+1] = line_str
-  elseif event == 'cmdline_block_hide' then
-    cmdline.context = {}
-  else
-    return
-  end
-  render_cmdline()
-end)
---]]
+-- local inspect_buf = vim.api.nvim_create_buf(false, true)
+-- local inspect_win = vim.api.nvim_open_win(inspect_buf, false, {
+--   relative = 'editor', anchor = 'NE',
+--   row = 1, col = vim.api.nvim_win_get_width(0)/2 - 1,
+--   width = 120, height = vim.api.nvim_win_get_height(0) - 2,
+--   style = 'minimal'
+-- })
+-- vim.bo[inspect_buf].filetype = 'lua'
+-- vim.api.nvim_buf_set_lines(inspect_buf, 0, -1, true, vim.split(vim.inspect(cmdline), '\n'))
+--
+-- local event_log_buf = vim.api.nvim_create_buf(false, true)
+-- local event_log_win = vim.api.nvim_open_win(event_log_buf, false, {
+--   relative = 'editor', anchor = 'NW',
+--   row = 1, col = vim.api.nvim_win_get_width(0)/2 + 1,
+--   width = 120, height = vim.api.nvim_win_get_height(0) - 2,
+--   style = 'minimal'
+-- })
+-- vim.bo[event_log_buf].filetype = 'lua'
+
+-- local last = nil
+-- vim.ui_attach(cmdline.ns, { ext_cmdline = true }, function (event, ...)
+--   if event == 'cmdline_show' then
+--     if vim.deep_equal({...}, last) then return end
+--     local content, pos, firstc, prompt, indent, level = ...
+--     cmdline.levels[level] = {
+--       content = content, pos = pos,
+--       header = firstc .. prompt, indent = indent
+--     }
+--   elseif event == 'cmdline_pos' then
+--     local pos, level = ...
+--     cmdline.levels[level].pos = pos
+--   elseif event == 'cmdline_special_char' then
+--     local c, shift, level = ...
+--     cmdline.levels[level].special = { char = c, shift = shift }
+--   elseif event == 'cmdline_hide' then
+--     cmdline.levels[...] = nil
+--   elseif event == 'cmdline_block_show' then
+--     cmdline.context = ...
+--   elseif event == 'cmdline_block_append' then
+--     cmdline.context[#cmdline.context+1] = ...
+--   elseif event == 'cmdline_block_hide' then
+--     cmdline.context = {}
+--   else
+--     return
+--   end
+--
+--   last = {...}
+--   -- vim.cmd.redrawstatus()
+--
+--   vim.api.nvim_buf_set_lines(inspect_buf, 0, -1, true, vim.split(vim.inspect(cmdline), '\n'))
+--   vim.api.nvim_buf_set_lines(event_log_buf, 0, 0, true, vim.split(vim.inspect({event, ...}), '\n'))
+--   vim.api.nvim__redraw({ flush = true })
+-- end)
+
+-- local Cmdline = vim.iter(cmdline.levels):map(function (level)
+--   
+-- end):totable()
 
 ---- Mode indicator ----
 
@@ -102,7 +110,7 @@ local Mode = {
   end,
   init = function (self)
     if not self.once then
-      vim.api.nvim_create_autocmd("ModeChanged", {
+      vim.api.nvim_create_autocmd('ModeChanged', {
         pattern = '*:*o*',
         command = 'redrawstatus',
       })
@@ -168,7 +176,7 @@ local Mode = {
     -- end
     return " " .. self.mode_names[self.mode] .. " "
   end,
-  hl = function (self) return { fg = 'black', bg = self.mode_colors[self.mode:sub(1, 1)] } end,
+  hl = function (self) return { fg = 'black', bg = self.mode_colors[self.mode:sub(1, 1)], bold = true } end,
   update = { 'ModeChanged', 'BufEnter', 'CmdlineLeave' },
 }
 
@@ -248,6 +256,7 @@ local Cursor = {
 
 ---- Info ----
 
+local Showcmd = { provider = '%S', update = { 'CmdlineEnter', 'CmdlineLeave', 'CmdlineChanged' } }
 local Filetype = { provider = function () return vim.bo.ft ~= '' and vim.bo.ft or 'no ft' end }
 local Encoding = { provider = function () return vim.bo.fenc ~= '' and vim.bo.fenc or vim.o.enc end }
 local FileFormat = { provider = function () return vim.bo.fileformat end }
@@ -258,7 +267,7 @@ local Space = { provider = ' ' }
 local Info = {
   condition = function () return conditions.is_active() end,
   hl = { fg = 'white', bg = 'black' },
-  Space, FileFormat, Seperator, Encoding, Seperator, Filetype, Space
+  Showcmd, Space, FileFormat, Seperator, Encoding, Seperator, Filetype, Space
 }
 
 ---- Full statusline ----
@@ -279,7 +288,7 @@ local StatusLine = {
 StatusLine = utils.insert(StatusLine,
   Mode, File,
   Align,
-  Info, Percent, Cursor
+  Showcmd, Info, Percent, Cursor
 )
 
 require'heirline'.setup {

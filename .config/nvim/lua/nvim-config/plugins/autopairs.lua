@@ -42,20 +42,14 @@ end
 -- Lua
 local end_appropriate = function (opts)
   return conds.before_text'do'(opts)
-    or conds.before_regex('if .+ then', -1)(opts)
-    or conds.before_regex('function[^()]*%([^()]*%)', -1)(opts)
+    or conds.before_regex('if .+ then$', -1)(opts)
+    or conds.before_regex('function.-%(.-%)$', -1)(opts)
 end
 
 npairs.add_rules {
   Rule(' ', ' end', 'lua')
     :with_pair(end_appropriate)
     :with_del(end_appropriate),
-  -- Rule(' ', ' then', 'lua')
-  --   :with_pair(conds.before_text 'if')
-  --   :with_del(conds.before_text 'if')
-  --   :replace_map_cr(function ()
-  --     return [[<C-G>u<C-C><Cmd>call search('then', 'cez', line("."))<CR>a<CR>]]
-  --   end),
 }
 
 -- LaTeX
@@ -67,16 +61,3 @@ npairs.add_rules {
   Rule('\\[', '\\]', 'tex'),
   Rule('`', "'", 'tex'),
 }
-
--- Julia
-local endwise = require'nvim-autopairs.ts-rule'.endwise
-npairs.add_rules {
-  Rule('do', 'end', 'julia'):end_wise(),
-  Rule('begin', 'end', 'julia'):end_wise(),
-  -- Rule('', 'end', 'julia'):end_wise(conds.before_regex 'if.*'),
-  -- Rule('', 'end', 'julia'):end_wise(conds.before_regex 'function[^()]*%([^()]*%)'),
-  endwise('if .*$', 'end', 'julia', 'if_statement'),
-  endwise('for .*$', 'end', 'julia', 'for_statement'),
-  endwise('function.*%(.*%)$', 'end', 'julia', 'function_definition'),
-}
-

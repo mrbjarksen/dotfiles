@@ -64,17 +64,3 @@ require'nvim-treesitter.configs'.setup {
   endwise = { enable = true },
   matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
 }
-
--- Fold using nvim-treesitter
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.opt.foldlevel = 99
--- vim.api.nvim_buf_create_augroup('recalc_treesitter_folds', { clear = true })
--- vim.api.nvim_create_autocmd('BufRead', {
---   callback = function()
---     vim.api.nvim_create_autocmd('BufWinEnter', {
---       once = true,
---       command = 'normal! zx'
---     })
---   end
--- })
