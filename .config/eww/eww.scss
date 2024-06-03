@@ -8,6 +8,7 @@ $background: (
     "good": #272d2d,
     "warning": #2e2a2d,
     "critical": #2d202a,
+    "focus": #2d2d3b,
     "darker": #16161e,
     "dark": #1a1b26,
 );
@@ -17,6 +18,7 @@ $accent: (
     "good": #9ece6a,
     "warning": #e0af68,
     "critical": #db4b4b,
+    "focus": #c0caf5,
 );
 $inactive: (
     "static": #5c4c7f,
@@ -24,14 +26,16 @@ $inactive: (
     "good": #5c7548,
     "warning": #7d6547,
     "critical": #7b3339,
+    "focus": #6d738e,
     "dark": #565f89,
 );
 $hover: (
-    "static": #2e2a41,
-    "normal": #282f45,
-    "good": #2e3630,
-    "warning": #383130,
-    "critical": #37222c,
+    "static": #322c46,
+    "normal": #2b334c,
+    "good": #323a21,
+    "warning": #3e3632,
+    "critical": #3d242d,
+    "focus": #383b4b,
 );
 
 * { all: unset; }
@@ -39,88 +43,109 @@ $hover: (
 .bar {
     font-family: remixicon, Manrope;
     font-size: 12px;
-
-    .group {
-        padding: 10px;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+    transition-property: all;
+    button {
+        transition: background-color 120ms, color 50ms;
     }
-
-    .icon {
-        font-size: 16px;
-    }
-
-    .component, .icon, .workspace, highlight {
-        transition: background-color 200ms ease-out;
-        label {
-            transition: color 200ms ease-out;
-        }
-    }
-
-    .component, .icon, .workspace, .info, button, .slider, highlight {
+    * {
         border-radius: 3px;
     }
-    .info {
-        padding: 0px 5px;
-    }
+}
 
-    .slider {
-        margin-left: 2px;
-        min-width: 60px;
-        highlight {
-            min-height: 20px;
+.group {
+    padding: 10px;
+}
+
+// .group + .eventbox {
+//     margin: 10px 0;
+// }
+
+.icon {
+    font-size: 16px;
+}
+
+.info {
+    padding: 0px 5px;
+}
+
+.disabled {
+    background-color: map.get($background, "dark");
+    color: map.get($inactive, "dark");
+    highlight {
+        background-color: map.get($inactive, "dark");
+    }
+}
+
+@each $type in "normal", "warning", "critical", "static", "good", "focus" {
+    .#{$type}.disabled button:hover:not(:active) {
+        background-color: map.get($background, $type);
+    }
+    .#{$type}:not(.disabled) {
+        background-color: map.get($background, $type);
+        color: map.get($accent, $type);
+        button:hover:not(:active) {
+            background-color: map.get($hover, $type);
+            .icon {
+                color: map.get($hover, $type);
+            }
+        }
+        .icon {
+            background-color: map.get($accent, $type);
+            color: map.get($background, $type);
+        }
+        .inactive {
+            color: map.get($inactive, $type);
+        }
+        .slider highlight {
+            background-color: map.get($accent, $type);
         }
     }
+}
 
-    button {
-        transition: background-color 100ms ease-out;
-        .info label {
-            transition: color 50ms ease-out;
+.workspace .title, .bluetooth .alias {
+    font-size: 11px;
+    padding: 0 5px 0 0;
+}
+
+.media .info {
+    font-size: 11px;
+}
+
+.media button {
+    font-size: 15px;
+}
+
+.media .controls {
+    margin: 0 3px;
+}
+
+.slider {
+    margin-left: 2px;
+    min-width: 60px;
+    highlight {
+        min-height: 20px;
+    }
+}
+
+.workspace {
+    button:hover:not(:active) {
+        background-color: map.get($hover, "normal")
+    }
+    &.active {
+        background-color: map.get($background, "normal");
+        color: map.get($accent, "normal");
+        .header, .header:hover:not(:active) {
+            background-color: map.get($accent, "normal");
+            color: map.get($background, "normal");
         }
     }
-
-    .todo {
-        transition: transform 200ms;
-        padding: 0px 7px;
-        border-radius: 10px 3px 3px 10px;
+    &:not(.active) {
         background-color: map.get($background, "dark");
         color: map.get($inactive, "dark");
-        :first-child {
-            min-height: 6px;
-            min-width: 6px;
-            border-radius: 3px;
-            margin: 7px 0px;
-            background-color: map.get($inactive, "dark");
-        }
-        :hover {
+        .header:hover:not(:active), button:hover:not(:active) {
             background-color: map.get($background, "normal");
-            color: map.get($accent, "normal");
-            :first-child {
-                background-color: map.get($accent, "normal");
-            }
-        }
-    }
-
-    .workspace {
-        button:hover {
-            background-color: map.get($hover, "normal")
-        }
-        .title {
-            font-size: 11px;
-            padding: 0 5px 0 0;
-        }
-        &.active {
-            background-color: map.get($background, "normal");
-            color: map.get($accent, "normal");
-            .header {
-                background-color: map.get($accent, "normal");
-                color: map.get($background, "normal");
-            }
-        }
-        &:not(.active) {
-            background-color: map.get($background, "dark");
-            color: map.get($inactive, "dark");
-            .header:hover, button:hover {
-                background-color: map.get($background, "normal");
-            }
         }
     }
 }
@@ -146,30 +171,29 @@ $power-item-type-map: (
     }
 }
 
-.component.disabled {
-    background-color: map.get($background, "dark");
-    color: map.get($inactive, "dark");
-    highlight {
-        background-color: map.get($inactive, "dark");
-    }
+.todolist {
+    padding: 10px 5px 0 12px;
+    background-color: map.get($background, "darker");
 }
 
-@each $type in "normal", "warning", "critical", "static", "good" {
-    .component.#{$type}:not(.disabled) {
-        background-color: map.get($background, $type);
-        color: map.get($accent, $type);
-        button:hover {
-            background-color: map.get($hover, $type);
-        }
-        .icon {
-            background-color: map.get($accent, $type);
-            color: map.get($background, $type);
-        }
-        .inactive {
-            color: map.get($inactive, $type);
-        }
-        .slider highlight {
-            background-color: map.get($accent, $type);
+.todo {
+    transition: transform 200ms;
+    padding: 0px 7px;
+    border-radius: 10px 3px 3px 10px;
+    background-color: map.get($background, "dark");
+    color: map.get($inactive, "dark");
+    :first-child {
+        min-height: 6px;
+        min-width: 6px;
+        border-radius: 3px;
+        margin: 7px 0px;
+        background-color: map.get($inactive, "dark");
+    }
+    :hover {
+        background-color: map.get($background, "normal");
+        color: map.get($accent, "normal");
+        :first-child {
+            background-color: map.get($accent, "normal");
         }
     }
 }

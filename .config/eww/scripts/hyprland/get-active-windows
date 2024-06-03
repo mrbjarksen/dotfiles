@@ -1,0 +1,13 @@
+#! /usr/bin/sh
+
+get_active_windows() {
+    hyprctl workspaces -j | \
+        jq -rc 'map({key: .id | tostring, value: .lastwindow}) | from_entries'
+}
+
+get_active_windows
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+    case $line in
+        activewindow*) get_active_windows
+    esac
+done

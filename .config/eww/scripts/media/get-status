@@ -1,0 +1,19 @@
+#! /usr/bin/sh
+
+last=""
+
+get_status() {
+    for player in $(playerctl --list-all --no-messages); do
+        playerctl metadata --player $player \
+            --format "{\"key\": \"$player\", \"value\": \"{{ status }}\"}"
+    done | jq --slurp --compact-output 'sort_by(.key) | from_entries'
+}
+
+watch="type='signal',destination='org.mpris.MediaPlayer2',member='PropertiesChanged'"
+dbus-monitor --session --profile "$watch" | while read -r line; do
+    new=$(get_status)
+    if [ "$last" != "$new" ]; then
+        echo $new
+        last=$new
+    fi
+done

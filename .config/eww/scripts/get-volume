@@ -17,7 +17,6 @@ report() {
 
 wait_and_see() {
     grandparent=$(ps -o ppid= $(ps -o ppid= $WAIT_PID) | tr -d ' ')
-    echo "$grandparent, $$"
     if [ "$grandparent" = "$$" ]; then
         kill $WAIT_PID
     fi

@@ -14,6 +14,7 @@ require'tokyonight'.setup {
     hl.TelescopePromptTitle = { link = 'TelescopeTitle' }
     hl.TelescopePromptBorder = { link = 'TelescopeBorder' }
 
+    hl.IndentLineCurrent = { link = '@keyword.function' }
     hl.IndentBlanklineContextChar = { link = '@keyword.function' }
 
     hl.TSVariable = { fg = c.fg, style = {} }

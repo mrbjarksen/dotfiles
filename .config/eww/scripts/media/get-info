@@ -1,0 +1,19 @@
+#! /usr/bin/sh
+
+last=""
+
+get_info() {
+    for player in $(playerctl --list-all --no-messages); do
+        playerctl metadata --player $player \
+            --format "{\"player\": \"$player\", \"name\": \"{{ playerName }}\", \"title\": \"{{ title }}\", \"album\": \"{{ album }}\", \"artist\": \"{{ artist }}\"}"
+    done | jq --slurp --compact-output 'sort_by(.player)'
+}
+
+watch="type='signal',destination='org.mpris.MediaPlayer2',member='PropertiesChanged'"
+dbus-monitor --session --profile "$watch" | while read -r line; do
+    new=$(get_info)
+    if [ "$last" != "$new" ]; then
+        echo $new
+        last=$new
+    fi
+done

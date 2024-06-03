@@ -2,7 +2,7 @@
 
 get_workspaces() {
     hyprctl clients -j | \
-      jq -rc 'group_by(.workspace.id) | map({workspace: .[0].workspace, windows: sort_by(.at) | map({address, class, title: .title | sub(" — Mozilla Firefox"; "")})})'
+        jq -rc 'group_by(.workspace.id) | map({workspace: .[0].workspace, windows: sort_by(.at) | map({address, class, title: .title | sub(" — Mozilla Firefox"; "")})})'
 }
 
 get_workspaces
