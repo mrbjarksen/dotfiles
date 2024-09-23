@@ -1,0 +1,21 @@
+@use "sass:map";
+
+$empty: #16161e;
+$bg: #1a1b26;
+$disabled: #565f89;
+
+$colors: (
+  "red": #db4b4b,
+  "green": #9ece6a,
+  "yellow": #e0af68,
+  "blue": #7aa2f7,
+  "magenta": #9d7cd8,
+  "cyan": #7dcfff,
+  "white": #c0caf5
+);
+
+$colors: map.merge($colors, (
+  "normal": map.get($colors, "blue"),
+  "static": map.get($colors, "magenta"),
+  "focus": map.get($colors, "white")
+));

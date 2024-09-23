@@ -566,11 +566,19 @@ return {
   },
   {
     'max397574/better-escape.nvim',
-    event = 'InsertEnter',
+    keys = {
+      { 'j', mode = { 'n', 'i', 'c', 't' } },
+      { 'k', mode = { 'n', 'i', 'c', 't' } }
+    },
     opts = {
-      mapping = { 'jk', 'kj' },
-      timeout = 100,
-      keys = '<Esc>',
+      timeout = 30,
+      default_mappings = false,
+      mappings = {
+        n = { j = { k = '<Esc>' }, k = { j = '<Esc>' } },
+        i = { j = { k = '<Esc>' }, k = { j = '<Esc>' } },
+        c = { j = { k = '<Esc>' }, k = { j = '<Esc>' } },
+        t = { j = { k = '<Esc>' }, k = { j = '<Esc>' } },
+      },
     },
   },
   {

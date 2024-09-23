@@ -4,12 +4,11 @@ require'tokyonight'.setup {
   styles = {
     keywords = {},
   },
-  sidebars = { 'qf', 'help', 'man', 'CompetiTest' },
   on_highlights = function (hl, c)
     hl.Cursor = { reverse = true, fg = 'NONE', bg = 'NONE' }
     hl.Hidden = { blend = 100, reverse = true }
 
-    hl.CursorLineNr = { fg = require'tokyonight.colors'.default.dark5 }
+    hl.CursorLineNr = { fg = c.dark5 }
 
     hl.TelescopePromptTitle = { link = 'TelescopeTitle' }
     hl.TelescopePromptBorder = { link = 'TelescopeBorder' }
@@ -17,7 +16,7 @@ require'tokyonight'.setup {
     hl.IndentLineCurrent = { link = '@keyword.function' }
     hl.IndentBlanklineContextChar = { link = '@keyword.function' }
 
-    hl.TSVariable = { fg = c.fg, style = {} }
+    hl.TSVariable = { fg = c.fg, italic = false }
 
     hl.NormalMode = { fg = '#7aa2f7' }
     hl.NormalModeFade = { fg = '#3b4261' }
@@ -35,15 +34,15 @@ require'tokyonight'.setup {
     hl.WinSeparatorSB = { bg = c.bg_sidebar, fg = c.bg }
     hl.EndOfBufferSB = { bg = c.bg_sidebar, fg = c.bg_sidebar }
 
-    hl.NeoTreeRootName = hl.NvimTreeRootFolder
-    hl.NeoTreeGitModified = hl.NvimTreeGitDirty
-    hl.NeoTreeGitAdded = hl.NvimTreeGitNew
-    hl.NeoTreeGitDeleted = hl.NvimTreeGitDeleted
-    hl.NeoTreeIndentMarker = hl.NvimTreeIndentMarker
-    hl.NeoTreeImageFile = hl.NvimTreeImageFile
-    hl.NeoTreeSymbolicLinkTarget = hl.NvimTreeSymlink
-    hl.NeoTreeMessage = hl.Comment
-    hl.NeoTreeDimText = { fg = c.comment }
+    -- hl.NeoTreeRootName = hl.NvimTreeRootFolder
+    -- hl.NeoTreeGitModified = hl.NvimTreeGitDirty
+    -- hl.NeoTreeGitAdded = hl.NvimTreeGitNew
+    -- hl.NeoTreeGitDeleted = hl.NvimTreeGitDeleted
+    -- hl.NeoTreeIndentMarker = hl.NvimTreeIndentMarker
+    -- hl.NeoTreeImageFile = hl.NvimTreeImageFile
+    -- hl.NeoTreeSymbolicLinkTarget = hl.NvimTreeSymlink
+    -- hl.NeoTreeMessage = hl.Comment
+    -- hl.NeoTreeDimText = { fg = c.comment }
 
     hl.CompetiTestCorrect = { fg = c.green }
     hl.CompetiTestWarning = { fg = c.yellow }

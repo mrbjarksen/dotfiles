@@ -1,0 +1,158 @@
+@use "sass:map";
+@use "themes/tokyonight" as theme;
+
+* {
+    all: unset;
+
+    font-family: remixicon, Manrope;
+    font-size: 12px;
+
+    border-radius: 3px;
+
+    // transition-duration: 100ms;
+    // transition-timing-function: ease-out;
+    // transition-property: all;
+    // button:not(.not-button) {
+    //     transition: background-color 60ms, color 25ms;
+    // }
+}
+
+@each $name, $color in theme.$colors {
+    .#{$name}:not(.disabled):not(.inactive) {
+        background-color: mix($color, theme.$bg, 10%);
+        color: $color;
+        .icon {
+            background-color: $color;
+            color: mix($color, theme.$bg, 10%);
+        }
+        button:hover:not(:active):not(.not-button) {
+            background-color: mix($color, theme.$bg, 20%);
+            .icon {
+                background-color: mix($color, theme.$bg, 80%);
+            }
+        }
+        .inactive {
+            color: mix($color, theme.$bg, 50%);
+        }
+    }
+    .#{$name}:not(.disabled) {
+        .slider highlight {
+            background-color: $color;
+        }
+    }
+    .#{$name}.inactive {
+    background-color: theme.$bg;
+        color: $color;
+        button:hover:not(:active):not(.not-button) {
+            background-color: mix($color, theme.$bg, 10%);
+        }
+    }
+    .#{$name}.disabled button:hover:not(:active):not(.not-button) {
+        background-color: mix($color, theme.$bg, 10%);
+    }
+    .power button.#{$name}:not(:hover) .icon, .power button.#{$name}:active .icon {
+        background-color: theme.$bg;
+        color: $color;
+    }
+}
+
+.power {
+    background-color: theme.$bg;
+}
+
+.disabled {
+    background-color: theme.$bg;
+    color: theme.$disabled;
+    highlight {
+        background-color: theme.$disabled;
+    }
+}
+
+.icon, .icon label {
+    font-size: 16px;
+}
+
+.arrow {
+    font-size: 15px;
+}
+
+.inner {
+    padding: 0px 3px;
+}
+
+.inner-append {
+    padding-left: 3px;
+}
+
+.inner-prepend {
+    padding-right: 3px;
+}
+
+.content {
+    padding: 0px 5px;
+}
+
+.workspace .title, .bluetooth-alias {
+    font-size: 11px;
+    padding-left: 5px;
+}
+
+.info, .microphone-name, .wifi-ssid {
+    font-size: 11px;
+}
+
+.slider {
+    margin-left: 2px;
+    min-width: 60px;
+    highlight {
+        min-height: 20px;
+    }
+}
+
+// .workspace {
+//     button:hover:not(:active) {
+//         background-color: map.get($hover, "normal")
+//     }
+//     &.active {
+//         background-color: map.get($background, "normal");
+//         color: map.get($accent, "normal");
+//         .header, .header:hover:not(:active) {
+//             background-color: map.get($accent, "normal");
+//             color: map.get($background, "normal");
+//         }
+//     }
+//     &:not(.active) {
+//         background-color: map.get($background, "dark");
+//         color: map.get($inactive, "dark");
+//         .header:hover:not(:active), button:hover:not(:active) {
+//             background-color: map.get($background, "normal");
+//         }
+//     }
+// }
+//
+// .todolist {
+//     padding: 10px 5px 0 12px;
+//     background-color: map.get($background, "darker");
+// }
+//
+// .todo {
+//     transition: transform 200ms;
+//     padding: 0px 7px;
+//     border-radius: 10px 3px 3px 10px;
+//     background-color: map.get($background, "dark");
+//     color: map.get($inactive, "dark");
+//     :first-child {
+//         min-height: 6px;
+//         min-width: 6px;
+//         border-radius: 3px;
+//         margin: 7px 0px;
+//         background-color: map.get($inactive, "dark");
+//     }
+//     :hover {
+//         background-color: map.get($background, "normal");
+//         color: map.get($accent, "normal");
+//         :first-child {
+//             background-color: map.get($accent, "normal");
+//         }
+//     }
+// }

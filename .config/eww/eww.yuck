@@ -8,21 +8,22 @@
   :exclusive false
   :focusable false
   (box :class "bar" :space-evenly false
-    (group :halign "start" (box :spacing 10 :space-evenly false
+    (group :halign "start" (box :spacing 6 :space-evenly false
       (label :text "${active-workspace}" :visible false)
       (label :text "${active-windows}" :visible false)
-      (for ws in workspaces (workspace :ws ws))))
-    (group :halign "end"
-      (camera)
-      (volume)
-      (brightness)
-      (battery)
-      (wifi)
-      (bluetooth)
-      (keyboard-layout)
-      (weather)
-      (date)
-      (time))))
+      (for ws in workspaces (workspace :ws ws))))))
+    ;; (group :halign "end" :spacing 6
+    ;;   (camera)
+    ;;   (volume)
+    ;;   (brightness)
+    ;;   (battery)
+    ;;   (wifi)
+    ;;   (bluetooth)
+    ;;   (keyboard-layout)
+    ;;   (weather)
+    ;;   (date)
+    ;;   (time)
+    ;;   (power))))
 
 (defwindow lower-bar
   :monitor 0
@@ -41,17 +42,16 @@
       (for m in media-info
         (media :player {m.player} :name {m.name}
           :title {m.title} :album {m.album} :artist {m.artist}))))
-    (group :halign "end"
+    (group :halign "end" :spacing 6
       (temp)
       (cpu)
       (ram)
-      (disk)
-      (power))))
+      (disk))))
 
 (defwindow todo-list
   :monitor 0
   :geometry (geometry 
-    :x 0 :y 40
+    :x 0 :y 70
     :width "100%" :height 20
     :anchor "bottom center")
   :stacking "bg"
@@ -59,16 +59,18 @@
   :focusable false
   (box :class "bar todolist" :halign "start" :spacing 5 :space-evenly false :orientation "vertical"
     (todo "Full-screen mode")
-    (todo "Cache weather")
-    (todo "Notifications")
+    (todo "System tray")
+    (todo "External volumes")
+    (todo "Ethernet and VPNs")
     (todo "dunst")
     (todo "tofi")
     (todo "neovim")
-    (todo "Microphone/Camera/Screenshare")
+    (todo "Dropdowns")
+    (todo "Better disabled/unused/inactive")
+    (todo "Microphone/Screenshare")
     (todo "Authentication")
     (todo "Accurate clock icon")
-    (todo "Aligned icons")
-    (todo "Bluetooth")))
+    (todo "Aligned icons")))
 
 (defwidget todo []
   (box :class "todo" :space-evenly false :spacing 5 :hexpand false
@@ -250,7 +252,7 @@
 
 (defwidget disk []
   (component :name "disk" :hover true
-    :type {EWW_DISK["/"].free < 128000000000 ? "critical" : EWW_DISK["/"].free < 256000000000 ? "warning" : "normal"}
+    :type {EWW_DISK["/"].free < 64000000000 ? "critical" : EWW_DISK["/"].free < 128000000000 ? "warning" : "normal"}
     (icon "")
     (info :spacing {disk-reveal || disk-hover || reveal-all ? 3 : 0}
       "${round(EWW_DISK["/"].free / 1000000000, 0)} GB"
