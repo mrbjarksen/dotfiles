@@ -5,8 +5,9 @@ const keyboard = await hyprland.messageAsync('j/devices')
     .then(json => JSON.parse(json).keyboards.find(({ name }) =>
         name === 'at-translated-set-2-keyboard'
     ))
+    .catch(_ => undefined)
 
-const layouts = keyboard.layout.split(',')
+const layouts = keyboard == undefined ? [] : keyboard.layout.split(',')
 
 const abbreviate = async (keymap: string): Promise<string | undefined> =>
     Utils.execAsync(['grep', '-e', keymap, '/usr/share/X11/xkb/rules/base.lst'])
@@ -20,7 +21,7 @@ const setActive = (abbr: string | undefined) => active.setValue({
     previous: active.getValue().current,
 })
 
-abbreviate(keyboard.active_keymap).then(setActive)
+if (keyboard != undefined) abbreviate(keyboard.active_keymap).then(setActive)
 
 hyprland.connect('keyboard-layout', (_, keyboard, layoutname) => {
     if (keyboard === 'at-translated-set-2-keyboard')

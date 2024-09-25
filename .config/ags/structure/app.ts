@@ -5,7 +5,8 @@ const upperBar = () => Widget.Window({
     name: 'upper-bar',
     anchor: ['top', 'left', 'right'],
     exclusivity: 'ignore',
-    margins: [40, 10, 10, 10],
+    layer: 'overlay',
+    margins: [10, 10, 10, 10],
     child: Widget.Box({
         hpack: 'end',
         spacing: 6,
@@ -30,7 +31,8 @@ const lowerBar = () => Widget.Window({
     name: 'lower-bar',
     anchor: ['bottom', 'left', 'right'],
     exclusivity: 'ignore',
-    margins: [10, 10, 40, 10],
+    layer: 'overlay',
+    margins: [10, 10, 10, 10],
     child: Widget.Box({
         hpack: 'end',
         spacing: 6,

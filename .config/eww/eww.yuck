@@ -1,7 +1,7 @@
 (defwindow upper-bar
   :monitor 0
   :geometry (geometry
-    :x 0 :y 0
+    :x 0 :y 30
     :width "100%" :height 40
     :anchor "top center")
   :stacking "fg"
@@ -11,24 +11,24 @@
     (group :halign "start" (box :spacing 6 :space-evenly false
       (label :text "${active-workspace}" :visible false)
       (label :text "${active-windows}" :visible false)
-      (for ws in workspaces (workspace :ws ws))))))
-    ;; (group :halign "end" :spacing 6
-    ;;   (camera)
-    ;;   (volume)
-    ;;   (brightness)
-    ;;   (battery)
-    ;;   (wifi)
-    ;;   (bluetooth)
-    ;;   (keyboard-layout)
-    ;;   (weather)
-    ;;   (date)
-    ;;   (time)
-    ;;   (power))))
+      (for ws in workspaces (workspace :ws ws))))
+    (group :halign "end" :spacing 6
+      (camera)
+      (volume)
+      (brightness)
+      (battery)
+      (wifi)
+      (bluetooth)
+      (keyboard-layout)
+      (weather)
+      (date)
+      (time)
+      (power))))
 
 (defwindow lower-bar
   :monitor 0
   :geometry (geometry
-    :x 0 :y 0
+    :x 0 :y 30
     :width "100%" :height 40
     :anchor "bottom center")
   :stacking "fg"

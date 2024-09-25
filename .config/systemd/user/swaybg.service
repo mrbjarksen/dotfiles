@@ -1,0 +1,10 @@
+[Unit]
+Description=swaybg Wallpaper Utility
+Documentation=man:swaybg(1)
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/swaybg --image "%h/wallpapers/polka-cairo-3800-2240.png" --mode center --color "#16161e"
+Restart=on-failure

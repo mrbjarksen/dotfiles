@@ -1,0 +1,192 @@
+prefer-no-csd
+screenshot-path null
+hotkey-overlay { skip-at-startup; }
+
+environment {
+    LIBVA_DRIVER_NAME "nvidia"
+    XDG_SESSION_TYPE "wayland"
+    GBM_BACKEND "nvidia-drm"
+    __GLX_VENDOR_LIBRARY_NAME "nvidia"
+    __NV_PRIME_RENDER_OFFLOAD "1"
+    __NV_PRIME_RENDER_OFFLOAD_PROVIDER null
+    NVD_BACKEND "direct"
+
+    GDK_BACKEND "wayland,x11,*"
+    QT_QPA_PLATFORM "wayland;xcb"
+    SDL_VIDEO_DRIVER "wayland"
+    CLUTTER_BACKEND "wayland"
+
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+}
+
+cursor {
+    xcursor-theme "Vimix-white-cursors"
+    xcursor-size 22
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "is,us"
+            variant "mac,"
+            options "caps:escape,grp:menu_toggle,grp_led:caps"
+        }
+        track-layout "global"
+
+        repeat-delay 400
+        repeat-rate 25
+    }
+
+    touchpad {
+        tap
+        dwt
+        natural-scroll
+        accel-speed 0.2
+        scroll-method "two-finger"
+        tap-button-map "left-right-middle"
+        click-method "clickfinger"
+    }
+
+    mouse {
+        accel-speed 0.2
+    }
+
+    focus-follows-mouse max-scroll-amount="34%"
+
+    workspace-auto-back-and-forth
+}
+
+output "eDP-1" {
+    mode "3840x2400"
+    scale 2
+    transform "normal"
+}
+
+layout {
+    center-focused-column "never"
+    always-center-single-column
+
+    default-column-width { proportion 0.66667; }
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+
+    focus-ring { off; }
+    border {
+        width 1
+        active-color "#7aa2f7"
+        inactive-color "#292e42"
+    }
+
+    gaps 6
+    struts {
+        left 4; right 4
+        top 34; bottom 34
+    }
+}
+
+window-rule {
+    geometry-corner-radius 3
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^org\.mozilla\.firefox"#
+    default-column-width { proportion 1.0; }
+}
+
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+animations {
+
+}
+
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+workspace "5"
+workspace "6"
+workspace "7"
+workspace "8"
+workspace "9"
+workspace "0"
+
+binds {
+    Mod+Shift+Apostrophe { show-hotkey-overlay; }
+    Mod+T repeat=false { spawn "kitty"; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+
+    Mod+Q repeat=false { close-window; }
+
+    Mod+H { focus-column-left; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+L { focus-column-right; }
+
+    Mod+Ctrl+H { move-column-left; }
+    Mod+Ctrl+J { move-window-down; }
+    Mod+Ctrl+K { move-window-up; }
+    Mod+Ctrl+L { move-column-right; }
+
+    Mod+G            { focus-column-first; }
+    Mod+Shift+G      { focus-column-last; }
+    Mod+Ctrl+G       { move-column-to-first; }
+    Mod+Ctrl+Shift+G { move-column-to-last; }
+
+    Mod+D { focus-workspace-down; }
+    Mod+U { focus-workspace-up; }
+    Mod+Ctrl+D { move-column-to-workspace-down; }
+    Mod+Ctrl+U { move-column-to-workspace-up; }
+
+    // Mod+Ctrl+Shift+D { move-workspace-down; }
+    // Mod+Ctrl+Shift+U { move-workspace-up; }
+
+    Mod+1 { focus-workspace "1"; }
+    Mod+2 { focus-workspace "2"; }
+    Mod+3 { focus-workspace "3"; }
+    Mod+4 { focus-workspace "4"; }
+    Mod+5 { focus-workspace "5"; }
+    Mod+6 { focus-workspace "6"; }
+    Mod+7 { focus-workspace "7"; }
+    Mod+8 { focus-workspace "8"; }
+    Mod+9 { focus-workspace "9"; }
+    Mod+0 { focus-workspace "0"; }
+    Mod+Ctrl+1 { move-column-to-workspace "1"; }
+    Mod+Ctrl+2 { move-column-to-workspace "2"; }
+    Mod+Ctrl+3 { move-column-to-workspace "3"; }
+    Mod+Ctrl+4 { move-column-to-workspace "4"; }
+    Mod+Ctrl+5 { move-column-to-workspace "5"; }
+    Mod+Ctrl+6 { move-column-to-workspace "6"; }
+    Mod+Ctrl+7 { move-column-to-workspace "7"; }
+    Mod+Ctrl+8 { move-column-to-workspace "8"; }
+    Mod+Ctrl+9 { move-column-to-workspace "9"; }
+    Mod+Ctrl+0 { move-column-to-workspace "0"; }
+
+    Mod+Comma  { consume-or-expel-window-left; }
+    Mod+Period { consume-or-expel-window-right; }
+
+    Mod+R       repeat=false { switch-preset-column-width; }
+    Mod+Shift+R repeat=false { switch-preset-window-height; }
+    Mod+Ctrl+R  repeat=false { reset-window-height; }
+    Mod+F       repeat=false { maximize-column; }
+    Mod+Shift+F repeat=false { fullscreen-window; }
+    Mod+C       repeat=false { center-column; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    Mod+Shift+E { quit; }
+}
