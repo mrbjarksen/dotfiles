@@ -29,7 +29,7 @@ const should_compile = (input, output) => {
 
 // Compile TypeScript
 
-const ts_dirs = [`${App.configDir}/structure`, `${App.configDir}/structure/components`, `${App.configDir}/services`]
+const ts_dirs = [`${App.configDir}/structure`, `${App.configDir}/structure/components`, `${App.configDir}/services`, `${App.configDir}/model`]
 const ts = `${ts_dirs[0]}/app.ts`
 const js = `${GLib.getenv('XDG_DATA_HOME')}/ags/config.js`
 

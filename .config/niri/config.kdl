@@ -67,11 +67,17 @@ layout {
     center-focused-column "never"
     always-center-single-column
 
-    default-column-width { proportion 0.66667; }
+    default-column-width { proportion 0.7; }
     preset-column-widths {
-        proportion 0.33333
+        proportion 0.3
         proportion 0.5
-        proportion 0.66667
+        proportion 0.7
+        proportion 1.0
+    }
+    preset-window-heights {
+        proportion 0.3
+        proportion 0.5
+        proportion 0.7
         proportion 1.0
     }
 
@@ -82,10 +88,10 @@ layout {
         inactive-color "#292e42"
     }
 
-    gaps 6
+    gaps 10
     struts {
-        left 4; right 4
-        top 34; bottom 34
+        left 0; right 0
+        top 30; bottom 30
     }
 }
 

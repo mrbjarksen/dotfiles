@@ -1,13 +1,12 @@
 import Common from 'structure/common'
-const hyprland = await Service.import('hyprland')
+const hyprland = await Service.import('hyprland').catch(_ => undefined)
 
-const keyboard = await hyprland.messageAsync('j/devices')
+const keyboard = await hyprland?.messageAsync('j/devices')
     .then(json => JSON.parse(json).keyboards.find(({ name }) =>
         name === 'at-translated-set-2-keyboard'
     ))
-    .catch(_ => undefined)
 
-const layouts = keyboard == undefined ? [] : keyboard.layout.split(',')
+const layouts = keyboard == null ? [] : keyboard.layout.split(',')
 
 const abbreviate = async (keymap: string): Promise<string | undefined> =>
     Utils.execAsync(['grep', '-e', keymap, '/usr/share/X11/xkb/rules/base.lst'])
@@ -23,7 +22,7 @@ const setActive = (abbr: string | undefined) => active.setValue({
 
 if (keyboard != undefined) abbreviate(keyboard.active_keymap).then(setActive)
 
-hyprland.connect('keyboard-layout', (_, keyboard, layoutname) => {
+hyprland?.connect('keyboard-layout', (_, keyboard, layoutname) => {
     if (keyboard === 'at-translated-set-2-keyboard')
         abbreviate(layoutname).then(setActive)
 })
@@ -45,7 +44,7 @@ const keymaps = layouts.map((label: string, index: number) =>
                 index == current ? ['content'] : ['content', 'inactive']
             ),
             onClicked: () =>
-                hyprland.messageAsync(`switchxkblayout at-translated-set-2-keyboard ${index}`),
+                hyprland?.messageAsync(`switchxkblayout at-translated-set-2-keyboard ${index}`),
             child: Widget.Label(label.toUpperCase())
         })
     })
