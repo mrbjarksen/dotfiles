@@ -17,22 +17,30 @@
     // }
 }
 
+.component-group {
+    $padding: 5px;
+    margin: calc(10px - $padding);
+    padding: $padding;
+    background-color: rgba(theme.$empty, 100%);
+    border-radius: calc(3px + $padding);
+}
+
 @each $name, $color in theme.$colors {
-    .#{$name}:not(.disabled):not(.inactive) {
-        background-color: mix($color, theme.$bg, 10%);
+    .#{$name}:not(.disabled):not(.inactive):not(.power-button) {
+        background-color: rgba($color, 10%);
         color: $color;
-        .icon {
+        .icon, .header {
             background-color: $color;
-            color: mix($color, theme.$bg, 10%);
+            color: mix($color, theme.$empty, 10%);
         }
         button:hover:not(:active):not(.not-button) {
-            background-color: mix($color, theme.$bg, 20%);
-            .icon {
-                background-color: mix($color, theme.$bg, 80%);
+            background-color: rgba($color, 10%);
+            .icon, .header {
+                background-color: rgba($color, 65%);
             }
         }
         .inactive {
-            color: mix($color, theme.$bg, 50%);
+            color: mix($color, theme.$empty, 50%);
         }
     }
     .#{$name}:not(.disabled) {
@@ -41,33 +49,47 @@
         }
     }
     .#{$name}.inactive {
-    background-color: theme.$bg;
+        background-color: rgba($color, 5%);
         color: $color;
         button:hover:not(:active):not(.not-button) {
-            background-color: mix($color, theme.$bg, 10%);
+            background-color: rgba($color, 10%);
         }
         .inactive {
-            color: mix($color, theme.$bg, 50%);
+            color: mix($color, theme.$empty, 50%);
         }
     }
-    .#{$name}.disabled button:hover:not(:active):not(.not-button) {
-        background-color: mix($color, theme.$bg, 10%);
-    }
-    .power button.#{$name}:not(:hover) .icon, .power button.#{$name}:active .icon {
-        background-color: theme.$bg;
+    .#{$name}.power-button {
+        background-color: rgba($color, 0%);
         color: $color;
+        &:hover:not(:active) {
+            background-color: $color;
+            color: mix($color, theme.$empty, 10%);
+        }
+    }
+}
+
+.disabled {
+    background-color: rgba(theme.$disabled, 5%);
+    color: theme.$disabled;
+    highlight {
+        background-color: theme.$disabled;
+    }
+    button:hover:not(:active):not(.not-button) {
+        background-color: rgba(theme.$disabled, 10%);
     }
 }
 
 .power {
-    background-color: theme.$bg;
-}
-
-.disabled {
-    background-color: theme.$bg;
-    color: theme.$disabled;
-    highlight {
-        background-color: theme.$disabled;
+    &:hover {
+        background: linear-gradient(to right,
+            rgba(map.get(theme.$colors, "red"), 10%) percentage(10 / 108),
+            rgba(map.get(theme.$colors, "yellow"), 10%) percentage(32 / 108),
+            rgba(map.get(theme.$colors, "green"), 10%) percentage(54 / 108),
+            rgba(map.get(theme.$colors, "blue"), 10%) percentage(76 / 108),
+            rgba(map.get(theme.$colors, "magenta"), 10%) percentage(98 / 108));
+    }
+    &:not(:hover) {
+        background-color: rgba(map.get(theme.$colors, "magenta"), 5%);
     }
 }
 
@@ -95,7 +117,7 @@
     padding: 0px 5px;
 }
 
-.workspace .title, .bluetooth-alias {
+.window-title, .bluetooth-alias {
     font-size: 11px;
     padding-left: 5px;
 }
@@ -112,26 +134,6 @@
     }
 }
 
-// .workspace {
-//     button:hover:not(:active) {
-//         background-color: map.get($hover, "normal")
-//     }
-//     &.active {
-//         background-color: map.get($background, "normal");
-//         color: map.get($accent, "normal");
-//         .header, .header:hover:not(:active) {
-//             background-color: map.get($accent, "normal");
-//             color: map.get($background, "normal");
-//         }
-//     }
-//     &:not(.active) {
-//         background-color: map.get($background, "dark");
-//         color: map.get($inactive, "dark");
-//         .header:hover:not(:active), button:hover:not(:active) {
-//             background-color: map.get($background, "normal");
-//         }
-//     }
-// }
 //
 // .todolist {
 //     padding: 10px 5px 0 12px;

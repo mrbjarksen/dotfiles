@@ -8,7 +8,7 @@ const NIRI_SOCKET = GLib.getenv('NIRI_SOCKET');
 
 type KeyOfUnion<T> = T extends T ? keyof T: never;
 
-export class Output extends Service {
+export class OutputService extends Service {
     static {
         Service.register(this, {}, {
             'name': ['string', 'r'],
@@ -56,7 +56,7 @@ export class Output extends Service {
     }
 }
 
-export class Workspace extends Service {
+export class WorkspaceService extends Service {
     static {
         Service.register(this, {}, {
             'id': ['int', 'r'],
@@ -119,7 +119,7 @@ export class Workspace extends Service {
     }
 }
 
-export class Window extends Service {
+export class WindowService extends Service {
     static {
         Service.register(this, {}, {
             'id': ['int', 'r'],
@@ -164,7 +164,7 @@ export class Window extends Service {
     }
 }
 
-export class KeyboardLayouts extends Service {
+export class KeyboardLayoutsService extends Service {
     static {
         Service.register(this, {}, {
             'names': ['jsobject', 'r'],
@@ -208,29 +208,19 @@ export class Niri extends Service {
         Service.register(this, {
             'event': ['string', 'jsobject'],
         }, {
-            //'focused-output': ['string', 'rw'],
-            //'focused-workspace': ['int', 'rw'],
-            //'focused-window': ['int', 'rw'],
-            //'active-workspaces': ['jsobject', 'r'],
-            //'outputs': ['jsobject', 'r'],
             'workspaces': ['jsobject', 'r'],
             'windows': ['jsobject', 'r'],
             'keyboard-layouts': ['jsobject', 'r'],
         });
     }
 
-    //#focused_output: string | null = null;
-    //#focused_workspace: number | null = null;
-    //#focused_window: number | null = null;
-    //
-    //#active_workspaces: Map<string, number> = new Map();
-    //#active_windows: Map<number, number> = new Map();
+    #workspaces: Map<number, WorkspaceService> = new Map();
+    #windows: Map<number, WindowService> = new Map();
 
-    //#outputs: Map<string, Output> = new Map();
-    #workspaces: Map<number, Workspace> = new Map();
-    #windows: Map<number, Window> = new Map();
-
-    #keyboardLayouts: KeyboardLayouts | null = null;
+    #keyboardLayouts = new KeyboardLayoutsService({
+        names: [],
+        current_idx: 0,
+    });
 
     #decoder = new TextDecoder();
     #encoder = new TextEncoder();
@@ -238,17 +228,10 @@ export class Niri extends Service {
     #socketAddress = new Gio.UnixSocketAddress({ path: NIRI_SOCKET });
     #eventStream: Gio.DataInputStream | null = null;
 
-    //get focused_output() { return this.#focused_output; }
-    //get focused_workspace() { return this.#focused_workspace; }
-    //get focused_window() { return this.#focused_window; }
-    //
-    //get active_workspaces() { return this.#active_workspaces; }
-
-    //get outputs() { return Array.from(this.#outputs.values()); }
-    get workspaces() { return Array.from(this.#workspaces.values()); }
+    get workspaces() { return Array.from(this.#workspaces.values()).sort((a, b) => a.idx - b.idx); }
     get windows() { return Array.from(this.#windows.values()); }
+    get keyboardLayouts() { return this.#keyboardLayouts; }
 
-    //readonly getOutput = (name: string) => this.#outputs.get(name);
     readonly getWorkspace = (id: number) => this.#workspaces.get(id);
     readonly getWindow = (id: number) => this.#windows.get(id);
 
@@ -260,14 +243,15 @@ export class Niri extends Service {
 
         super();
 
-        this.request('EventStream');
+        this.request('EventStream')
+            .then(() => {
+                if (this.#eventStream === null) {
+                    console.error('could not receive event stream')
+                    return;
+                }
+                this.#watchEventStream(this.#eventStream);
+            });
 
-        if (this.#eventStream === null) {
-            console.error('could not receive event stream')
-            return;
-        }
-
-        this.#watchEventStream(this.#eventStream);
     }
 
     #connection() {
@@ -278,17 +262,23 @@ export class Niri extends Service {
         stream.read_line_async(0, null, (stream, result) => {
             if (!stream) return console.error('Error reading niri socket');
 
-            const [line] = stream.read_line_finish(result);
-            if (line === null) return console.error('could not read from stream');
-
-            const event = JSON.parse(this.#decoder.decode(line))
-            this.#onEvent(event);
+            try {
+                const [line] = stream.read_line_finish(result);
+                if (line === null) throw 'could not read from stream';
+                const event = JSON.parse(this.#decoder.decode(line)) as N.Event;
+                this.#onEvent(event);
+            }
+            catch (e) {
+                console.error(`error in event handler: ${e}`)
+            }
 
             this.#watchEventStream(stream);
         });
     }
 
     #socketStream(message: string) {
+        if (!message.endsWith('\n')) message += '\n';
+
         const connection = this.#connection();
 
         connection.get_output_stream()
@@ -302,14 +292,17 @@ export class Niri extends Service {
         return [connection, stream] as const;
     }
 
-    readonly request = (request: N.Request): N.Response | null => {
+    readonly request = async (request: N.Request): Promise<N.Response | null> => {
         const message = JSON.stringify(request);
         const [connection, stream] = this.#socketStream(message);
         try {
-            const [response] = stream.read_line(null);
+            const result = await stream.read_upto_async('\n', -1, 0, null);
+            stream.read_byte(null);
+
+            const [response] = result as unknown as [string, number];
             if (response === null) throw 'could not read response from stream';
 
-            const reply = JSON.parse(this.#decoder.decode(response)) as N.Reply;
+            const reply = JSON.parse(response) as N.Reply;
             if ('Err' in reply) throw `error handling request ${message}: ${reply.Err}`;
 
             if (request === 'EventStream') this.#eventStream = stream;
@@ -324,61 +317,6 @@ export class Niri extends Service {
         return null;
     };
 
-    readonly requestAsync = async (request: Exclude<N.Request, 'EventStream'>): Promise<N.Response | null> => {
-        const writtenRequest = JSON.stringify(request);
-        const [connection, stream] = this.#socketStream(writtenRequest);
-        try {
-            const result = await stream.read_upto_async('\x04', -1, 0, null);
-            const [response] = result as unknown as [string, number];
-            if (response === null) throw 'could not read response from stream';
-
-            const reply = JSON.parse(response) as N.Reply;
-            if ('Err' in reply) throw `error handling request ${writtenRequest}: ${reply.Err}`;
-
-            return reply.Ok;
-        }
-        catch (error) {
-            logError(error);
-        }
-        finally {
-            connection.close(null);
-        }
-        return null;
-    };
-
-    //#updateOutputs(outputs: { [name: string]: N.Output }, notify = true) {
-    //    this.#outputs.clear();
-    //    for (const name in outputs)
-    //        this.#outputs.set(name, new Output(outputs[name]));
-    //    if (notify) this.notify('outputs');
-    //}
-    //
-    //#updateWorkspaces(workspaces: N.Workspace[], notify = true) {
-    //    this.#workspaces.clear();
-    //    //this.#active_workspaces.clear();
-    //    //this.#active_windows.clear();
-    //    for (const workspace of workspaces) {
-    //        this.#workspaces.set(workspace.id, new Workspace(workspace));
-    //        //if (workspace.is_active && workspace.output != null) {
-    //        //    this.#active_workspaces.set(workspace.output, workspace.id);
-    //        //}
-    //        //if (workspace.is_focused) {
-    //        //    this.#focused_workspace = workspace.id;
-    //        //    if (workspace.output) this.#focused_output = workspace.output;
-    //        //}
-    //    }
-    //    if (notify) this.notify('workspaces');
-    //}
-    //
-    //#updateWindows(windows: N.Window[], notify = true) {
-    //    this.#windows.clear();
-    //    for (const window of windows) {
-    //        this.#windows.set(window.id, new Window(window));
-    //        //if (window.is_focused) this.#focused_window = window.id;
-    //    }
-    //    if (notify) this.notify('workspaces');
-    //}
-
     async #onEvent(event: N.Event) {
         const keys = Object.keys(event || {})
         if (keys.length !== 1) return;
@@ -392,11 +330,11 @@ export class Niri extends Service {
                     for (const workspace of args.workspaces) {
                         const oldWorkspace = this.#workspaces.get(workspace.id);
                         if (oldWorkspace === undefined)
-                            this.#workspaces.set(workspace.id, new Workspace(workspace));
+                            this.#workspaces.set(workspace.id, new WorkspaceService(workspace));
                         else
                             oldWorkspace.update(workspace);
                     }
-                    this.changed('workspace');
+                    this.changed('workspaces');
                     break;
 
                 case 'WorkspaceActivated':
@@ -420,26 +358,27 @@ export class Niri extends Service {
                     break;
 
                 case 'WindowsChanged':
-                    for (const window of args.windows) {
-                        const oldWindow = this.#windows.get(window.id);
+                    for (const win of args.windows) {
+                        const oldWindow = this.#windows.get(win.id);
                         if (oldWindow === undefined)
-                            this.#windows.set(window.id, new Window(window));
+                            this.#windows.set(win.id, new WindowService(win));
                         else
-                            oldWindow.update(window);
+                            oldWindow.update(win);
                     }
                     this.changed('windows');
                     break;
 
                 case 'WindowOpenedOrChanged':
-                    const window = this.#windows.get(args.window.id);
-                    if (window === undefined)
-                        this.#windows.set(args.window.id, args.window);
-                    else
-                        window.update(args.window);
+                    const win = this.#windows.get(args.window.id);
+                    if (win === undefined) {
+                        this.#windows.set(args.window.id, new WindowService(args.window));
+                        this.changed('windows');
+                    }
+                    else win.update(args.window);
                     if (args.window.is_focused)
-                        for (const [id, window] of this.#windows)
+                        for (const [id, w] of this.#windows)
                             if (id !== args.window.id)
-                                window.is_focused = false;
+                                w.is_focused = false;
                     break;
 
                 case 'WindowClosed':
@@ -449,20 +388,17 @@ export class Niri extends Service {
                     break;
 
                 case 'WindowFocusChanged':
-                    for (const [id, window] of this.#windows)
-                        window.is_focused = id === args.id;
+                    for (const [id, win] of this.#windows)
+                        win.is_focused = id === args.id;
                     break;
 
                 case 'KeyboardLayoutsChanged':
-                    if (this.#keyboardLayouts === null)
-                        this.#keyboardLayouts = new KeyboardLayouts(args.keyboard_layouts);
-                    else
-                        this.#keyboardLayouts.update(args.keyboard_layouts)
+                    this.#keyboardLayouts.update(args.keyboard_layouts)
                     this.changed('keyboard-layouts');
                     break;
 
                 case 'KeyboardLayoutSwitched':
-                    if (this.#keyboardLayouts === null)
+                    if (this.#keyboardLayouts.names.length === 0)
                         throw `error handling event 'KeyboardLayoutSwitched': keyboard layouts have not been set`
                     this.#keyboardLayouts.current_idx = args.idx;
                     break;
@@ -474,7 +410,6 @@ export class Niri extends Service {
         }
 
         this.emit('event', eventType, args);
-        this.emit('changed');
     }
 }
 

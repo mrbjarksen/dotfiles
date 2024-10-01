@@ -20,8 +20,8 @@ export default {
             ...icons
         })
     },
-    Inner: (child: string) => Widget.Label({
+    Inner: (label: string) => Widget.Label({
         className: 'inner',
-        label: child
+        label
     }),
 }

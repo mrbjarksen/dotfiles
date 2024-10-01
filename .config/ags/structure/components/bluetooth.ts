@@ -48,7 +48,7 @@ bluetooth.connect('device-removed', (_, address) => {
 
 const Device = (device: BluetoothDevice, deviceHover: typeof hover) => Widget.Button({
     setup: self => self
-        .on('enter-notify-event', () => deviceHover.setValue(Utils.timeout(1000, () => deviceHover.setValue(true))))
+        .on('enter-notify-event', () => deviceHover.setValue(Utils.timeout(500, () => deviceHover.setValue(true))))
         .on('leave-notify-event', () => {
             if (typeof deviceHover.value === 'number') GLib.source_remove(deviceHover.value)
             deviceHover.setValue(false)
@@ -112,7 +112,7 @@ export const BluetoothComponent = Widget.EventBox({
             if (typeof hover.value === 'number') GLib.source_remove(hover.value)
             hover.setValue(true)
         })
-        .on('leave-notify-event', () => hover.setValue(Utils.timeout(2000, () => hover.setValue(false)))),
+        .on('leave-notify-event', () => hover.setValue(Utils.timeout(1000, () => hover.setValue(false)))),
     classNames: Utils.merge([bluetooth.bind('enabled'), bluetooth.bind('connected_devices')],
         (enabled, connected) => !enabled ? ['normal', 'disabled'] : connected.length == 0 ? ['normal', 'inactive'] : ['normal']
     ),

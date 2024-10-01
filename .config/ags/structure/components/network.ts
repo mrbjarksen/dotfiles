@@ -8,7 +8,7 @@ const WifiIcon = Widget.Button({
     onClicked: network.toggleWifi,
     child: Common.Icons({
         setup: self => self.hook(network.wifi, () => {
-            if (!network.wifi.enabled) self.shown = 'disabled'
+            if (!network.wifi.enabled) self.shown = 'none'
             else if (network.connectivity === 'limited' || network.connectivity === 'portal') self.shown = 'alert'
             else if (network.wifi.internet === 'disconnected') self.shown = 'none'
             else if (network.wifi.internet === 'connecting') {
@@ -98,14 +98,6 @@ export const NetworkComponent = Widget.EventBox({
     setup: self => self
         .on('enter-notify-event', () => hover.setValue(true))
         .on('leave-notify-event', () => hover.setValue(false)),
-    classNames: network.bind('connectivity').as(connectivity => {
-        switch (connectivity) {
-            case 'full': return ['normal']
-            case 'limited': return ['normal', 'inactive']
-            case 'portal': return ['yellow']
-            default: return ['normal', 'disabled']
-        }
-    }),
     child: Widget.Box([
         Widget.Stack({
             homogeneous: false,

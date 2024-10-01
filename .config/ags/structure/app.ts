@@ -6,23 +6,33 @@ const upperBar = () => Widget.Window({
     anchor: ['top', 'left', 'right'],
     exclusivity: 'ignore',
     layer: 'overlay',
-    margins: [10, 10, 10, 10],
-    child: Widget.Box({
-        hpack: 'end',
-        spacing: 6,
-        children: [
-            Component.Network,
-            Component.Bluetooth,
-            Component.Volume,
-            Component.Microphone,
-            Component.Backlight,
-            Component.Battery,
-            Component.Keyboard,
-            Component.Weather,
-            Component.Date,
-            Component.Time,
-            Component.Power,
-        ]
+    child: Widget.CenterBox({
+        startWidget: Widget.Box({
+            className: 'component-group',
+            hpack: 'start',
+            spacing: 6,
+            children: [
+                Component.Workspaces,
+            ]
+        }),
+        endWidget: Widget.Box({
+            className: 'component-group',
+            hpack: 'end',
+            spacing: 6,
+            children: [
+                Component.Network,
+                Component.Bluetooth,
+                Component.Volume,
+                Component.Microphone,
+                Component.Backlight,
+                Component.Battery,
+                Component.Keyboard,
+                Component.Weather,
+                Component.Date,
+                Component.Time,
+                Component.Power,
+            ]
+        })
     })
 })
 
@@ -32,8 +42,8 @@ const lowerBar = () => Widget.Window({
     anchor: ['bottom', 'left', 'right'],
     exclusivity: 'ignore',
     layer: 'overlay',
-    margins: [10, 10, 10, 10],
     child: Widget.Box({
+        className: 'component-group',
         hpack: 'end',
         spacing: 6,
         children: [
