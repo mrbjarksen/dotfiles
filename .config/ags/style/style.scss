@@ -46,6 +46,9 @@
         button:hover:not(:active):not(.not-button) {
             background-color: mix($color, theme.$bg, 10%);
         }
+        .inactive {
+            color: mix($color, theme.$bg, 50%);
+        }
     }
     .#{$name}.disabled button:hover:not(:active):not(.not-button) {
         background-color: mix($color, theme.$bg, 10%);

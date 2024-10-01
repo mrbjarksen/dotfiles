@@ -1,17 +1,39 @@
-export type ConfiguredMode = {
+export type Output = {
+    name: string,
+    make: string,
+    model: string,
+    serial: string | null,
+    physical_size: [number, number] | null,
+    modes: Mode[],
+    current_mode: number | null,
+    vrr_supported: boolean,
+    vrr_enabled: boolean,
+    logical: LogicalOutput | null,
+};
+
+export type Workspace = {
+    id: number,
+    idx: number,
+    name: string | null,
+    output: string | null,
+    is_active: boolean,
+    is_focused: boolean,
+    active_window_id: number | null,
+};
+
+export type Window = {
+    id: number,
+    title: string | null,
+    app_id: string | null,
+    workspace_id: number | null,
+    is_focused: boolean,
+};
+
+export type Mode = {
     width: number,
     height: number,
-    refresh: number | null,
-};
-
-export type ConfiguredPosition = {
-    x: number,
-    y: number,
-};
-
-export type KeyboardLayouts = {
-    names: string[],
-    current_idx: number,
+    refresh_rate: number,
+    is_preferred: boolean,
 };
 
 export type LogicalOutput = {
@@ -23,11 +45,15 @@ export type LogicalOutput = {
     transform: Transform,
 };
 
-export type Mode = {
+export type ConfiguredMode = {
     width: number,
     height: number,
-    refresh_rate: number,
-    is_preferred: boolean,
+    refresh: number | null,
+};
+
+export type ConfiguredPosition = {
+    x: number,
+    y: number,
 };
 
 export type SizeChange
@@ -68,40 +94,14 @@ export type OutputAction
 
 export type OutputConfigChanged = 'Applied' | 'OutputWasMissing';
 
-export type Output = {
-    name: string,
-    make: string,
-    model: string,
-    serial: string | null,
-    physical_size: [number, number] | null,
-    modes: Mode[],
-    current_mode: number | null,
-    vrr_supported: boolean,
-    vrr_enabled: boolean,
-    logical: LogicalOutput | null,
-};
-
-export type Workspace = {
-    id: number,
-    idx: number,
-    name: string | null,
-    output: string | null,
-    is_active: boolean,
-    is_focused: boolean,
-    active_window_id: number | null,
-};
-
 export type WorkspaceReferenceArg
     = { Id: number }
     | { Index: number }
     | { Name: string };
 
-export type Window = {
-    id: number,
-    title: string | null,
-    app_id: string | null,
-    workspace_id: number | null,
-    is_focused: boolean,
+export type KeyboardLayouts = {
+    names: string[],
+    current_idx: number,
 };
 
 export type Request
