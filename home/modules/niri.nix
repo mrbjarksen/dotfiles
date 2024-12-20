@@ -100,7 +100,17 @@
     };
 
     window-rules = [
-      { geometry-corner-radius = 3; clip-to-geometry = true; }
+      {
+        geometry-corner-radius = let
+          corner-radius = 3;
+        in {
+          bottom-left = corner-radius;
+          bottom-right = corner-radius;
+          top-left = corner-radius;
+          top-right = corner-radius;
+        };
+        clip-to-geometry = true;
+      }
       { match.app-id = "firefox"; default-column-width.proportion = 1.0; }
     ];
 
