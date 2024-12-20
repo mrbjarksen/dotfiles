@@ -19,5 +19,5 @@
     music = "${config.home.homeDirectory}/media/audio";
   };
 
-  systemd.user.tmpfiles.rules = [ "e ${config.xdg.userDirs.downloads} - - - - 7d -" ];
+  systemd.user.tmpfiles.rules = [ "e ${config.xdg.userDirs.download} - - - - 7d -" ];
 }
