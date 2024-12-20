@@ -12,7 +12,7 @@
   };
   nix.optimise = {
     automatic = true;
-    dates = "06:00";
+    dates = [ "06:00" ];
   };
 
   nix.registry.nixpkgs.flake = pkgs;
