@@ -3,7 +3,7 @@
 {
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false;
-  networking.useDHCP = true;
+  # networking.useDHCP = true;
 
   # networking.wireguard.enable = true;
 
