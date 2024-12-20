@@ -1,9 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs, ... }:
 
 {
   nix.package = pkgs.nix;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.channel.enable = false;
 
   nix.gc = {
     automatic = true;
@@ -15,7 +14,9 @@
     dates = [ "06:00" ];
   };
 
-  nix.registry.nixpkgs.flake = pkgs;
+  nix.registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+
   nix.registry."dotfiles" = {
     from = {
       type = "indirect";
@@ -27,6 +28,4 @@
       repo = "dotfiles";
     };
   };
-
-  environment.etc."nix/inputs/nixpkgs".source = "${pkgs}";
 }

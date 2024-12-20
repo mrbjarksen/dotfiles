@@ -3,8 +3,8 @@
 {
   services.libinput.enable = true;
   hardware.logitech = {
-    enable = true;
-    enableGraphical = true;
+    wireless.enable = true;
+    wireless.enableGraphical = true;
     lcd.enable = true;
   };
 }
