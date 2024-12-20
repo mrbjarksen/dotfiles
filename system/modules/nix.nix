@@ -1,6 +1,8 @@
 { config, lib, pkgs, inputs, ... }:
 
-{
+let
+  inputRegistries = lib.mapAttrs (_: value: { flake = value; }) inputs;
+in {
   nix.package = pkgs.nix;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -14,7 +16,7 @@
     dates = [ "06:00" ];
   };
 
-  nix.registry = (lib.mapAttrs (_: value: { flake = value; }) inputs) // {
+  nix.registry = inputRegistries // {
     dotfiles = {
       from = {
         type = "indirect";
@@ -28,5 +30,5 @@
     };
   };
 
-  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") inputRegistries;
 }
