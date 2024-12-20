@@ -111,7 +111,10 @@
         };
         clip-to-geometry = true;
       }
-      { match.app-id = "firefox"; default-column-width.proportion = 1.0; }
+      {
+        matches = [ { app-id = "firefox"; } ];
+        default-column-width.proportion = 1.0;
+      }
     ];
 
     animations = {};
