@@ -20,8 +20,8 @@
     };
 
     cursor = {
-      xcursor-theme = config.home.pointerCursor.name;
-      xcursor-size = config.home.pointerCursor.size;
+      theme = config.home.pointerCursor.name;
+      size = config.home.pointerCursor.size;
       hide-when-typing = true;
     };
 
