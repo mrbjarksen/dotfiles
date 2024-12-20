@@ -21,7 +21,7 @@
 
     cursor = {
       xcursor-theme = config.home.pointerCursor.name;
-      xcursor-size = config.home.pointerCursos.size;
+      xcursor-size = config.home.pointerCursor.size;
       hide-when-typing = true;
     };
 
