@@ -117,7 +117,7 @@
     workspaces."9" = {};
     workspaces."0" = {};
 
-    binds = with lib.niri.actions; let
+    binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
       noRepeat = action: { repeat = false; inherit action; };
     in {
