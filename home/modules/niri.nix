@@ -102,7 +102,7 @@
     window-rules = [
       {
         geometry-corner-radius = let
-          corner-radius = 3;
+          corner-radius = 3.0;
         in {
           bottom-left = corner-radius;
           bottom-right = corner-radius;
