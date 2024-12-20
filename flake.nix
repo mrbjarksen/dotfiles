@@ -12,35 +12,35 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri = {
-      url = github:sodiboo/niri-flake;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    niri.url = github:sodiboo/niri-flake;
   };
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      common = [
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.mrbjarksen = import ./home/mrbjarksen.nix;
+        }
+        niri.nixosModules.niri
+        { nixpkgs.overlays = [ niri.overlays.niri ]; programs.niri.enable = true; }
+      ];
     in {
       nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [
+        modules = common ++ [
           nixos-hardware.nixosModules.dell-xps-17-9700-nvidia
-          disko.nixosModules.disko
           ./system/neumann.nix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.mrbjarksen = import ./home/mrbjarksen.nix;
-          }
-          niri.nixosModules.niri
         ];
       };
 
       nixosConfigurations.galois = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [
+        modules = common ++ [
           nixpkgs.nixosModules.notDetected
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-cpu-amd-pstate
@@ -48,14 +48,7 @@
           nixos-hardware.nixosModules.common-gpu-amd
           nixos-hardware.nixosModules.common-pc
           nixos-hardware.nixosModules.common-pc-ssd
-          disko.nixosModules.disko
           ./system/galois.nix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.mrbjarksen = import ./home/mrbjarksen.nix;
-          }
-          niri.nixosModules.niri
         ];
       };
     };
