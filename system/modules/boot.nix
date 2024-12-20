@@ -8,7 +8,7 @@
     enable = true;
     device = "nodev";
     efiSupport = true;
-    fsIdentifier = "label";
+    # fsIdentifier = "label";
     configurationLimit = 10;
     # ... theming ...
   };

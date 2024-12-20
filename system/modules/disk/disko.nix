@@ -6,7 +6,7 @@
       type = "gpt";
       partitions = {
         ESP = {
-          label = "NIXOS_BOOT";
+          # label = "NIXOS_BOOT";
           size = "1G";
           type = "EF00";
           content = {
