@@ -15,13 +15,13 @@
       page-cache-size = 20;
       page-thumbnail-size = 67108864; # 64M
       
-      adjust-open = "width";
-      guioptions = "";
+      # adjust-open = lib.mkDefault "width";
+      # guioptions = lib.mkDefault "";
 
       ### THEME ###
 
-      adjust-open = "best-fit";
-      guioptions = "s";
+      adjust-open = lib.mkForce "best-fit";
+      guioptions = lib.mkForce "s";
 
       page-padding = 2;
 
