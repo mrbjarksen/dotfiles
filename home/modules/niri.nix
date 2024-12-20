@@ -70,7 +70,7 @@
       center-focused-column = "never";
       always-center-single-column = true;
 
-      default-column-width = { proportion = 0.7; };
+      default-column-width.proportion = 0.7;
       preset-column-widths = [
         { proportion = 0.3; }
         { proportion = 0.5; }
@@ -86,9 +86,10 @@
 
       focus-ring.enable = false;
       border = {
+        enable = true;
         width = 1;
-        active-color = "#7aa2f7";
-        inactive-color = "#292e42";
+        active = "#7aa2f7";
+        inactive = "#292e42";
       };
 
       gaps = 10;
@@ -100,7 +101,7 @@
 
     window-rules = [
       { geometry-corner-radius = 3; clip-to-geometry = true; }
-      { match.app-id = "firefox"; default-column-width = { proportion = 1.0; }; }
+      { match.app-id = "firefox"; default-column-width.proportion = 1.0; }
     ];
 
     animations = {};
