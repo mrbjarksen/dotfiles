@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   nix.package = pkgs.nix;
