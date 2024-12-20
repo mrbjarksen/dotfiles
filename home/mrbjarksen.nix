@@ -3,7 +3,7 @@
 {
   imports = [ ./modules ];
 
-  home.username = "mrbjarken";
+  home.username = "mrbjarksen";
   home.homeDirectory = "/home/mrbjarksen";
   home.stateVersion = "24.11";
 
