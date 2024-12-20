@@ -11,7 +11,7 @@
     desktop = "${config.home.homeDirectory}/misc/desktop";
     templates = "${config.home.homeDirectory}/misc/templates";
     publicShare = "${config.home.homeDirectory}/misc/public";
-    downloads = "${config.home.homeDirectory}/temp";
+    download = "${config.home.homeDirectory}/temp";
 
     documents = "${config.home.homeDirectory}/media/documents";
     pictures = "${config.home.homeDirectory}/media/images";
