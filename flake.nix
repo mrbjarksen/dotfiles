@@ -32,6 +32,7 @@
     in {
       nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { inherit inputs; };
         modules = common ++ [
           nixos-hardware.nixosModules.dell-xps-17-9700-nvidia
           ./system/neumann.nix
@@ -40,6 +41,7 @@
 
       nixosConfigurations.galois = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { inherit inputs; };
         modules = common ++ [
           nixpkgs.nixosModules.notDetected
           nixos-hardware.nixosModules.common-cpu-amd
