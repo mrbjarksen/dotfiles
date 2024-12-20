@@ -13,10 +13,10 @@
     # ... theming ...
   };
 
-  boot.plymouth = {
-    enable = true;
-    # ... theming ...
-  };
+  # boot.plymouth = {
+  #   enable = true;
+  #   # ... theming ...
+  # };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
