@@ -18,7 +18,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, home-manager, niri }@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
