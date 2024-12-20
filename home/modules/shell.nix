@@ -29,9 +29,9 @@
   };
 
   home.shellAliases = {
-    ls = lib.mkIf config.eza.enable "eza";
-    ll = if config.eza.enable then "eza -la --icons" else "ls -Flah";
-    tree = lib.mkIf config.eza.enable "eza -la --icons --tree";
+    ls = lib.mkIf config.programs.eza.enable "eza";
+    ll = if config.programs.eza.enable then "eza -la --icons" else "ls -Flah";
+    tree = lib.mkIf config.programs.eza.enable "eza -la --icons --tree";
   };
 
   home.sessionVariables = {
