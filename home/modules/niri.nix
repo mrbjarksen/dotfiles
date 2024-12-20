@@ -88,8 +88,8 @@
       border = {
         enable = true;
         width = 1;
-        active = "#7aa2f7";
-        inactive = "#292e42";
+        active.color = "#7aa2f7";
+        inactive.color = "#292e42";
       };
 
       gaps = 10;
