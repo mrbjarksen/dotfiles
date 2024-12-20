@@ -35,7 +35,7 @@
   };
 
   home.sessionVariables = {
-    TERM = "xterm-kitty";
+    TERM = "kitty";
     EDITOR = "nvim";
     VISUAL = "nvim";
     BROWSER = "firefox";
