@@ -14,18 +14,19 @@
     dates = [ "06:00" ];
   };
 
-  nix.registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
-  nix.registry."dotfiles" = {
-    from = {
-      type = "indirect";
-      id = "dotfiles";
-    };
-    to = {
-      type = "github";
-      owner = "mrbjarksen";
-      repo = "dotfiles";
+  nix.registry = (lib.mapAttrs (_: value: { flake = value; }) inputs) // {
+    dotfiles = {
+      from = {
+        type = "indirect";
+        id = "dotfiles";
+      };
+      to = {
+        type = "github";
+        owner = "mrbjarksen";
+        repo = "dotfiles";
+      };
     };
   };
+
+  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 }
