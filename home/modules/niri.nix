@@ -60,11 +60,11 @@
       workspace-auto-back-and-forth = true;
     };
 
-    output."eDP-1" = {
-      mode = "3840x2400";
-      scale = 2;
-      transform = "normal";
-    };
+    # output."eDP-1" = {
+    #   mode = "3840x2400";
+    #   scale = 2;
+    #   transform = "normal";
+    # };
 
     layout = {
       center-focused-column = "never";
