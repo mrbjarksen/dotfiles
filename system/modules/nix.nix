@@ -28,5 +28,5 @@
     };
   };
 
-  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.flake.outPath}") config.nix.registry;
+  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.outPath}") inputs;
 }
