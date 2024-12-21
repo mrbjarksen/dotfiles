@@ -27,4 +27,8 @@
     powerKey = "suspend-then-hibernate";
     powerKeyLongPress = "suspend-then-hibernate";
   };
+
+  # services.desktopManager.plasma6.enable = true;
+  services.xserver.enable = true;
+  # programs.xwayland.enable = true;
 }

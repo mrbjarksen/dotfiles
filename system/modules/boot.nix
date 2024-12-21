@@ -10,6 +10,7 @@
     efiSupport = true;
     # fsIdentifier = "label";
     configurationLimit = 10;
+    memtest86.enable = true;
     # ... theming ...
   };
 
