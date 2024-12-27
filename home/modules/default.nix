@@ -8,6 +8,7 @@
     ./git.nix
     ./input.nix
     ./kitty.nix
+    ./mangohud.nix
     ./niri.nix
     ./shell.nix
     ./xdg.nix
