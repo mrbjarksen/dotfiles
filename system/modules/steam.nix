@@ -7,9 +7,11 @@
     capSysNice = true;
   };
 
+  environment.systemPackages = with pkgs; [ mangohud ];
   programs.steam = {
     enable = true;
     gamescopeSession.enable = true;
+    gamescopeSession.args = [ "--mangoapp" ];
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -18,6 +20,4 @@
     "steam-unwrapped"
     "steam-run"
   ];
-
-  environment.systemPackages = with pkgs; [ mangohud ];
 }
