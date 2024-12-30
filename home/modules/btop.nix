@@ -16,7 +16,7 @@
     graph_symbol_mem = "default";
     graph_symbol_net = "default";
     graph_symbol_proc = "default";
-    shown_boxes = "proc cpu mem net";
+    shown_boxes = "proc cpu gpu0 mem net";
     update_ms = 2000;
     proc_sorting = "cpu direct";
     proc_reversed = false;
@@ -30,8 +30,8 @@
     proc_filter_kernel = false;
     proc_aggregate = true;
     cpu_graph_upper = "total";
-    cpu_graph_lower = "gpu-totals";
-    show_gpu_info = "Auto";
+    cpu_graph_lower = "total";
+    show_gpu_info = "Off";
     cpu_invert_lower = true;
     cpu_single_graph = false;
     cpu_bottom = false;
@@ -72,7 +72,7 @@
     log_level = "WARNING";
     nvml_measure_pcie_speeds = true;
     gpu_mirror_graph = true;
-    custom_gpu_name0 = "";
+    custom_gpu_name0 = "Radeon RX 7800 XT";
     custom_gpu_name1 = "";
     custom_gpu_name2 = "";
     custom_gpu_name3 = "";
