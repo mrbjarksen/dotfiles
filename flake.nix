@@ -17,8 +17,6 @@
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri }@inputs:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
       common = [
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
@@ -30,7 +28,13 @@
         { nixpkgs.overlays = [ niri.overlays.niri ]; programs.niri.enable = true; }
       ];
     in {
-      nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.neumann = let
+        system = "x86_64-linux";
+        pkgs = import nixpkgs {
+          inherit system;
+          config.rocmSupport = true;
+        };
+      in nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
         modules = common ++ [
@@ -39,14 +43,20 @@
         ];
       };
 
-      nixosConfigurations.galois = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.galois = let
+        system = "x86_64-linux";
+        pkgs = import nixpkgs {
+          inherit system;
+	  config.cudaSupport = true;
+        };
+      in nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
         modules = common ++ [
           nixpkgs.nixosModules.notDetected
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-cpu-amd-pstate
-          nixos-hardware.nixosModules.common-cpu-amd-zenpower
+          # nixos-hardware.nixosModules.common-cpu-amd-zenpower
           nixos-hardware.nixosModules.common-gpu-amd
           nixos-hardware.nixosModules.common-pc
           nixos-hardware.nixosModules.common-pc-ssd

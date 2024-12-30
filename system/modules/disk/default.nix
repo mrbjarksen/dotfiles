@@ -4,10 +4,10 @@
   imports = [ ./disko.nix ];
 
   boot.resumeDevice = "/dev/disk/by-label/NIXOS_ROOT";
+  boot.kernelParams = [ "resume_offset=533760" ];
 
   environment.systemPackages = with pkgs; [ btrfs-progs ];
 
-  services.fstrim.enable = true;
   services.btrfs.autoScrub = {
     enable = true;
     interval = "weekly";

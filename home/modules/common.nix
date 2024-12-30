@@ -4,14 +4,30 @@
   programs.home-manager.enable = true;
   manual.json.enable = true;
 
+  home.packages = [
+    go
+    cargo
+    zig
+    node
+    npm
+    typescript
+    tree-sitter
+  ];
+
   home.language = {
-    base        = "en_US.UTF-8";
+    base = "en_US.UTF-8";
+
     time        = "en_DK.UTF-8";
     collate     = "is_IS.UTF-8";
     monetary    = "is_IS.UTF-8";
     paper       = "is_IS.UTF-8";
     telephone   = "is_IS-UTF-8";
     measurement = "is_IS.UTF-8";
+
+    ctype    = "en_US.UTF-8";
+    messages = "en_US.UTF-8";
+    address  = "en_US.UTF-8";
+    name     = "en_US.UTF-8";
   };
 
   programs.firefox.enable = true; # <-
@@ -36,4 +52,6 @@
       show-files = true;
     };
   };
+
+  programs.nix-index.enable = true;
 }

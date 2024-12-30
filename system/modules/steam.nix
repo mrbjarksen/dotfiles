@@ -8,6 +8,7 @@
   };
 
   environment.systemPackages = with pkgs; [ mangohud ];
+  environment.variables.MANGOHUD_CONFIGFILE = "${config.users.users.mrbjarksen.home}/.config/MangoHud/MangoHud.conf";
   programs.steam = {
     enable = true;
     gamescopeSession.enable = true;
