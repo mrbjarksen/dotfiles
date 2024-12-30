@@ -17,6 +17,8 @@
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri }@inputs:
     let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
       common = [
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
@@ -28,13 +30,7 @@
         { nixpkgs.overlays = [ niri.overlays.niri ]; programs.niri.enable = true; }
       ];
     in {
-      nixosConfigurations.neumann = let
-        system = "x86_64-linux";
-        pkgs = import nixpkgs {
-          inherit system;
-          config.rocmSupport = true;
-        };
-      in nixpkgs.lib.nixosSystem {
+      nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
         modules = common ++ [
@@ -43,13 +39,7 @@
         ];
       };
 
-      nixosConfigurations.galois = let
-        system = "x86_64-linux";
-        pkgs = import nixpkgs {
-          inherit system;
-	  config.cudaSupport = true;
-        };
-      in nixpkgs.lib.nixosSystem {
+      nixosConfigurations.galois = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
         modules = common ++ [

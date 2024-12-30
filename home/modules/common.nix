@@ -4,14 +4,15 @@
   programs.home-manager.enable = true;
   manual.json.enable = true;
 
-  home.packages = [
+  home.packages = with pkgs; [
     go
     cargo
     zig
-    node
-    npm
+    nodejs
     typescript
     tree-sitter
+    ripgrep
+    fzf
   ];
 
   home.language = {

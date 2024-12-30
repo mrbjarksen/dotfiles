@@ -11,6 +11,8 @@
   boot.kernelParams = [ "nvme_core.default_ps_max_latency_us=0" "pcie_aspm=off" "pcie_port_pm=off" ];
 
   hardware.enableRedistributableFirmware = true;
+
+  nixpkgs.config.rocmSupport = true;
   
   # hardware.fancontrol.enable = true;
   # services.gotify.enable = true;

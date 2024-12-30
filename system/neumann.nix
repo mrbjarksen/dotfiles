@@ -7,7 +7,7 @@
   system.stateVersion = "24.11";
   
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
-  boot.kernelPatches = mkForce [];
+  boot.kernelPatches = lib.mkForce [];
 
   hardware.nvidia.prime = {
     offload.enable = lib.mkForce false;
@@ -16,4 +16,9 @@
 
   services.fprintd.enable = true;
   services.upower.enable = true;
+
+  nixpkgs.config = {
+    cudaSupport = true;
+    allowUnfree = true;
+  };
 }
