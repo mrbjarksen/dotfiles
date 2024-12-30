@@ -9,7 +9,7 @@
     LC_COLLATE = "is_IS.UTF-8";
     LC_MONETARY = "is_IS.UTF-8";
     LC_PAPER = "is_IS.UTF-8";
-    LC_TELEPHONE = "is_IS-UTF-8";
+    LC_TELEPHONE = "is_IS.UTF-8";
     LC_MEASUREMENT = "is_IS.UTF-8";
   };
 
