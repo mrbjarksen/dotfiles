@@ -16,6 +16,7 @@ M.insured = {
     julials = false,
     elixirls = true,
     sqls = true,
+    zls = true,
   },
   dap = {},
   linters = {},

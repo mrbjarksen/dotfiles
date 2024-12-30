@@ -12,7 +12,7 @@ const upperBar = () => Widget.Window({
             hpack: 'start',
             spacing: 6,
             children: [
-                Component.Workspaces,
+                Component.Workspaces('eDP-1'),
             ]
         }),
         endWidget: Widget.Box({

@@ -7,7 +7,7 @@ require'nvim-treesitter.configs'.setup {
     'bash', 'c', 'cpp', 'haskell', 'latex', 'lua', 'markdown', 'markdown_inline', 'nix', 'python', 'vim',
     -- Less common
     'html', 'css', 'javascript', 'typescript', 'tsx', 'json', 'json5', 'jsonc', 'hjson', 'jsonnet',
-    'toml', 'yaml', 'dockerfile', 'bibtex', 'java', 'scheme',
+    'toml', 'yaml', 'dockerfile', 'bibtex', 'java', 'scheme', 'rust', 'zig',
     -- Misc
     'awk', 'ebnf', 'elixir', 'fennel', 'http', 'julia', 'llvm', 'make', 'r', 'rst', 'sql',
   },

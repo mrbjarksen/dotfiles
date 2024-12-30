@@ -101,7 +101,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^org\.mozilla\.firefox"#
+    match app-id="firefox"
     default-column-width { proportion 1.0; }
 }
 

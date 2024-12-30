@@ -21,10 +21,15 @@ export class OutputService extends Service {
             'vrr-supported': ['boolean', 'r'],
             'vrr-enabled': ['boolean', 'r'],
             'logical': ['jsobject', 'r'],
+
+            //'workspaces': ['jsobject', 'r'],
+            //'active-workspace-id': ['int', 'rw'],
         });
     }
 
     #output: N.Output;
+    //#workspaces: Map<number, WorkspaceService> = new Map();
+    //#active_workspace_id: number | null = null;
 
     constructor(output: N.Output) {
         super();
@@ -41,6 +46,26 @@ export class OutputService extends Service {
     get vrr_supported() { return this.#output.vrr_supported; }
     get vrr_enabled() { return this.#output.vrr_enabled; }
     get logical() { return this.#output.logical; }
+
+    //get workspaces() { return Array.from(this.#workspaces.values()).sort((a, b) => a.idx - b.idx); }
+    //get active_workspace_id() { return this.#active_workspace_id; }
+
+    //set active_workspace_id(value: number | null) {
+    //    const prev = this.#active_workspace_id;
+    //    if (value !== prev) {
+    //        if (prev !== null) {
+    //            const prevWorkspace = this.#workspaces.get(prev);
+    //            if (prevWorkspace !== undefined) prevWorkspace.is_active = false;
+    //        }
+    //        if (value !== null) {
+    //            const newWorkspace = this.#workspaces.get(value);
+    //            if (newWorkspace !== undefined) newWorkspace.is_active = true;
+    //        }
+    //
+    //        this.#active_workspace_id = value;
+    //        this.changed('active-window-id');
+    //    }
+    //}
 
     update(output: N.Output) {
         let shouldChange = false;
@@ -65,11 +90,14 @@ export class WorkspaceService extends Service {
             'output': ['string', 'r'],
             'is-active': ['boolean', 'rw'],
             'is-focused': ['boolean', 'rw'],
-            'active-window-id': ['int', 'r'],
+            'active-window-id': ['int', 'rw'],
+
+            //'windows': ['jsobject', 'r'],
         });
     }
 
     #workspace: N.Workspace;
+    //#windows: Map<number, WindowService> = new Map();
 
     constructor(workspace: N.Workspace) {
         super();
@@ -84,22 +112,34 @@ export class WorkspaceService extends Service {
     get is_focused() { return this.#workspace.is_focused; }
     get active_window_id() { return this.#workspace.active_window_id; }
 
-    set is_active(value: boolean) {
-        if (this.#workspace.is_active !== value) {
-            this.#workspace.is_active = value;
-            this.changed('is-active');
-        }
-    }
+    //get windows() { return Array.from(this.#windows.values()).sort((a, b) => a.id - b.id); }
 
     set is_focused(value: boolean) {
-        if (this.#workspace.is_focused !== value) {
+        if (value !== this.#workspace.is_focused) {
             this.#workspace.is_focused = value;
             this.changed('is-focused');
         }
     }
 
+    set is_active(value: boolean) {
+        if (value !== this.#workspace.is_active) {
+            this.#workspace.is_active = value;
+            this.changed('is-active');
+        }
+    }
+
     set active_window_id(value: number | null) {
-        if (this.#workspace.active_window_id !== value) {
+        const prev = this.#workspace.active_window_id;
+        if (value !== prev) {
+            //if (prev !== null) {
+            //    const prevWindow = this.#windows.get(prev);
+            //    if (prevWindow !== undefined) prevWindow.is_active = false;
+            //}
+            //if (value !== null) {
+            //    const newWindow = this.#windows.get(value);
+            //    if (newWindow !== undefined) newWindow.is_active = true;
+            //}
+
             this.#workspace.active_window_id = value;
             this.changed('active-window-id');
         }
@@ -124,13 +164,16 @@ export class WindowService extends Service {
         Service.register(this, {}, {
             'id': ['int', 'r'],
             'title': ['string', 'r'],
-            'app_id': ['string', 'r'],
-            'workspace_id': ['int', 'r'],
-            'is_focused': ['boolean', 'r'],
+            'app-id': ['string', 'r'],
+            'workspace-id': ['int', 'r'],
+            'is-focused': ['boolean', 'rw'],
+
+            'is-active': ['boolean', 'rw'],
         });
     }
 
     #window: N.Window;
+    #is_active: boolean = false;
 
     constructor(window: N.Window) {
         super();
@@ -143,20 +186,29 @@ export class WindowService extends Service {
     get workspace_id() { return this.#window.workspace_id; }
     get is_focused() { return this.#window.is_focused; }
 
+    get is_active() { return this.#is_active; }
+
     set is_focused(value: boolean) {
-        if (this.#window.is_focused !== value) {
+        if (value !== this.#window.is_focused) {
             this.#window.is_focused = value;
-            this.changed('is-focused')
+            this.changed('is-focused');
         }
     }
 
-    update(window: N.Window) {
+    set is_active(value: boolean) {
+        if (value !== this.#is_active) {
+            this.#is_active = value;
+            this.changed('is-active');
+        }
+    }
+
+    update(win: N.Window) {
         let shouldChange = false;
-        for (const prop in window) {
-            if (window[prop] === this.#window[prop] ||
-                JSON.stringify(window[prop]) === JSON.stringify(this.#window[prop]))
+        for (const prop in win) {
+            if (win[prop] === this.#window[prop] ||
+                JSON.stringify(win[prop]) === JSON.stringify(this.#window[prop]))
                 continue
-            this.#window[prop] = window[prop];
+            this.#window[prop] = win[prop];
             this.notify(prop.replaceAll('_', '-'));
             shouldChange = true;
         }
@@ -207,13 +259,28 @@ export class Niri extends Service {
     static {
         Service.register(this, {
             'event': ['string', 'jsobject'],
+            'workspaces-changed': ['jsobject'],
+            'workspace-activated': ['int', 'boolean'],
+            'workspace-active-window-changed': ['int', 'int'],
+            'windows-changed': ['jsobject'],
+            'window-opened-or-changed': ['jsobject'],
+            'window-focus-changed': ['int'],
+            'keyboard-layouts-changed': ['jsobject'],
+            'keyboard-layout-switched': ['int'],
+
+            'workspace-added': ['jsobject'],
+            'workspace-removed': ['int'],
+            'window-opened': ['jsobject'],
+            'window-closed': ['int'],
         }, {
+            'outputs': ['jsobject', 'r'],
             'workspaces': ['jsobject', 'r'],
             'windows': ['jsobject', 'r'],
             'keyboard-layouts': ['jsobject', 'r'],
         });
     }
 
+    #outputs: Map<string, OutputService> = new Map();
     #workspaces: Map<number, WorkspaceService> = new Map();
     #windows: Map<number, WindowService> = new Map();
 
@@ -228,12 +295,32 @@ export class Niri extends Service {
     #socketAddress = new Gio.UnixSocketAddress({ path: NIRI_SOCKET });
     #eventStream: Gio.DataInputStream | null = null;
 
-    get workspaces() { return Array.from(this.#workspaces.values()).sort((a, b) => a.idx - b.idx); }
+    get outputs() { return Array.from(this.#outputs.values()); }
+    get workspaces() { return Array.from(this.#workspaces.values()); }
     get windows() { return Array.from(this.#windows.values()); }
     get keyboardLayouts() { return this.#keyboardLayouts; }
 
+    readonly getOutput = (name: string) => this.#outputs.get(name);
     readonly getWorkspace = (id: number) => this.#workspaces.get(id);
     readonly getWindow = (id: number) => this.#windows.get(id);
+
+    updateActiveWindow(workspaceId: number, windowId: number | null) {
+        const workspace = this.#workspaces.get(workspaceId);
+        if (workspace === undefined) return;
+        if (workspace.active_window_id !== windowId) {
+            if (workspace.active_window_id !== null) {
+                const oldActiveWindow = this.#workspaces.get(workspace.active_window_id);
+                if (oldActiveWindow !== undefined)
+                    oldActiveWindow.is_active = false;
+            }
+            if (windowId !== null) {
+                const newActiveWindow = this.#workspaces.get(windowId);
+                if (newActiveWindow !== undefined)
+                    newActiveWindow.is_active = true;
+            }
+            workspace.active_window_id = windowId;
+        }
+    }
 
     constructor() {
         if (!NIRI_SOCKET) {
@@ -242,16 +329,24 @@ export class Niri extends Service {
         }
 
         super();
+        
+        this.#initialize();
+    }
 
-        this.request('EventStream')
-            .then(() => {
-                if (this.#eventStream === null) {
-                    console.error('could not receive event stream')
-                    return;
-                }
-                this.#watchEventStream(this.#eventStream);
-            });
+    async #initialize() {
+        const outputs = await this.request('Outputs') as { Outputs: { [name: string]: N.Output } };
 
+        for (const name in outputs.Outputs)
+            this.#outputs.set(name, new OutputService(outputs.Outputs[name]));
+
+        await this.request('EventStream');
+
+        if (this.#eventStream === null) {
+            console.error('could not receive event stream')
+            return;
+        }
+
+        this.#watchEventStream(this.#eventStream);
     }
 
     #connection() {
@@ -324,23 +419,54 @@ export class Niri extends Service {
         const eventType = keys[0] as KeyOfUnion<N.Event>
         const args = event[eventType];
 
+        const errorMessage = `error handling event '${eventType}'`
+
         try {
             switch (eventType) {
                 case 'WorkspacesChanged':
+                    for (const [id, _] of this.#workspaces) {
+                        if (!args.workspaces.has(id)) {
+                            this.#workspaces.delete(id);
+                            this.emit('workspace-removed', id);
+                        }
+                    }
                     for (const workspace of args.workspaces) {
                         const oldWorkspace = this.#workspaces.get(workspace.id);
-                        if (oldWorkspace === undefined)
-                            this.#workspaces.set(workspace.id, new WorkspaceService(workspace));
-                        else
+                        if (oldWorkspace === undefined) {
+                            const workspaceService = new WorkspaceService(workspace);
+                            this.#workspaces.set(workspace.id, workspaceService);
+                            if (workspace.active_window_id !== null) {
+                                const activeWindow = this.#windows.get(workspace.active_window_id);
+                                if (activeWindow !== undefined)
+                                    activeWindow.is_active = true;
+                            }
+                            this.emit('workspace-added', workspaceService);
+                        }
+                        else {
+                            if (oldWorkspace.active_window_id !== workspace.active_window_id) {
+                                if (oldWorkspace.active_window_id !== null) {
+                                    const oldActiveWindow = this.#workspaces.get(oldWorkspace.active_window_id);
+                                    if (oldActiveWindow !== undefined)
+                                        oldActiveWindow.is_active = false;
+                                }
+                                if (workspace.active_window_id !== null) {
+                                    const newActiveWindow = this.#workspaces.get(workspace.active_window_id);
+                                    if (newActiveWindow !== undefined)
+                                        newActiveWindow.is_active = true;
+                                }
+                                oldWorkspace.active_window_id = workspace.active_window_id;
+                            }
                             oldWorkspace.update(workspace);
+                        }
                     }
                     this.changed('workspaces');
+                    this.emit('workspaces-changed', args.workspaces);
                     break;
 
                 case 'WorkspaceActivated':
                     const output = this.#workspaces.get(args.id)?.output;
                     if (output === undefined)
-                        throw `error handling event 'WorkspaceActivated': did not find workspace with id ${args.id}`;
+                        throw `${errorMessage}: did not find workspace with id ${args.id}`;
                     for (const [id, workspace] of this.#workspaces) {
                         const activated = id === args.id;
                         if (workspace.output === output)
@@ -348,59 +474,78 @@ export class Niri extends Service {
                         if (args.focused)
                             workspace.is_focused = activated;
                     }
+                    this.emit('workspace-activated', args.id, args.focused);
                     break;
 
                 case 'WorkspaceActiveWindowChanged':
-                    const workspace =  this.#workspaces.get(args.workspace_id);
+                    const workspace = this.#workspaces.get(args.workspace_id);
                     if (workspace === undefined)
-                        throw `error handling event 'WorkspaceActivated': did not find workspace with id ${args.id}`;
+                        throw `${errorMessage}: did not find workspace with id ${args.id}`;
                     workspace.active_window_id = args.active_window_id;
+                    this.emit('workspace-active-window-changed', args.workspace_id, args.active_window_id);
                     break;
 
                 case 'WindowsChanged':
+                    for (const [id, _] of this.#windows) {
+                        if (!args.windows.has(id)) {
+                            this.#windows.delete(id);
+                            this.emit('window-closed', id);
+                        }
+                    }
                     for (const win of args.windows) {
                         const oldWindow = this.#windows.get(win.id);
-                        if (oldWindow === undefined)
-                            this.#windows.set(win.id, new WindowService(win));
-                        else
-                            oldWindow.update(win);
+                        if (oldWindow === undefined) {
+                            const windowService = new WindowService(win);
+                            this.#windows.set(win.id, windowService);
+                            this.emit('window-opened', windowService);
+                        }
+                        else oldWindow.update(win);
                     }
                     this.changed('windows');
+                    this.emit('windows-changed', args.windows);
                     break;
 
                 case 'WindowOpenedOrChanged':
                     const win = this.#windows.get(args.window.id);
                     if (win === undefined) {
-                        this.#windows.set(args.window.id, new WindowService(args.window));
-                        this.changed('windows');
+                        const windowService = new WindowService(args.window);
+                        this.#windows.set(args.window.id, windowService);
+                        this.emit('window-opened', windowService);
                     }
                     else win.update(args.window);
                     if (args.window.is_focused)
                         for (const [id, w] of this.#windows)
                             if (id !== args.window.id)
                                 w.is_focused = false;
+                    this.changed('windows');
+                    this.emit('window-opened-or-changed', args.window);
                     break;
 
                 case 'WindowClosed':
                     const found = this.#windows.delete(args.id);
                     if (!found)
-                        throw `error handling event 'WindowClosed': did not find window with id ${args.id}`
+                        throw `${errorMessage}: did not find window with id ${args.id}`
+                    this.emit('window-closed', args.id);
+                    this.changed('windows');
                     break;
 
                 case 'WindowFocusChanged':
                     for (const [id, win] of this.#windows)
                         win.is_focused = id === args.id;
+                    this.emit('window-focus-changed', args.id);
                     break;
 
                 case 'KeyboardLayoutsChanged':
                     this.#keyboardLayouts.update(args.keyboard_layouts)
                     this.changed('keyboard-layouts');
+                    this.emit('keyboard-layouts-changed', args.keyboard_layouts);
                     break;
 
                 case 'KeyboardLayoutSwitched':
                     if (this.#keyboardLayouts.names.length === 0)
-                        throw `error handling event 'KeyboardLayoutSwitched': keyboard layouts have not been set`
+                        throw `${errorMessage}: keyboard layouts have not been set`
                     this.#keyboardLayouts.current_idx = args.idx;
+                    this.emit('keyboard-layouts-switched', args.idx);
                     break;
             }
             

@@ -1,8 +1,8 @@
 # ------ General QoL ------ #
 
 # Aliases
-alias ls='ls --color -F'
-alias ll='ls --color -AFlv'
+alias ls='ls --color -Fv'
+alias ll='ls --color -AFlvh'
 alias vim=nvim
 alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
