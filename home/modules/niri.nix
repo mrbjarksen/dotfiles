@@ -66,6 +66,12 @@
     #   transform = "normal";
     # };
 
+    outputs."eDP-1".background-color = "#16161e";
+    outputs."DP-1".background-color = "#16161e";
+    outputs."HDMI-A-2".background-color = "#16161e";
+
+    outputs."DP-1".variable-refresh-rate = true;
+
     layout = {
       center-focused-column = "never";
       always-center-single-column = true;

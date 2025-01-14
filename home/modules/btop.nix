@@ -41,7 +41,7 @@
     show_coretemp = true;
     cpu_core_map = ""; # ! <--
     temp_scale = "celsius";
-    base_10_sizes = true;
+    base_10_sizes = false;
     show_cpu_freq = true;
     clock_format = "";
     background_update = true;
@@ -51,7 +51,7 @@
     mem_below_net = false;
     zfs_arc_cached = true;
     show_swap = true;
-    swap_disk = true;
+    swap_disk = false;
     show_disks = true;
     only_physical = true;
     use_fstab = true;

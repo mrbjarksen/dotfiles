@@ -38,10 +38,10 @@
   services.playerctld.enable = true;
   services.mpris-proxy.enable = true;
 
-  programs.wpaperd = { # <-
-    enable = true;
-    settings.any.path = "${config.xdg.userDirs.pictures}/wallpapers";
-  };
+  # programs.wpaperd = { # <-
+  #   enable = true;
+  #   settings.any.path = "${config.xdg.userDirs.pictures}/wallpapers";
+  # };
   services.dunst.enable = true;
 
   services.cliphist.enable = true;
