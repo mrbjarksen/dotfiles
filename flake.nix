@@ -2,7 +2,8 @@
   description = "Personal NixOS system configurations";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    # nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-24.11;
     nixos-hardware.url = github:NixOS/nixos-hardware;
     disko = {
       url = github:nix-community/disko;
