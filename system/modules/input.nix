@@ -5,6 +5,6 @@
   hardware.logitech = {
     wireless.enable = true;
     wireless.enableGraphical = true;
-    lcd.enable = true;
+    # lcd.enable = true;
   };
 }
