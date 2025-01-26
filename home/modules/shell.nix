@@ -41,24 +41,24 @@
     BROWSER = "firefox";
   };
 
-  programs.atuin = {
-    enable = true;
-    daemon.enable = true;
-    flags = [ "--disable-up-arrow" ];
-    settings = {
-      db_path = "${config.xdg.dataHome}/atuin/history.db";
-      key_path = "${config.xdg.dataHome}/atuin/atuin-key";
-      session_path = "${config.xdg.dataHome}/atuin/atuin-session";
-      daemon.socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
-
-      update_check = false;
-      style = "compact";
-      enter_accept = false;
-      keymap_mode = "auto";
-      keys.scroll_exits = false;
-    };
-    # ... add theme ...
-  };
+  # programs.atuin = {
+  #   enable = true;
+  #   daemon.enable = true;
+  #   flags = [ "--disable-up-arrow" ];
+  #   settings = {
+  #     db_path = "${config.xdg.dataHome}/atuin/history.db";
+  #     key_path = "${config.xdg.dataHome}/atuin/atuin-key";
+  #     session_path = "${config.xdg.dataHome}/atuin/atuin-session";
+  #     daemon.socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
+  #
+  #     update_check = false;
+  #     style = "compact";
+  #     enter_accept = false;
+  #     keymap_mode = "auto";
+  #     keys.scroll_exits = false;
+  #   };
+  #   # ... add theme ...
+  # };
 
   # programs.bat.enable = true;
   # programs.carapace.enable = true;

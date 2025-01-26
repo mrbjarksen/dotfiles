@@ -8,7 +8,7 @@
 
   boot.initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
   boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelParams = [ "nvme_core.default_ps_max_latency_us=0" "pcie_aspm=off" "pcie_port_pm=off" ];
+  boot.kernelParams = [ "nvme_core.default_ps_max_latency_us=0" "pcie_aspm=off" "pcie_port_pm=off" "amdgpu.dcdebugmask=0x10" ];
 
   hardware.enableRedistributableFirmware = true;
 

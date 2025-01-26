@@ -4,6 +4,8 @@
   home.packages = with pkgs; [
     barlow
     nerd-fonts.jetbrains-mono
+    # (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    # jetbrains-mono
     # cormorant
   ];
 
