@@ -50,7 +50,6 @@
     enable = true;
     settings = {
       dir = config.xdg.userDirs.download;
-      show-files = true;
     };
   };
 

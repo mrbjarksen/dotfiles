@@ -8,8 +8,8 @@
         neumann = "0x00010c"; # Laptop
         galois = "0x000104"; # Desktop
       };
-      FastConnectable = true;
-      JustWorksRepairing = "always";
+      # FastConnectable = true;
+      # JustWorksRepairing = "always";
     };
   };
 }
