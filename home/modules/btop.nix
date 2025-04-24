@@ -3,7 +3,7 @@
 {
   programs.btop.enable = true;
   programs.btop.settings = {
-    color_theme = "Default";
+    # color_theme = "Default";
     theme_background = false;
     truecolor = true;
     force_tty = false;

@@ -66,9 +66,9 @@
     #   transform = "normal";
     # };
 
-    outputs."eDP-1".background-color = "#16161e";
-    outputs."DP-1".background-color = "#16161e";
-    outputs."HDMI-A-2".background-color = "#16161e";
+    outputs."eDP-1".background-color = "#11111b";
+    outputs."DP-1".background-color = "#11111b";
+    outputs."HDMI-A-2".background-color = "#11111b";
 
     outputs."DP-1".variable-refresh-rate = true;
 
@@ -94,8 +94,8 @@
       border = {
         enable = true;
         width = 1;
-        active.color = "#7aa2f7";
-        inactive.color = "#292e42";
+        active.color = "#89b4fa";
+        inactive.color = "#313244";
       };
 
       gaps = 10;
@@ -205,8 +205,8 @@
       "Mod+C" = noRepeat center-column;
 
       "Print".action = screenshot;
-      "Ctrl+Print".action = screenshot-screen;
-      "Alt+Print".action = screenshot-window; 
+      # "Ctrl+Print".action = screenshot-screen;
+      # "Alt+Print".action = screenshot-window; 
 
       "Mod+Shift+E".action = quit;
     };

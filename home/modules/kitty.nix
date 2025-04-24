@@ -19,7 +19,7 @@
       hide_window_decorations = "yes";
       resize_debounce_time = "0.05";
     };
-    themeFile = "tokyo_night_night";
+    # themeFile = "tokyo_night_night";
     extraConfig = "cursor none";
   };
 }

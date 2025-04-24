@@ -15,9 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = github:sodiboo/niri-flake;
+    catppuccin.url = github:catppuccin/nix;
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri }@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri, catppuccin }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -26,10 +27,16 @@
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.mrbjarksen = import ./home/mrbjarksen.nix;
+          home-manager.users.mrbjarksen = {
+            imports = [
+              ./home/mrbjarksen.nix
+              catppuccin.homeModules.catppuccin
+            ];
+          };
         }
         niri.nixosModules.niri
         { nixpkgs.overlays = [ niri.overlays.niri ]; programs.niri.enable = true; }
+        catppuccin.nixosModules.catppuccin
       ];
     in {
       nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {

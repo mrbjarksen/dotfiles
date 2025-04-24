@@ -30,5 +30,11 @@
     powerKeyLongPress = "suspend-then-hibernate";
   };
 
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "blue";
+  };
 }

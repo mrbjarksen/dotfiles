@@ -3,9 +3,10 @@
 {
   home.packages = with pkgs; [
     barlow
+    manrope
     nerd-fonts.jetbrains-mono
     # (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    # jetbrains-mono
+    jetbrains-mono
     # cormorant
   ];
 
@@ -14,7 +15,7 @@
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
       monospace = [ "JetBrainsMono Nerd Font" "Noto Sans Mono" ];
-      sansSerif = [ "Barlow" "Noto Sans" ];
+      sansSerif = [ "Barlow" "Manrope" "Noto Sans" ];
       serif = [ "Cormorant" "Noto Sans Serif" ];
     };
   };
