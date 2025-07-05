@@ -15,6 +15,11 @@
     fzf
   ];
 
+  gtk.enable = true;
+  qt.enable = true;
+  qt.style.name = "kvantum";
+  qt.platformTheme.name = "kvantum";
+
   # home.language = {
   #   base = "en_US.UTF-8";
   #

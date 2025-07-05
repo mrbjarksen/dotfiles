@@ -13,9 +13,16 @@
     "pcie_aspm=off"
     "pcie_port_pm=off"
     "amdgpu.dcdebugmask=0x10"
-    "video=DP-1:3840x2160"
-    "video=HDMI-A-2:1920x1080"
+    "video=1920x1080"
   ];
+
+  boot.loader.grub.gfxmodeEfi = "1920x1080,auto";
+  boot.loader.grub.font = lib.mkForce "${pkgs.terminus_font}/share/fonts/terminus/ter-u12n.otb";
+  console = {
+    earlySetup = true;
+    packages = with pkgs; [ terminus_font ];
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-u12n.psf.gz";
+  };
 
   hardware.enableRedistributableFirmware = true;
 

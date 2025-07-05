@@ -1,8 +1,51 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.fish = {
+  programs.zsh = {
     enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    defaultKeymap = "viins";
+
+    history.extended = true;
+    history.ignoreDups = true;
+    history.save = 1000000;
+    history.size = 1000000;
+
+    dotDir = "${lib.path.removePrefix (/. + config.home.homeDirectory) (/. + config.xdg.configHome)}/zsh";
+    history.path = "${config.xdg.dataHome}/zsh/zsh_history";
+
+    initContent = ''
+      setopt AUTO_CD
+      setopt LIST_PACKED
+      setopt INTERACTIVE_COMMENTS
+      unsetopt BEEP
+
+      zsh_highlight+=(paste:none)
+
+      zstyle ':completion:*' menu select
+
+      bindkey -v '^?' backward-delete-char
+
+      autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+      zle -N up-line-or-beginning-search
+      zle -N down-line-or-beginning-search
+
+      bindkey -- '^[[A' up-line-or-beginning-search
+      bindkey -- '^[[B' down-line-or-beginning-search
+      bindkey -a 'k' up-line-or-beginning-search
+      bindkey -a 'j' down-line-or-beginning-search
+    '';
+
+    plugins = [
+      {
+        name = "vi-mode";
+        src = pkgs.zsh-vi-mode;
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugins.zsh";
+      }
+    ];
   };
 
   # programs.starship.enable = true;

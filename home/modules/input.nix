@@ -8,9 +8,10 @@
   };
 
   home.pointerCursor = {
-    package = pkgs.vimix-cursors;
-    name = "Vimix-cursors";
-    size = 16;
-    gtk.enable = true;
+    # package = pkgs.vimix-cursors;
+    # name = "Vimix-cursors";
+    package = pkgs.rose-pine-cursor;
+    name = "BreezeX-RosePineDawn-Linux";
+    size = 22;
   };
 }
