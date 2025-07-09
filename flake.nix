@@ -16,9 +16,14 @@
     };
     niri.url = github:sodiboo/niri-flake;
     catppuccin.url = github:catppuccin/nix;
+
+    ssbm-nix = {
+      url = github:heraplem/ssbm-nix?rev=2610939316fd8c48b983910f7c7434a56ce154c3;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri, catppuccin }@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri, catppuccin, ssbm-nix }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
