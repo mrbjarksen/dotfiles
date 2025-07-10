@@ -37,7 +37,6 @@
   # };
 
   programs.firefox.enable = true; # <-
-  programs.firefox.profiles.default.extensions.force = true;
   programs.imv.enable = true; # <-
   programs.mpv.enable = true; # <-
 

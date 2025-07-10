@@ -22,21 +22,24 @@
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          inputs.niri.overlays.niri
+        ];
+      };
       common = [
-        {
-          nixpkgs.overlays = [
-            inputs.niri.overlays.niri
-          ];
-        }
+        { nixpkgs.overlays = [ inputs.niri.overlays.niri ]; }
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "hmbkp";
           home-manager.users.mrbjarksen = {
             imports = [
               ./home/mrbjarksen.nix
               inputs.catppuccin.homeModules.catppuccin
+              { catppuccin.firefox.profiles = nixpkgs.lib.mkForce {}; }
             ];
           };
         }

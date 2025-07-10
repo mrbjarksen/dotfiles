@@ -19,9 +19,9 @@
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     };
 
-    xwayland-sattelite = {
+    xwayland-satellite = {
       enable = true;
-      path = "${lib.getExe pkgs.xwayland-sattelite-unstable}";
+      path = "${lib.getExe pkgs.xwayland-satellite-unstable}";
     };
 
     cursor = {
@@ -65,9 +65,13 @@
       workspace-auto-back-and-forth = true;
     };
 
-    overview.background-color = "#11111b";
+    overview = {
+      backdrop-color = "#11111b";
+      zoom = 0.25;
+    };
 
     outputs."eDP-1" = {
+      background-color = "#00000000";
       mode = {
         width = 3840;
         height = 2180;
@@ -76,6 +80,7 @@
     };
 
     outputs."HDMI-A-2" = {
+      background-color = "#00000000";
       mode = {
         width = 3840;
         height = 2180;
@@ -85,7 +90,15 @@
       variable-refresh-rate = true;
     };
 
-    outputs."DP-1".variable-refresh-rate = true;
+    outputs."DP-1" = {
+      background-color = "#00000000";
+      mode = {
+        width = 3840;
+        height = 2180;
+      };
+      scale = 1.5;
+      variable-refresh-rate = true;
+    };
 
     layout = {
       center-focused-column = "never";
@@ -116,7 +129,7 @@
       gaps = 10;
       struts = {
         left = 0; right = 0;
-        top = 30; bottom = 30;
+        top = 0; bottom = 0; # 30
       };
     };
 
@@ -140,16 +153,16 @@
 
     animations = {};
 
-    workspaces."1" = {};
-    workspaces."2" = {};
-    workspaces."3" = {};
-    workspaces."4" = {};
-    workspaces."5" = {};
-    workspaces."6" = {};
-    workspaces."7" = {};
-    workspaces."8" = {};
-    workspaces."9" = {};
-    workspaces."0" = {};
+    # workspaces."1" = {};
+    # workspaces."2" = {};
+    # workspaces."3" = {};
+    # workspaces."4" = {};
+    # workspaces."5" = {};
+    # workspaces."6" = {};
+    # workspaces."7" = {};
+    # workspaces."8" = {};
+    # workspaces."9" = {};
+    # workspaces."0" = {};
 
     binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
@@ -225,8 +238,10 @@
       "Mod+C" = noRepeat center-visible-columns;
       "Mod+E" = noRepeat expand-column-to-available-width;
 
+      "Mod+O" = noRepeat toggle-overview;
+
       "Mod+Shift+S".action = screenshot;
-      "Mod+Ctrl+S".action = screenshot-screen;
+      # "Mod+Ctrl+S".action = screenshot-screen;
       "Mod+Shift+Ctrl+S".action = screenshot-window; 
 
       "Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
