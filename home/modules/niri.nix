@@ -1,11 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  # programs.niri.enable = true;
-
   programs.niri.settings = {
     prefer-no-csd = true;
-    screenshot-path = "${config.xdg.userDirs.pictures}/screenshots/%Y-%m-%d-%H-%M-%S.png";
+    screenshot-path = "${config.xdg.userDirs.pictures}/screenshots/%Y-%m-%d-%H.%M.%S.png";
     hotkey-overlay.skip-at-startup = true;
 
     environment = {
@@ -19,6 +17,11 @@
 
       QT_AUTO_SCREEN_SCALE_FACTOR = "1";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    };
+
+    xwayland-sattelite = {
+      enable = true;
+      path = "${lib.getExe pkgs.xwayland-sattelite-unstable}";
     };
 
     cursor = {
@@ -62,15 +65,15 @@
       workspace-auto-back-and-forth = true;
     };
 
-    # output."eDP-1" = {
-    #   mode = "3840x2400";
-    #   scale = 2;
-    #   transform = "normal";
-    # };
+    overview.background-color = "#11111b";
 
-    outputs."eDP-1".background-color = "#11111b";
-    outputs."DP-1".background-color = "#11111b";
-    outputs."HDMI-A-2".background-color = "#11111b";
+    outputs."eDP-1" = {
+      mode = {
+        width = 3840;
+        height = 2180;
+      };
+      scale = 2;
+    };
 
     outputs."HDMI-A-2" = {
       mode = {
@@ -182,6 +185,8 @@
       "Mod+Ctrl+D".action = move-column-to-workspace-down;
       "Mod+Ctrl+U".action = move-column-to-workspace-up;
 
+      "Mod+Ctrl+M".action = move-window-to-monitor-next;
+
       # "Mod+Ctrl+Shift+D".action = move-workspace-down;
       # "Mod+Ctrl+Shift+U".action = move-workspace-up;
 
@@ -209,17 +214,22 @@
       "Mod+Comma" .action = consume-or-expel-window-left;
       "Mod+Period".action = consume-or-expel-window-right;
 
+      "Mod+W".action = toggle-column-tabbed-display;
+
       "Mod+R" = noRepeat switch-preset-column-width;
       "Mod+Shift+R" = noRepeat switch-preset-window-height;
       "Mod+Ctrl+R" = noRepeat reset-window-height;
       "Mod+F" = noRepeat maximize-column;
       "Mod+Shift+F" = noRepeat fullscreen-window;
-      "Mod+C" = noRepeat center-column;
+      "Mod+Ctrl+F" = noRepeat toggle-windowed-fullscreen;
+      "Mod+C" = noRepeat center-visible-columns;
+      "Mod+E" = noRepeat expand-column-to-available-width;
 
-      "Print".action = screenshot;
-      # "Ctrl+Print".action = screenshot-screen;
-      # "Alt+Print".action = screenshot-window; 
+      "Mod+Shift+S".action = screenshot;
+      "Mod+Ctrl+S".action = screenshot-screen;
+      "Mod+Shift+Ctrl+S".action = screenshot-window; 
 
+      "Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
       "Mod+Shift+E".action = quit;
     };
   };

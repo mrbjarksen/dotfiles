@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-    # nixpkgs.url = github:NixOS/nixpkgs/nixos-24.11;
     nixos-hardware.url = github:NixOS/nixos-hardware;
     disko = {
       url = github:nix-community/disko;
@@ -11,33 +10,23 @@
     };
     home-manager = {
       url = github:nix-community/home-manager;
-      # url = github:nix-community/home-manager/release-24.11;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri.url = github:sodiboo/niri-flake;
-    catppuccin.url = github:catppuccin/nix;
-
-    ssbm-nix = {
-      url = github:mrbjarksen/ssbm-nix;
-      # inputs.nixpkgs.follows = "nixpkgs";
+    niri = {
+      url = github:sodiboo/niri-flake;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = github:catppuccin/nix;
   };
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        # overlays = [
-        #   inputs.niri.overlays.niri
-        #   inputs.ssbm-nix.overlay
-        # ];
-      };
+      pkgs = import nixpkgs { inherit system; };
       common = [
         {
           nixpkgs.overlays = [
             inputs.niri.overlays.niri
-            inputs.ssbm-nix.overlays.ssbm-nix
           ];
         }
         disko.nixosModules.disko
@@ -48,12 +37,14 @@
             imports = [
               ./home/mrbjarksen.nix
               inputs.catppuccin.homeModules.catppuccin
-              inputs.ssbm-nix.homeModules.ssbm-nix
             ];
           };
         }
         inputs.niri.nixosModules.niri
-        { programs.niri.enable = true; }
+        {
+          programs.niri.enable = true;
+          programs.niri.package = pkgs.niri-unstable;
+        }
         inputs.catppuccin.nixosModules.catppuccin
       ];
     in {
@@ -73,7 +64,6 @@
           nixpkgs.nixosModules.notDetected
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-cpu-amd-pstate
-          # nixos-hardware.nixosModules.common-cpu-amd-zenpower
           nixos-hardware.nixosModules.common-gpu-amd
           nixos-hardware.nixosModules.common-pc
           nixos-hardware.nixosModules.common-pc-ssd
