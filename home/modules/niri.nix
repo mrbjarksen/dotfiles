@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  # programs.niri.enable = true;
+
   programs.niri.settings = {
     prefer-no-csd = true;
     screenshot-path = "${config.xdg.userDirs.pictures}/screenshots/%Y-%m-%d-%H-%M-%S.png";

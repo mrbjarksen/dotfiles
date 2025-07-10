@@ -18,16 +18,28 @@
     catppuccin.url = github:catppuccin/nix;
 
     ssbm-nix = {
-      url = github:heraplem/ssbm-nix?rev=2610939316fd8c48b983910f7c7434a56ce154c3;
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = github:mrbjarksen/ssbm-nix;
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, niri, catppuccin, ssbm-nix }@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        # overlays = [
+        #   inputs.niri.overlays.niri
+        #   inputs.ssbm-nix.overlay
+        # ];
+      };
       common = [
+        {
+          nixpkgs.overlays = [
+            inputs.niri.overlays.niri
+            inputs.ssbm-nix.overlays.ssbm-nix
+          ];
+        }
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
@@ -35,13 +47,14 @@
           home-manager.users.mrbjarksen = {
             imports = [
               ./home/mrbjarksen.nix
-              catppuccin.homeModules.catppuccin
+              inputs.catppuccin.homeModules.catppuccin
+              inputs.ssbm-nix.homeModules.ssbm-nix
             ];
           };
         }
-        niri.nixosModules.niri
-        { nixpkgs.overlays = [ niri.overlays.niri ]; programs.niri.enable = true; }
-        catppuccin.nixosModules.catppuccin
+        inputs.niri.nixosModules.niri
+        { programs.niri.enable = true; }
+        inputs.catppuccin.nixosModules.catppuccin
       ];
     in {
       nixosConfigurations.neumann = nixpkgs.lib.nixosSystem {
