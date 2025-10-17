@@ -23,11 +23,11 @@
   services.fwupd.enable = true;
   services.locate.enable = true;
 
-  services.logind = {
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchExternalPower = "suspend";
-    powerKey = "suspend-then-hibernate";
-    powerKeyLongPress = "suspend-then-hibernate";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchExternalPower = "suspend";
+    HandlePowerKey = "suspend-then-hibernate";
+    HandlePowerKeyLongPress = "suspend-then-hibernate";
   };
 
   catppuccin = {

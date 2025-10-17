@@ -14,7 +14,7 @@
     history.save = 1000000;
     history.size = 1000000;
 
-    dotDir = "${lib.path.removePrefix (/. + config.home.homeDirectory) (/. + config.xdg.configHome)}/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     history.path = "${config.xdg.dataHome}/zsh/zsh_history";
 
     initContent = ''
