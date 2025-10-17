@@ -1,13 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   home.packages = with pkgs; [
     barlow
     manrope
     nerd-fonts.jetbrains-mono
-    # (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     jetbrains-mono
-    # cormorant
+    cormorant
   ];
 
   fonts.fontconfig = {

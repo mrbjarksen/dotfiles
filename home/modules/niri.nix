@@ -79,17 +79,6 @@
       scale = 2;
     };
 
-    outputs."HDMI-A-2" = {
-      background-color = "#00000000";
-      mode = {
-        width = 3840;
-        height = 2180;
-        refresh = 120.000;
-      };
-      scale = 2;
-      variable-refresh-rate = true;
-    };
-
     outputs."DP-1" = {
       background-color = "#00000000";
       mode = {
@@ -97,6 +86,17 @@
         height = 2180;
       };
       scale = 1.5;
+      variable-refresh-rate = true;
+    };
+
+    outputs."HDMI-A-2" = {
+      background-color = "#00000000";
+      backdrop-color = "#00000000";
+      mode = {
+        width = 3840;
+        height = 2180;
+      };
+      scale = 2;
       variable-refresh-rate = true;
     };
 
@@ -148,6 +148,12 @@
       {
         matches = [ { app-id = "firefox"; } ];
         default-column-width.proportion = 1.0;
+      }
+      {
+        matches = [ { app-id = "sol"; } ];
+        open-on-output = "HDMI-A-2";
+        open-fullscreen = true;
+        open-focused = true;
       }
     ];
 

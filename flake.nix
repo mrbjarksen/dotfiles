@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs-local.url = github:mrbjarksen/nixpkgs/add-cormorant;
     nixos-hardware.url = github:NixOS/nixos-hardware;
     disko = {
       url = github:nix-community/disko;
@@ -17,19 +18,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = github:catppuccin/nix;
+
+    slippi = {
+      url = github:mrbjarksen/slippi-flake;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
+      overlays = [
+        inputs.niri.overlays.niri
+        inputs.slippi.overlays.slippi
+        (final: prev: { cormorant = inputs.nixpkgs-local.legacyPackages.${system}.cormorant; })
+      ];
       pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.niri.overlays.niri
-        ];
+        inherit system overlays;
       };
       common = [
-        { nixpkgs.overlays = [ inputs.niri.overlays.niri ]; }
+        { nixpkgs.overlays = overlays; }
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
@@ -40,6 +48,7 @@
               ./home/mrbjarksen.nix
               inputs.catppuccin.homeModules.catppuccin
               { catppuccin.firefox.profiles = nixpkgs.lib.mkForce {}; }
+              inputs.slippi.homeModules.slippi
             ];
           };
         }

@@ -7,4 +7,5 @@
     wireless.enableGraphical = true;
     # lcd.enable = true;
   };
+  services.udev.packages = [ pkgs.dolphin-emu ];
 }
