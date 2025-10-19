@@ -71,7 +71,7 @@
     };
 
     outputs."eDP-1" = {
-      background-color = "#00000000";
+      background-color = "#11111b";
       mode = {
         width = 3840;
         height = 2180;
@@ -80,7 +80,7 @@
     };
 
     outputs."DP-1" = {
-      background-color = "#00000000";
+      background-color = "#11111b";
       mode = {
         width = 3840;
         height = 2180;
@@ -90,8 +90,7 @@
     };
 
     outputs."HDMI-A-2" = {
-      background-color = "#00000000";
-      backdrop-color = "#00000000";
+      background-color = "#11111b";
       mode = {
         width = 3840;
         height = 2180;
@@ -158,17 +157,6 @@
     ];
 
     animations = {};
-
-    # workspaces."1" = {};
-    # workspaces."2" = {};
-    # workspaces."3" = {};
-    # workspaces."4" = {};
-    # workspaces."5" = {};
-    # workspaces."6" = {};
-    # workspaces."7" = {};
-    # workspaces."8" = {};
-    # workspaces."9" = {};
-    # workspaces."0" = {};
 
     binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
