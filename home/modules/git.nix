@@ -12,9 +12,9 @@
 
   programs.git = {
     enable = true;
-    userName = "Bjarki B. Harksen";
-    userEmail = "bjarki@harksen.is";
-    extraConfig = {
+    settings = {
+      user.name = "Bjarki B. Harksen";
+      user.email = "bjarki@harksen.is";
       init = { defaultBranch = "main"; };
       core = { quoteBranch = false; };
       merge = { conflictStyle = "diff3"; };
@@ -23,7 +23,7 @@
     };
   };
 
-  programs.git.delta = {
+  programs.delta = {
     enable = true;
     options = {
       minus-style = "syntax \"#37222c\""; 
