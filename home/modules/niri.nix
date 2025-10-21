@@ -236,7 +236,7 @@
 
       "Mod+Shift+S".action = screenshot;
       # "Mod+Ctrl+S".action = screenshot-screen;
-      "Mod+Shift+Ctrl+S".action = screenshot-window; 
+      # "Mod+Shift+Ctrl+S".action = screenshot-window; 
 
       "Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
       "Mod+Shift+E".action = quit;
