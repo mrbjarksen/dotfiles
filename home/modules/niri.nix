@@ -234,7 +234,7 @@
 
       "Mod+O" = noRepeat toggle-overview;
 
-      "Mod+Shift+S".action = screenshot;
+      # "Mod+Shift+S".action = screenshot;
       # "Mod+Ctrl+S".action = screenshot-screen;
       # "Mod+Shift+Ctrl+S".action = screenshot-window; 
 
