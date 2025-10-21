@@ -1,23 +1,24 @@
 { config, lib, pkgs, ... }:
 
 {
+  catppuccin.mangohud.enable = false;
+  home.sessionVariables.MANGOHUD_CONFIGFLE = "${config.xdg.configHome}/MangoHud/MangoHud.conf";
   programs.mangohud = {
     enable = true;
-    enableSessionWide = true;
     settings = {
       fps = true;
-      fps_limit = 120;
       frametime = false;
       frame_timing = false;
 
       cpu_stats = true;
-      ram = true;
+      # ram = true;
 
       gpu_stats = true;
-      vram = true;
+      gpu_list = 0;
+      # vram = true;
 
       font_file = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMono-Light.ttf";
-      font_size = 13;
+      font_size = 16;
       hud_compact = true;
       hud_no_margin = true;
       offset_x = 3;
