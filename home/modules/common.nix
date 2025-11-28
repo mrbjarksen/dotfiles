@@ -13,6 +13,7 @@
     tree-sitter
     ripgrep
     fzf
+    bscpylgtv
   ];
 
   gtk.enable = true;
