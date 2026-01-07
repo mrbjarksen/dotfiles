@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-    nixpkgs-local.url = github:mrbjarksen/nixpkgs/add-cormorant;
     nixos-hardware.url = github:NixOS/nixos-hardware;
     disko = {
       url = github:nix-community/disko;
@@ -32,7 +31,7 @@
         inputs.niri.overlays.niri
         inputs.slippi.overlays.slippi
         (final: prev: { bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; })
-        (final: prev: { cormorant = inputs.nixpkgs-local.legacyPackages.${system}.cormorant; })
+        (final: prev: { cormorant = pkgs.callPackage ./packages/cormorant.nix {}; })
         (final: prev: {
           winetricks = nixpkgs.legacyPackages.${system}.winetricks.overrideAttrs (final: prev: {
             patches = [

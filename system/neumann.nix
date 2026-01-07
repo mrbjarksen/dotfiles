@@ -4,7 +4,7 @@
   imports = [ ./modules ];
 
   networking.hostName = "neumann"; 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
   
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
   boot.kernelPatches = lib.mkForce [];

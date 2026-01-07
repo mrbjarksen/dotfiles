@@ -2,8 +2,8 @@
 
 {
   home.packages = with pkgs; [
-    barlow
-    manrope
+    # barlow
+    # manrope
     nerd-fonts.jetbrains-mono
     jetbrains-mono
     cormorant
