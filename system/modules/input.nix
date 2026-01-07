@@ -17,5 +17,13 @@
       '';
       destination = "/etc/udev/rules.d/71-8bitdo-u2w.rules";
     })
+    (pkgs.writeTextFile {
+      name = "8bitdo-boot-udev-rules";
+      text = ''
+        SUBSYSTEM=="hidraw", ATTRS{idProduct}=="3208", ATTRS{idVendor}=="2dc8", TAG+="uaccess"
+        SUBSYSTEM=="hidraw", ATTRS{idProduct}=="3109", ATTRS{idVendor}=="2dc8", TAG+="uaccess"
+      '';
+      destination = "/etc/udev/rules.d/71-8bitdo-boot.rules";
+    })
   ];
 }
