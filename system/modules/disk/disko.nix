@@ -1,12 +1,23 @@
+{ config, lib, ... }:
+
+let
+  host = config.networking.hostName;
+  deviceId =
+    if host == "galois" then
+      "nvme-Samsung_SSD_990_PRO_2TB_S6Z2NU0XA01474A"
+    else if host == "neumann" then
+      "nvme-Micron_2200S_NVMe_1024GB__200926C0B4C4"
+    else throw "unknown host: ${host}";
+in
 {
-  disko.devices.disk."nvme0n1" = {
+  disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/nvme0n1";
+    device = "/dev/disk/by-id/${deviceId}";
     content = {
       type = "gpt";
       partitions = {
         ESP = {
-          # label = "NIXOS_BOOT";
+          label = "NIXOS_BOOT";
           size = "1G";
           type = "EF00";
           content = {

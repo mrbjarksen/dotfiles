@@ -83,7 +83,7 @@
     outputs."DP-1" = {
       mode = {
         width = 3840;
-        height = 2180;
+        height = 2160;
       };
       scale = 1.5;
       variable-refresh-rate = true;
@@ -92,7 +92,8 @@
     outputs."HDMI-A-2" = {
       mode = {
         width = 3840;
-        height = 2180;
+        height = 2160;
+        refresh = 120.000;
       };
       scale = 2;
       variable-refresh-rate = true;
