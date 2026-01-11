@@ -67,20 +67,20 @@
 
     overview = {
       backdrop-color = "#11111b";
-      zoom = 0.25;
+      zoom = 0.75;
     };
 
+    # recent-windows.off = true;
+
     outputs."eDP-1" = {
-      background-color = "#11111b";
       mode = {
         width = 3840;
-        height = 2180;
+        height = 2400;
       };
       scale = 2;
     };
 
     outputs."DP-1" = {
-      background-color = "#11111b";
       mode = {
         width = 3840;
         height = 2180;
@@ -90,7 +90,6 @@
     };
 
     outputs."HDMI-A-2" = {
-      background-color = "#11111b";
       mode = {
         width = 3840;
         height = 2180;
@@ -100,21 +99,21 @@
     };
 
     layout = {
+      background-color = "#11111b";
+
       center-focused-column = "never";
       always-center-single-column = true;
 
       default-column-width.proportion = 0.7;
       preset-column-widths = [
-        { proportion = 0.3; }
-        { proportion = 0.5; }
         { proportion = 0.7; }
-        { proportion = 1.0; }
+        { proportion = 0.5; }
+        { proportion = 0.3; }
       ];
       preset-window-heights = [
-        { proportion = 0.3; }
-        { proportion = 0.5; }
         { proportion = 0.7; }
-        { proportion = 1.0; }
+        { proportion = 0.5; }
+        { proportion = 0.3; }
       ];
 
       focus-ring.enable = false;
@@ -145,8 +144,16 @@
         clip-to-geometry = true;
       }
       {
-        matches = [ { app-id = "firefox"; } ];
+        matches = [ { app-id = "firefox$"; } ];
         default-column-width.proportion = 1.0;
+      }
+      {
+          matches = [ { app-id = "firefox$"; title = "^Picture-in-Picture$"; } ];
+          open-floating = true;
+          open-focused = false;
+          default-floating-position = { x = 10; y = 10; relative-to = "top-right"; };
+          default-column-width.fixed = 25 * 16;
+          default-window-height.fixed = 25 * 9;
       }
       {
         matches = [ { app-id = "sol"; } ];
@@ -161,14 +168,9 @@
     binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
       noRepeat = action: { repeat = false; inherit action; };
-    in {
+    in lib.mkForce {
       "Mod+Shift+Apostrophe".action = show-hotkey-overlay;
       "Mod+T" = noRepeat (spawn config.home.sessionVariables.TERM);
-
-      XF86AudioRaiseVolume = allowWhenLocked (spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+");
-      XF86AudioLowerVolume = allowWhenLocked (spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-");
-      XF86AudioMute = allowWhenLocked (spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle");
-      XF86AudioMicMute = allowWhenLocked (spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle");
 
       "Mod+Q" = noRepeat close-window;
 
@@ -197,31 +199,12 @@
       # "Mod+Ctrl+Shift+D".action = move-workspace-down;
       # "Mod+Ctrl+Shift+U".action = move-workspace-up;
 
-      # "Mod+1".action = focus-workspace "1";
-      # "Mod+2".action = focus-workspace "2";
-      # "Mod+3".action = focus-workspace "3";
-      # "Mod+4".action = focus-workspace "4";
-      # "Mod+5".action = focus-workspace "5";
-      # "Mod+6".action = focus-workspace "6";
-      # "Mod+7".action = focus-workspace "7";
-      # "Mod+8".action = focus-workspace "8";
-      # "Mod+9".action = focus-workspace "9";
-      # "Mod+0".action = focus-workspace "0";
-      # "Mod+Ctrl+1".action = move-column-to-workspace "1";
-      # "Mod+Ctrl+2".action = move-column-to-workspace "2";
-      # "Mod+Ctrl+3".action = move-column-to-workspace "3";
-      # "Mod+Ctrl+4".action = move-column-to-workspace "4";
-      # "Mod+Ctrl+5".action = move-column-to-workspace "5";
-      # "Mod+Ctrl+6".action = move-column-to-workspace "6";
-      # "Mod+Ctrl+7".action = move-column-to-workspace "7";
-      # "Mod+Ctrl+8".action = move-column-to-workspace "8";
-      # "Mod+Ctrl+9".action = move-column-to-workspace "9";
-      # "Mod+Ctrl+0".action = move-column-to-workspace "0";
+      "Mod+Comma"= noRepeat consume-or-expel-window-left;
+      "Mod+Period" = noRepeat consume-or-expel-window-right;
 
-      "Mod+Comma" .action = consume-or-expel-window-left;
-      "Mod+Period".action = consume-or-expel-window-right;
-
-      "Mod+W".action = toggle-column-tabbed-display;
+      "Mod+Tab" = noRepeat switch-focus-between-floating-and-tiling;
+      "Mod+Ctrl+Tab" = noRepeat toggle-window-floating;
+      "Mod+W" = noRepeat toggle-column-tabbed-display;
 
       "Mod+R" = noRepeat switch-preset-column-width;
       "Mod+Shift+R" = noRepeat switch-preset-window-height;
@@ -238,8 +221,8 @@
       # "Mod+Ctrl+S".action = screenshot-screen;
       # "Mod+Shift+Ctrl+S".action = screenshot-window; 
 
-      "Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
-      "Mod+Shift+E".action = quit;
+      "Mod+Escape" = noRepeat toggle-keyboard-shortcuts-inhibit;
+      "Mod+Shift+E" = noRepeat quit;
     };
   };
 }

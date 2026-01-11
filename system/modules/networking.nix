@@ -4,8 +4,6 @@
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false;
 
-  # networking.wireguard.enable = true;
-
   services.openssh = {
     enable = true;
     settings = {
@@ -24,10 +22,20 @@
     };
   };
 
+  networking.enableIPv6 = true;
   services.printing.enable = true;
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    nssmdns6 = true;
     openFirewall = true;
+    publish = {
+      enable = true;
+      domain = true;
+      hinfo = true;
+      addresses = true;
+      userServices = true;
+      workstation = true;
+    };
   };
 }

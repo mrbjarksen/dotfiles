@@ -23,13 +23,6 @@
   services.fwupd.enable = true;
   services.locate.enable = true;
 
-  services.logind.settings.Login = {
-    HandleLidSwitch = "suspend-then-hibernate";
-    HandleLidSwitchExternalPower = "suspend";
-    HandlePowerKey = "suspend-then-hibernate";
-    HandlePowerKeyLongPress = "suspend-then-hibernate";
-  };
-
   catppuccin = {
     enable = true;
     flavor = "mocha";

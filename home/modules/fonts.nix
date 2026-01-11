@@ -2,11 +2,40 @@
 
 {
   home.packages = with pkgs; [
-    # barlow
-    # manrope
+    # Mix
+    lmodern
+    fira
+
+    # Monospace
     nerd-fonts.jetbrains-mono
     jetbrains-mono
+    nerd-fonts.fira-code
+    fira-code
+
+    # Sans Serif
+    barlow
+    inter
+    lato
+    libre-franklin
+    # manrope
+    merriweather-sans
+    montserrat
+
+    # Serif
+    bodoni-moda
+    cardo
     cormorant
+    crimson
+    eb-garamond
+    edwin
+    fraunces
+    # junge
+    libre-baskerville
+    # maitree
+    merriweather
+    # playfair-display
+    sorts-mill-goudy
+    # wittgenstein
   ];
 
   fonts.fontconfig = {
@@ -14,8 +43,8 @@
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
       monospace = [ "JetBrainsMono Nerd Font" "Noto Sans Mono" ];
-      sansSerif = [ "Barlow" "Manrope" "Noto Sans" ];
-      serif = [ "Cormorant" "Noto Sans Serif" ];
+      sansSerif = [ "Lato" "Noto Sans" ];
+      serif = [ "Crimson" "Noto Serif" ];
     };
   };
 }

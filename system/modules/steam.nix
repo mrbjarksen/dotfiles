@@ -29,5 +29,6 @@
       waylandSupport = true;
     })
     winetricks
+    libstrangle
   ];
 }

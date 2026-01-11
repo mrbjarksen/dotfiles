@@ -9,16 +9,10 @@
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
   boot.kernelPatches = lib.mkForce [];
 
-  hardware.nvidia.prime = {
-    offload.enable = lib.mkForce false;
-    sync.enable = lib.mkForce true;
-  };
+  hardware.nvidia.modesetting.enable = true;
 
   services.fprintd.enable = true;
   services.upower.enable = true;
 
-  nixpkgs.config = {
-    cudaSupport = true;
-    allowUnfree = true;
-  };
+  nixpkgs.config.allowUnfree = true;
 }
