@@ -33,10 +33,10 @@
       zle -N up-line-or-beginning-search
       zle -N down-line-or-beginning-search
 
-      bindkey -- '^[[A' up-line-or-beginning-search
-      bindkey -- '^[[B' down-line-or-beginning-search
       bindkey -a 'k' up-line-or-beginning-search
       bindkey -a 'j' down-line-or-beginning-search
+      [[ -n "$key[Up]" ]] && bindkey -- "$key[Up]" up-line-or-beginning-search
+      [[ -n "$key[Up]" ]] && bindkey -- "$key[Down]" down-line-or-beginning-search
     '';
 
     plugins = [
@@ -53,7 +53,7 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    config.whitelist.prefix = [ "~/dev" ];
+    config.whitelist.prefix = [ "~/projects" ];
   };
 
   programs.eza = {
@@ -68,7 +68,6 @@
       "--git"
       "--git-repos"
     ];
-    # ... add theme...
   };
 
   home.shellAliases = {
@@ -86,19 +85,27 @@
 
   # programs.atuin = {
   #   enable = true;
+  #   enableZshIntegration = true;
   #   daemon.enable = true;
   #   flags = [ "--disable-up-arrow" ];
   #   settings = {
   #     db_path = "${config.xdg.dataHome}/atuin/history.db";
-  #     key_path = "${config.xdg.dataHome}/atuin/atuin-key";
-  #     session_path = "${config.xdg.dataHome}/atuin/atuin-session";
-  #     daemon.socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
+  #     key_path = "${config.xdg.dataHome}/atuin/key";
+  #     session_path = "${config.xdg.dataHome}/atuin/session";
+  #     daemon = {
+  #       enable = true;
+  #       socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
+  #     };
   #
-  #     update_check = false;
+  #     dialect = "uk";
   #     style = "compact";
   #     enter_accept = false;
   #     keymap_mode = "auto";
   #     keys.scroll_exits = false;
+  #
+  #     records = true;
+  #     update_check = true;
+  #     dotfiles = false;
   #   };
   #   # ... add theme ...
   # };

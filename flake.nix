@@ -30,9 +30,9 @@
       overlays = [
         inputs.niri.overlays.niri
         inputs.slippi.overlays.slippi
-        (final: prev: { bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; })
-        (final: prev: { cormorant = pkgs.callPackage ./packages/cormorant.nix {}; })
         (final: prev: {
+          bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
+          cormorant = pkgs.callPackage ./packages/cormorant.nix {}; 
           winetricks = nixpkgs.legacyPackages.${system}.winetricks.overrideAttrs (final: prev: {
             patches = [
               (pkgs.fetchpatch {

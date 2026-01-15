@@ -23,6 +23,8 @@
   services.fwupd.enable = true;
   services.locate.enable = true;
 
+  programs.firejail.enable = true;
+
   catppuccin = {
     enable = true;
     flavor = "mocha";
