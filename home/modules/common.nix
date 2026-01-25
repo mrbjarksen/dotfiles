@@ -6,7 +6,6 @@
 
   home.packages = with pkgs; [
     bscpylgtv
-    libnotify
   ];
 
   gtk.enable = true;
