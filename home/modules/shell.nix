@@ -52,6 +52,7 @@
 
   programs.direnv = {
     enable = true;
+    silent = true;
     nix-direnv.enable = true;
     config.whitelist.prefix = [ "~/projects" ];
   };

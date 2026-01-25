@@ -5,15 +5,8 @@
   manual.json.enable = true;
 
   home.packages = with pkgs; [
-    go
-    cargo
-    zig
-    nodejs
-    typescript
-    tree-sitter
-    ripgrep
-    fzf
     bscpylgtv
+    libnotify
   ];
 
   gtk.enable = true;
@@ -43,6 +36,9 @@
 
   services.playerctld.enable = true;
   services.mpris-proxy.enable = true;
+
+  programs.fzf.enable = true;
+  programs.ripgrep.enable = true;
 
   # programs.wpaperd = { # <-
   #   enable = true;

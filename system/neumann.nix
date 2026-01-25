@@ -15,7 +15,12 @@
   hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDriver = [ "modesetting" ];
 
-  services.fprintd.enable = true;
+  services.fprintd =
+  {
+    enable = true;
+    tod.enable = true;
+    tod.driver = pkgs.libfprint-2-tod1-goodix;
+  };
 
   nixpkgs.config.allowUnfree = true;
 }
