@@ -7,13 +7,19 @@
   system.stateVersion = "25.11";
   
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
-  boot.kernelPatches = lib.mkForce [];
+  # boot.kernelPatches = lib.mkForce [];
 
   services.upower.enable = true;
   services.tlp.pd.enable = true;
 
-  hardware.nvidia.modesetting.enable = true;
-  services.xserver.videoDriver = [ "modesetting" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    # powerManagement.enable = true;
+    # powerManagement.finegrained = true;
+  };
+  # boot.extraModprobeConfig = lib.optionalString config.hardware.nvidia.powerManagement.enable ''
+  #   options nvidia "NVreg_PreserveVideoMemoryAllocations=1"
+  # '';
 
   services.fprintd =
   {
