@@ -39,10 +39,18 @@
   programs.fzf.enable = true;
   programs.ripgrep.enable = true;
 
-  # programs.wpaperd = { # <-
+  # services.wpaperd = {
   #   enable = true;
-  #   settings.any.path = "${config.xdg.userDirs.pictures}/wallpapers";
+  #   settings = let
+  #     wallpapers = "${config.xdg.userDirs.pictures}/wallpapers";
+  #   in {
+  #     default.mode = "center";
+  #     "eDP-1".path = "${wallpapers}/puddles-3800-2360.png";
+  #     "DP-1".path = "${wallpapers}/puddles-3840-2160.png";
+  #     "HDMI-A-2".path = "${wallpapers}/puddles-3840-2160.png";
+  #   };
   # };
+
   services.dunst.enable = true;
 
   services.cliphist.enable = true;

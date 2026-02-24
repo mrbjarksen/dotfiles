@@ -169,8 +169,15 @@
     binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
       noRepeat = action: { repeat = false; inherit action; };
+      wpctl = "${pkgs.wireplumber}/bin/wpctl";
     in lib.mkForce {
       "Mod+Shift+Apostrophe".action = show-hotkey-overlay;
+
+      "XF86AudioRaiseVolume".action.spawn = [ wpctl "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+" ];
+      "XF86AudioLowerVolume".action.spawn = [ wpctl "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-" ];
+      "XF86AudioMute".action.spawn = [ wpctl "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
+      "XF86AudioMicMute".action.spawn = [ wpctl "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle" ];
+
       "Mod+T" = noRepeat (spawn config.home.sessionVariables.TERM);
 
       "Mod+Q" = noRepeat close-window;

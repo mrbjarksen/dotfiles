@@ -48,7 +48,129 @@
     ];
   };
 
-  # programs.starship.enable = true;
+  programs.starship = {
+    enable = true;
+    configPath = "${config.xdg.configHome}/starship.toml";
+    settings = {
+      format = ''
+        [🮈](fg:#45475b) $status$time$cmd_duration
+
+        [🮈](fg:#45475b) $username$hostname$container$directory$direnv$git_branch$git_commit$git_status$git_state$git_metrics
+        [🮈](fg:#45475b) $shlvl$character
+      '';
+      add_newline = false;
+      username = {
+        format = "[█  $user ]($style) ";
+        style_user = "fg:#cba6f8 bg:#38324d";
+        style_root = "fg:#f38ba9 bg:#3e2e41";
+        show_always = true;
+        disabled = false;
+      };
+      hostname = {
+        format = "[█ 󰁥 $hostname ]($style) ";
+        style = "fg:#cba6f8 bg:#38324d";
+        ssh_only = false;
+        disabled = false;
+      };
+      container = {
+        format = "[█ $symbol $name]($style)";
+        style = "fg:#cba6f8 bg:#38324d";
+        disabled = false;
+      };
+      directory = {
+        format = "[█ 󰉋 $path ]($style)";
+        style = "fg:#89b4fa bg:#2e354d";
+        truncation_length = 4;
+        # truncation_symbol = "󰶻 ";
+        disabled = false;
+      };
+      direnv = {
+        format = "[$loaded ]($style)";
+        style = "fg:#89b4fa bg:#2e354d";
+        loaded_msg = "●";
+        unloaded_msg = "○";
+        disabled = false;
+      };
+      git_branch = {
+        format = " [█  $branch ]($style)";
+        style = "fg:#f38ba9 bg:#3e2e41";
+        only_attached = true;
+        disabled = false;
+      };
+      git_commit = {
+        format = '' [█  \($hash$tag\) ]($style)'';
+        style = "fg:#f38ba9 bg:#3e2e41";
+        tag_disabled = false;
+        only_detached = true;
+        disabled = false;
+      };
+      git_status = {
+        format = "( [󰈚 $all_status$ahead_behind ]($style))";
+        style = "fg:#f9e2af bg:#3f3b42";
+        conflicted = "=";
+        ahead = " ";
+        behind = " ";
+        diverged = " ";
+        up_to_date = "";
+        untracked = "?";
+        stashed = "";
+        modified = "M";
+        staged = "A";
+        renamed = "R";
+        deleted = "D";
+        typechanged = "T";
+        disabled = false;
+      };
+      git_state = {
+        format = "[$state $progress_current/$progress_total ]($style)";
+        style = "fg:#f9e2af bg:#3f3b42";
+        disabled = false;
+      };
+      git_metrics = {
+        format = "( [󰐖 $added]($added_style))( [󰍵 $deleted]($deleted_style) )";
+        added_style = "fg:#a6e3a2 bg:#323c40";
+        deleted_style = "fg:#f38ba9 bg:#3e2e41";
+        disabled = false;
+      };
+      shlvl = {
+        format = "[$symbol]($style)";
+        style = "fg:#45475b";
+        symbol = "";
+        repeat = true;
+        repeat_offset = 2;
+        threshold = 3;
+        disabled = false;
+      };
+      character = {
+        success_symbol = ''[](fg:#a6e3a2)'';
+        error_symbol = ''[](fg:#a6e3a2)'';
+        vimcmd_symbol = ''[](fg:#89b4fa)'';
+        vimcmd_replace_one_symbol = ''[](fg:#f38ba9)'';
+        vimcmd_replace_symbol = ''[](fg:#f38ba9)'';
+        vimcmd_visual_symbol = ''[](fg:#cba6f8)'';
+        disabled = false;
+      };
+      status = {
+        format = "[█ $symbol$common_meaning$signal_name$maybe_int ]($style) ";
+        failure_style = "fg:#f38ba9 bg:#3e2e41";
+        symbol = "● ";
+        disabled = false;
+      };
+      time = {
+        format = "[█ 󰥔 $time ]($style) ";
+        # style = "fg:#9399b3 bg:303043";
+        style = "fg:#45475b";
+        disabled = false;
+      };
+      cmd_duration = {
+        format = "[█ 󱎫 $duration ]($style)";
+        style = "fg:#45475b";
+        min_time = 0;
+        show_milliseconds = true;
+        disabled = false;
+      };
+    };
+  };
 
   programs.direnv = {
     enable = true;
