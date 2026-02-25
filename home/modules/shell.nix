@@ -97,7 +97,7 @@
         disabled = false;
       };
       git_status = {
-        format = "( [󰈚 $all_status( $ahead_behind)]($style))";
+        format = "( [󰈚( $all_status)( $ahead_behind)]($style))";
         style = "fg:#45475b";
         conflicted = "=";
         ahead = "";
