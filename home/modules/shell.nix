@@ -53,64 +53,56 @@
     configPath = "${config.xdg.configHome}/starship.toml";
     settings = {
       format = ''
-        [🮈](fg:#45475b) $status$time$cmd_duration
+        [🮈](fg:#45475b)$status$time$cmd_duration
 
-        [🮈](fg:#45475b) $username$hostname$container$directory$direnv$git_branch$git_commit$git_status$git_state$git_metrics
+        [🮈](fg:#45475b)$username$hostname$container$directory$git_branch$git_commit$git_state( [█](fg:#45475b)$git_status$git_metrics)
         [🮈](fg:#45475b) $shlvl$character
       '';
       add_newline = false;
       username = {
-        format = "[█  $user ]($style) ";
+        format = "( [█  $user ]($style))";
         style_user = "fg:#cba6f8 bg:#38324d";
         style_root = "fg:#f38ba9 bg:#3e2e41";
         show_always = true;
         disabled = false;
       };
       hostname = {
-        format = "[█ 󰁥 $hostname ]($style) ";
+        format = "( [█ 󰒋 $hostname ]($style))";
         style = "fg:#cba6f8 bg:#38324d";
         ssh_only = false;
         disabled = false;
       };
       container = {
-        format = "[█ $symbol $name]($style)";
+        format = "( [█ 󰋘 $name]($style))";
         style = "fg:#cba6f8 bg:#38324d";
         disabled = false;
       };
       directory = {
-        format = "[█ 󰉋 $path ]($style)";
+        format = " [█ 󰉋 $path ]($style)";
         style = "fg:#89b4fa bg:#2e354d";
-        truncation_length = 4;
-        # truncation_symbol = "󰶻 ";
-        disabled = false;
-      };
-      direnv = {
-        format = "[$loaded ]($style)";
-        style = "fg:#89b4fa bg:#2e354d";
-        loaded_msg = "●";
-        unloaded_msg = "○";
+        truncation_length = 8;
         disabled = false;
       };
       git_branch = {
-        format = " [█  $branch ]($style)";
+        format = "( [█  $branch ]($style))";
         style = "fg:#f38ba9 bg:#3e2e41";
         only_attached = true;
         disabled = false;
       };
       git_commit = {
-        format = '' [█  \($hash$tag\) ]($style)'';
+        format = ''( [█  \($hash$tag\) ]($style))'';
         style = "fg:#f38ba9 bg:#3e2e41";
         tag_disabled = false;
         only_detached = true;
         disabled = false;
       };
       git_status = {
-        format = "( [󰈚 $all_status$ahead_behind ]($style))";
-        style = "fg:#f9e2af bg:#3f3b42";
+        format = "( [󰈚 $all_status( $ahead_behind)]($style))";
+        style = "fg:#45475b";
         conflicted = "=";
-        ahead = " ";
-        behind = " ";
-        diverged = " ";
+        ahead = "";
+        behind = "";
+        diverged = "";
         up_to_date = "";
         untracked = "?";
         stashed = "";
@@ -122,14 +114,14 @@
         disabled = false;
       };
       git_state = {
-        format = "[$state $progress_current/$progress_total ]($style)";
+        format = "( [█ $state $progress_current/$progress_total ]($style))";
         style = "fg:#f9e2af bg:#3f3b42";
         disabled = false;
       };
       git_metrics = {
-        format = "( [󰐖 $added]($added_style))( [󰍵 $deleted]($deleted_style) )";
-        added_style = "fg:#a6e3a2 bg:#323c40";
-        deleted_style = "fg:#f38ba9 bg:#3e2e41";
+        format = "( [󰐖 $added]($added_style))( [󰍵 $deleted]($deleted_style))";
+        added_style = "fg:#45475b";
+        deleted_style = "fg:#45475b";
         disabled = false;
       };
       shlvl = {
@@ -151,19 +143,18 @@
         disabled = false;
       };
       status = {
-        format = "[█ $symbol$common_meaning$signal_name$maybe_int ]($style) ";
+        format = "( [█ $symbol$common_meaning$signal_name$maybe_int ]($style))";
         failure_style = "fg:#f38ba9 bg:#3e2e41";
         symbol = "● ";
         disabled = false;
       };
       time = {
-        format = "[█ 󰥔 $time ]($style) ";
-        # style = "fg:#9399b3 bg:303043";
+        format = "( [█ 󰥔 $time]($style))";
         style = "fg:#45475b";
         disabled = false;
       };
       cmd_duration = {
-        format = "[█ 󱎫 $duration ]($style)";
+        format = "( [󱎫 $duration]($style))";
         style = "fg:#45475b";
         min_time = 0;
         show_milliseconds = true;
