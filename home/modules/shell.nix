@@ -170,6 +170,14 @@
     config.whitelist.prefix = [ "~/projects" ];
   };
 
+  programs.bat = {
+    enable = true;
+    config = {
+      tabs = "8";
+      style = "numbers";
+    };
+  };
+
   programs.eza = {
     enable = true;
     git = true;
@@ -224,7 +232,6 @@
   #   # ... add theme ...
   # };
 
-  # programs.bat.enable = true;
   # programs.carapace.enable = true;
   # programs.dircolors.enable = true;
 }
