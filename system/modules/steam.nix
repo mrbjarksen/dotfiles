@@ -23,7 +23,7 @@
 
   hardware.graphics.enable32Bit = true;
   environment.systemPackages = with pkgs; [
-    (wineWowPackages.full.override {
+    (wineWow64Packages.full.override {
       wineRelease = "staging";
       mingwSupport = true;
       waylandSupport = true;

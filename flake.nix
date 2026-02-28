@@ -33,23 +33,14 @@
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
           cormorant = pkgs.callPackage ./packages/cormorant.nix {}; 
-          winetricks = nixpkgs.legacyPackages.${system}.winetricks.overrideAttrs (final: prev: {
-            patches = [
-              (pkgs.fetchpatch {
-                # make WINE_BIN and WINESERVER_BIN overridable
-                # see https://github.com/NixOS/nixpkgs/issues/338367
-                url = "https://github.com/Winetricks/winetricks/commit/1d441b422d9a9cc8b0a53fa203557957ca1adc44.patch";
-                hash = "sha256-AYXV2qLHlxuyHC5VqUjDu4qi1TcAl2pMSAi8TEp8db4=";
-              })
-            ];
-            postInstall = ''
-              sed -i \
-                -e '2i PATH="${final.pathAdd}:$PATH"' \
-                -e '2i : "''${WINESERVER_BIN:=/run/current-system/sw/bin/wineserver}"' \
-                -e '2i : "''${WINE_BIN:=/run/current-system/sw/bin/.wine}"' \
-                "$out/bin/winetricks"
-            '';
-          });
+          # See https://github.com/NixOS/nixpkgs/issues/493679
+          pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+            (python-final: python-prev: {
+              picosvg = python-prev.picosvg.overrideAttrs (oldAttrs: {
+                doCheck = false;
+              });
+            })
+          ];
         })
       ];
       pkgs = import nixpkgs {
