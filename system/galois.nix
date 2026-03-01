@@ -28,11 +28,10 @@
 
   nixpkgs.config.rocmSupport = true;
 
-  nix.settings.trusted-users = [ "root" "builders" ];
+  nix.settings.trusted-users = [ "root" "builder" ];
   users.users.builder = {
     description = "Nix Remote Builder";
-    isSystemUser = true;
-    group = "nogroup";
+    isNormalUser = true;
     createHome = true;
     home = "/home/builder";
     homeMode = "500";

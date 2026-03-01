@@ -30,8 +30,7 @@
   nixpkgs.config.allowUnfree = true;
 
   nix.buildMachines = [{
-    hostName = "galois";
-    sshUser = "builder";
+    hostName = "galois-builder";
     system = "x86_64-linux";
     protocol = "ssh-ng";
     maxJobs = 4;
@@ -40,11 +39,4 @@
   }];
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
-
-  programs.ssh.extraConfig = ''
-    Host galois.local
-      IdentitiesOnly yes
-      IdentityFile /root/.ssh/galois-builder
-      User builder
-  '';
 }
