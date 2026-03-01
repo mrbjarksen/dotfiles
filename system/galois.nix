@@ -27,6 +27,19 @@
   hardware.enableRedistributableFirmware = true;
 
   nixpkgs.config.rocmSupport = true;
+
+  nix.settings.trusted-users = [ "root" "builders" ];
+  users.users.builder = {
+    description = "Nix Remote Builder";
+    isSystemUser = true;
+    group = "nogroup";
+    createHome = true;
+    home = "/home/builder";
+    homeMode = "500";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRQST/op7kO83sIsmh7FdUcG5LijViTKcbPPLZkoBP/ root@neumann"
+    ];
+  };
   
   # hardware.fancontrol.enable = true;
   # services.gotify.enable = true;

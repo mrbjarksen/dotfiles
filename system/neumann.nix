@@ -3,9 +3,9 @@
 {
   imports = [ ./modules ];
 
-  networking.hostName = "neumann"; 
+  networking.hostName = "neumann";
   system.stateVersion = "25.11";
-  
+
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
   # boot.kernelPatches = lib.mkForce [];
 
@@ -21,12 +21,30 @@
   #   options nvidia "NVreg_PreserveVideoMemoryAllocations=1"
   # '';
 
-  services.fprintd =
-  {
+  services.fprintd = {
     enable = true;
     tod.enable = true;
     tod.driver = pkgs.libfprint-2-tod1-goodix;
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  nix.buildMachines = [{
+    hostName = "galois";
+    sshUser = "builder";
+    system = "x86_64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 4;
+    speedFactor = 2;
+    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+  }];
+  nix.distributedBuilds = true;
+  nix.settings.builders-use-substitutes = true;
+
+  programs.ssh.extraConfig = ''
+    Host galois.local
+      IdentitiesOnly yes
+      IdentityFile /root/.ssh/galois-builder
+      User builder
+  '';
 }

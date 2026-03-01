@@ -33,14 +33,6 @@
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
           cormorant = pkgs.callPackage ./packages/cormorant.nix {}; 
-          # See https://github.com/NixOS/nixpkgs/issues/493679
-          pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-            (python-final: python-prev: {
-              picosvg = python-prev.picosvg.overrideAttrs (oldAttrs: {
-                doCheck = false;
-              });
-            })
-          ];
         })
       ];
       pkgs = import nixpkgs {
