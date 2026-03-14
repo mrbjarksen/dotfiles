@@ -38,6 +38,7 @@
 
   programs.fzf.enable = true;
   programs.ripgrep.enable = true;
+  programs.fd.enable = true;
 
   # services.wpaperd = {
   #   enable = true;
@@ -61,6 +62,4 @@
       dir = config.xdg.userDirs.download;
     };
   };
-
-  programs.nix-index.enable = true;
 }

@@ -12,6 +12,12 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-database = {
+      url = github:nix-community/nix-index-database;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri = {
       url = github:sodiboo/niri-flake;
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +60,11 @@
               inputs.slippi.homeModules.slippi
             ];
           };
+        }
+        inputs.nix-index-database.nixosModules.default
+        {
+          programs.nix-index.enable = true;
+          programs.nix-index-database.comma.enable = true;
         }
         inputs.niri.nixosModules.niri
         {
