@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  hardware.i2c.enable = true;
+
   environment.systemPackages = with pkgs; [
     wget
     curl
