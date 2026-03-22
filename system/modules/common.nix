@@ -13,8 +13,11 @@
     git.enable = true;
     less.enable = true;
     nano.enable = true;
-    neovim.enable = true;
-    neovim.vimAlias = true;
+    neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+    };
   };
 
   fonts.enableDefaultPackages = true;
