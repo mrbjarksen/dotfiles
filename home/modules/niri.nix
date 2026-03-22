@@ -53,10 +53,6 @@
         click-method = "clickfinger";
       };
 
-      mouse = {
-        accel-speed = 0.2;
-      };
-
       focus-follows-mouse = {
         enable = true;
         max-scroll-amount = "34%";
@@ -72,7 +68,7 @@
 
     # recent-windows.off = true;
 
-    outputs."eDP-1" = {
+    outputs."Sharp Corporation 0x14D6 Unknown" = {
       mode = {
         width = 3840;
         height = 2400;
@@ -80,7 +76,7 @@
       scale = 2;
     };
 
-    outputs."DP-1" = {
+    outputs."Lenovo Group Limited Qreator27 U310Y6F9" = {
       mode = {
         width = 3840;
         height = 2160;
@@ -89,7 +85,7 @@
       variable-refresh-rate = true;
     };
 
-    outputs."HDMI-A-2" = {
+    outputs."LG Electronics LG TV SSCR2 0x01010101" = {
       mode = {
         width = 3840;
         height = 2160;
