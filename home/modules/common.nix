@@ -5,6 +5,7 @@
   manual.json.enable = true;
 
   home.packages = with pkgs; [
+    nixd
     bscpylgtv
   ];
 

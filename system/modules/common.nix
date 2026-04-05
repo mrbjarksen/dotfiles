@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
+  # TODO Lenovo Qreator not detected with brightnessctl; works with ddcutil (some issue with permissions?)
   hardware.i2c.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -37,6 +38,7 @@
   };
 
   # Fix services starting before niri-session
+  # TODO This doesn't work i think
   systemd.user.services.xdg-desktop-portal = { after = [ "xdg-desktop-autostart.target" ]; };
   systemd.user.services.xdg-desktop-portal-gtk = { after = [ "xdg-desktop-autostart.target" ]; };
   systemd.user.services.xdg-desktop-portal-gnome = { after = [ "xdg-desktop-autostart.target" ]; };
