@@ -10,6 +10,8 @@
   ];
 
   gtk.enable = true;
+  gtk.gtk4.theme = config.gtk.theme;
+
   qt.enable = true;
   qt.style.name = "kvantum";
   qt.platformTheme.name = "kvantum";

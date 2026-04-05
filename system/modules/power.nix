@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=2h
-    SuspendEstimationSec=120s
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "2h";
+    SuspendEstimationSec = "120s";
+  };
 
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend-then-hibernate";

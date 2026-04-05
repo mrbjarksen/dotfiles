@@ -12,6 +12,7 @@
 
   programs.git = {
     enable = true;
+    signing.format = null;
     settings = {
       user.name = "Bjarki B. Harksen";
       user.email = "bjarki@harksen.is";

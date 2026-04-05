@@ -7,6 +7,7 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+    setSessionVariables = true;
 
     desktop = "${config.home.homeDirectory}/misc/desktop";
     templates = "${config.home.homeDirectory}/misc/templates";
