@@ -1,9 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, nixosConfig, lib, pkgs, ... }:
 
-{
+let
+  host = nixosConfig.networking.hostName;
+  gpuName =
+    if host == "galois" then
+      "Radeon RX 7800 XT"
+    else if host == "neumann" then
+      "NVIDIA GeForce GTX 1650 Ti"
+    else throw "unknown host: ${host}";
+in {
   programs.btop.enable = true;
   programs.btop.settings = {
-    # color_theme = "Default";
     theme_background = false;
     truecolor = true;
     force_tty = false;
@@ -72,7 +79,7 @@
     log_level = "WARNING";
     nvml_measure_pcie_speeds = true;
     gpu_mirror_graph = true;
-    custom_gpu_name0 = "Radeon RX 7800 XT";
+    custom_gpu_name0 = gpuName;
     custom_gpu_name1 = "";
     custom_gpu_name2 = "";
     custom_gpu_name3 = "";
