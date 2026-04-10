@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{ config, nixosConfig, lib, pkgs, ... }:
 
-{
+let
+  host = nixosConfig.networking.hostName;
+  gpuNumber =
+    if host == "galois" then 0
+    else if host == "neumann" then 1
+    else throw "unknown host: ${host}";
+in {
   catppuccin.mangohud.enable = false;
-  home.sessionVariables.MANGOHUD_CONFIGFLE = "${config.xdg.configHome}/MangoHud/MangoHud.conf";
+  home.sessionVariables.MANGOHUD_CONFIGFILE = "${config.xdg.configHome}/MangoHud/MangoHud.conf";
   programs.mangohud = {
     enable = true;
     settings = {
@@ -14,7 +20,7 @@
       # ram = true;
 
       gpu_stats = true;
-      gpu_list = 0;
+      gpu_list = gpuNumber;
       # vram = true;
 
       font_file = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMono-Light.ttf";
@@ -26,8 +32,8 @@
 
       cpu_color = "5A5A5A";
       gpu_color = "5A5A5A";
-      ram_color = "5A5A5A";
-      vram_color = "5A5A5A";
+      # ram_color = "5A5A5A";
+      # vram_color = "5A5A5A";
       text_color = "A0A0A0";
       text_outline_thickness = 0.1;
       background_alpha = 0;
