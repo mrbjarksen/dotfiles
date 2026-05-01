@@ -27,7 +27,7 @@
 
       zstyle ':completion:*' menu select
 
-      bindkey -v '^?' backward-delete-char
+      bindkey -v "$key[Backspace]" backward-delete-char
 
       autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
       zle -N up-line-or-beginning-search
@@ -43,7 +43,12 @@
       {
         name = "vi-mode";
         src = pkgs.zsh-vi-mode;
-        file = "share/zsh-vi-mode/zsh-vi-mode.plugins.zsh";
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      }
+      {
+        name = "bd";
+        src = pkgs.zsh-bd;
+        file = "share/zsh-bd/zsh-bd.plugin.zsh";
       }
     ];
   };
