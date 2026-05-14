@@ -34,6 +34,7 @@
   # };
 
   programs.firefox.enable = true; # <-
+  programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
   programs.imv.enable = true; # <-
   programs.mpv.enable = true; # <-
 

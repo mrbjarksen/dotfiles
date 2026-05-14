@@ -7,6 +7,10 @@
     wireless.enableGraphical = true;
     # lcd.enable = true;
   };
+  hardware.keyboard.qmk = {
+    enable = true;
+    keychronSupport = true;
+  };
   services.udev.packages = [
     pkgs.dolphin-emu
     (pkgs.writeTextFile {

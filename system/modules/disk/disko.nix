@@ -36,7 +36,7 @@ in
             settings = {
               allowDiscards = true;
               bypassWorkqueues = true;
-              fallbackToPassword = true;
+              # fallbackToPassword = true;
             };
             content = {
               type = "btrfs";
