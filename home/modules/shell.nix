@@ -27,7 +27,7 @@
 
       zstyle ':completion:*' menu select
 
-      bindkey -v "$key[Backspace]" backward-delete-char
+      bindkey -v '^?' backward-delete-char
 
       autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
       zle -N up-line-or-beginning-search
