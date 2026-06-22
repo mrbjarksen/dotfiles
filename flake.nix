@@ -2,30 +2,30 @@
   description = "Personal NixOS system configurations";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-    nixos-hardware.url = github:NixOS/nixos-hardware;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     disko = {
-      url = github:nix-community/disko;
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = github:nix-community/home-manager;
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-index-database = {
-      url = github:nix-community/nix-index-database;
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     niri = {
-      url = github:sodiboo/niri-flake;
+      url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    catppuccin.url = github:catppuccin/nix;
+    catppuccin.url = "github:catppuccin/nix";
 
     slippi = {
-      url = github:mrbjarksen/slippi-flake;
+      url = "github:mrbjarksen/slippi-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
