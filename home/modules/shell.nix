@@ -199,8 +199,8 @@
 
   home.shellAliases = {
     ls = lib.mkIf config.programs.eza.enable "eza";
-    ll = if config.programs.eza.enable then "eza -la --icons" else "ls -Flah";
-    tree = lib.mkIf config.programs.eza.enable "eza -la --icons --tree";
+    ll = if config.programs.eza.enable then "eza -la --icons=auto" else "ls -Flah";
+    tree = lib.mkIf config.programs.eza.enable "eza -la --icons=auto --tree";
   };
 
   home.sessionVariables = {

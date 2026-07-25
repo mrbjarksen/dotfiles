@@ -41,7 +41,6 @@
         inputs.slippi.overlays.slippi
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
-          cormorant = pkgs.callPackage ./packages/cormorant.nix {}; 
         })
       ];
       pkgs = import nixpkgs {
