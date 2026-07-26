@@ -23,5 +23,5 @@
   # xdg.portal.extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-kde ];
   # systemd.user.services.xdg-desktop-portal-kde.after = [ "xdg-desktop-autostart.target" ];
 
-  systemd.user.tmpfiles.rules = [ "d ${config.xdg.userDirs.download} - - - 1w -" ];
+  systemd.user.tmpfiles.rules = [ "d ${config.xdg.userDirs.download} - - - 30d -" ];
 }
