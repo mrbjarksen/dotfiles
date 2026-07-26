@@ -4,14 +4,10 @@
   nix.package = pkgs.nix;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "05:00";
-    options = "--delete-older-than 7d";
-  };
-  nix.optimise = {
-    automatic = true;
-    dates = [ "06:00" ];
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep 5 --keep-since 30d --optimise";
   };
 
   nix.registry = (lib.mapAttrs (_: value: { flake = value; }) inputs) // {
