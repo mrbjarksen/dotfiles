@@ -38,6 +38,26 @@
         "type": "github"
       }
     },
+    "harkprompt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785335888,
+        "narHash": "sha256-N1cchy6hFCCUvT/OxdP0i1PZP2nzIXyQ0PEfYkNkTks=",
+        "owner": "mrbjarksen",
+        "repo": "harkprompt",
+        "rev": "77552f136b8c2fcdeb8eb6a24ca4758d46e7c92c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mrbjarksen",
+        "repo": "harkprompt",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -205,6 +225,7 @@
       "inputs": {
         "catppuccin": "catppuccin",
         "disko": "disko",
+        "harkprompt": "harkprompt",
         "home-manager": "home-manager",
         "niri": "niri",
         "nix-index-database": "nix-index-database",

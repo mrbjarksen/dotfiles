@@ -11,8 +11,6 @@
     enable = true;
     package = pkgs.vimix-cursors;
     name = "Vimix-cursors";
-    # package = pkgs.rose-pine-cursor;
-    # name = "BreezeX-RosePineDawn-Linux";
-    size = 22;
+    size = 20;
   };
 }

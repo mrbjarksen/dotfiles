@@ -27,6 +27,11 @@
     };
     catppuccin.url = "github:catppuccin/nix";
 
+    harkprompt = {
+      url = "github:mrbjarksen/harkprompt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     slippi = {
       url = "github:mrbjarksen/slippi-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +43,7 @@
       system = "x86_64-linux";
       overlays = [
         inputs.niri.overlays.niri
+        inputs.harkprompt.overlays.harkprompt
         inputs.slippi.overlays.slippi
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
@@ -59,6 +65,7 @@
               ./home/mrbjarksen.nix
               inputs.catppuccin.homeModules.catppuccin
               { catppuccin.firefox.profiles = nixpkgs.lib.mkForce { }; }
+              inputs.harkprompt.homeModules.harkprompt
               inputs.slippi.homeModules.slippi
             ];
           };
