@@ -3,7 +3,14 @@
 {
   programs.zsh = {
     enable = true;
+
     enableCompletion = true;
+    completionInit = ''
+      autoload -U compinit && compinit
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+    '';
+
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
@@ -17,27 +24,47 @@
     dotDir = "${config.xdg.configHome}/zsh";
     history.path = "${config.xdg.dataHome}/zsh/zsh_history";
 
-    initContent = ''
-      setopt AUTO_CD
-      setopt LIST_PACKED
-      setopt INTERACTIVE_COMMENTS
-      unsetopt BEEP
+    setOptions = [
+      "AUTO_CD"
+      "LIST_PACKED"
+      "INTERACTIVE_COMMENTS"
+      "NO_BEEP"
+    ];
 
-      zsh_highlight+=(paste:none)
+    initContent = lib.mkMerge [
+      # (lib.mkOrder 550 ''
+      #   fpath+=(/home/mrbjarksen/projects/harkprompt)
+      #
+      #   setopt TRANSIENT_RPROMPT
+      #   PROMPT_HARK_SHLVL_OFFSET=-1
+      #
+      #   autoload -U promptinit && promptinit
+      #   prompt hark catppuccin-mocha
+      # '')
+      ''
+        bindkey -v '^?' backward-delete-char
 
-      zstyle ':completion:*' menu select
+        autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+        zle -N up-line-or-beginning-search
+        zle -N down-line-or-beginning-search
 
-      bindkey -v '^?' backward-delete-char
+        bindkey -a 'k' up-line-or-beginning-search
+        bindkey -a 'j' down-line-or-beginning-search
+        [[ -n "$key[Up]" ]] && bindkey -- "$key[Up]" up-line-or-beginning-search
+        [[ -n "$key[Up]" ]] && bindkey -- "$key[Down]" down-line-or-beginning-search
 
-      autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-      zle -N up-line-or-beginning-search
-      zle -N down-line-or-beginning-search
-
-      bindkey -a 'k' up-line-or-beginning-search
-      bindkey -a 'j' down-line-or-beginning-search
-      [[ -n "$key[Up]" ]] && bindkey -- "$key[Up]" up-line-or-beginning-search
-      [[ -n "$key[Up]" ]] && bindkey -- "$key[Down]" down-line-or-beginning-search
-    '';
+        function add-dot-and-resolve-abbr() {
+          [[ $LBUFFER = *.. ]] && LBUFFER+=/.
+          LBUFFER+=.
+        }
+        zle -N add-dot-and-resolve-abbr
+        bindkey -v . add-dot-and-resolve-abbr
+      ''
+      (lib.mkAfter ''
+        eval "$(${pkgs.zsh-patina}/bin/zsh-patina completion)"
+        eval "$(${pkgs.zsh-patina}/bin/zsh-patina activate)"
+      '')
+    ];
 
     plugins = [
       {
@@ -58,11 +85,15 @@
     };
   };
 
+  xdg.configFile."zsh-patina/config.toml".text = ''
+    [highlighting]
+    theme = "catppuccin-mocha"
+  '';
+
   programs.direnv = {
     enable = true;
     silent = true;
     nix-direnv.enable = true;
-    config.whitelist.prefix = [ "~/projects" ];
   };
 
   programs.bat = {
@@ -75,6 +106,7 @@
 
   programs.eza = {
     enable = true;
+    enableZshIntegration = false; # Turn off built-in aliases
     git = true;
     icons = "auto";
     extraOptions = [
@@ -89,8 +121,8 @@
 
   home.shellAliases = {
     ls = lib.mkIf config.programs.eza.enable "eza";
-    ll = if config.programs.eza.enable then "eza -la --icons=auto" else "ls -Flah";
-    tree = lib.mkIf config.programs.eza.enable "eza -la --icons=auto --tree";
+    ll = if config.programs.eza.enable then "eza -la" else "ls -Flah";
+    tree = lib.mkIf config.programs.eza.enable "eza -la --tree";
   };
 
   home.sessionVariables = {
