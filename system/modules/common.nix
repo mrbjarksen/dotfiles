@@ -32,6 +32,8 @@
   services.locate.enable = true;
 
   programs.firejail.enable = true;
+  
+  programs.localsend.enable = true;
 
   catppuccin = {
     enable = true;
