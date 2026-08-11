@@ -18,10 +18,9 @@
     pictures = "${config.home.homeDirectory}/media/images";
     videos = "${config.home.homeDirectory}/media/video";
     music = "${config.home.homeDirectory}/media/audio";
-  };
 
-  # xdg.portal.extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-kde ];
-  # systemd.user.services.xdg-desktop-portal-kde.after = [ "xdg-desktop-autostart.target" ];
+    projects = "${config.home.homeDirectory}/projects";
+  };
 
   systemd.user.tmpfiles.rules = [ "d ${config.xdg.userDirs.download} - - - 30d -" ];
 }
