@@ -1,17 +1,16 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.gamemode.enable = true;
+  programs.gamemode.enable = false;
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+    capSysNice = false;
   };
 
-  programs.steam = {
+  programs.steam.enable = true;
+  programs.steam.gamescopeSession = {
     enable = true;
-    remotePlay.openFirewall = true;
-    gamescopeSession.enable = true;
-    gamescopeSession.args = [ "--adaptive-sync" ];
+    args = [ "--adaptive-sync" "--hdr-enabled" ];
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
