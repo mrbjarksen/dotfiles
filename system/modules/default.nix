@@ -7,7 +7,6 @@
     ./boot.nix
     ./common.nix
     ./disk
-    ./greetd.nix
     ./input.nix
     ./networking.nix
     ./nix.nix

@@ -27,6 +27,13 @@
   fonts.packages = with pkgs; [ noto-fonts noto-fonts-color-emoji ];
 
   programs.niri.enable = true;
+  programs.dms-shell.enable = true;
+  programs.dms-shell.enableDynamicTheming = false;
+  services.displayManager.dms-greeter = {
+    enable = true;
+    compositor.name = "niri";
+    configHome = config.users.users.mrbjarksen.home;
+  };
 
   services.fwupd.enable = true;
   services.locate.enable = true;
