@@ -88,6 +88,10 @@
   xdg.configFile."zsh-patina/config.toml".text = ''
     [highlighting]
     theme = "catppuccin-mocha"
+
+    [[highlighting.precommands]]
+    name = "gamemoderun"
+    mode = "default"
   '';
 
   programs.direnv = {
