@@ -42,7 +42,6 @@
     let
       system = "x86_64-linux";
       overlays = [
-        inputs.niri.overlays.niri
         inputs.harkprompt.overlays.harkprompt
         inputs.slippi.overlays.slippi
         (final: prev: {
@@ -63,6 +62,8 @@
           home-manager.users.mrbjarksen = {
             imports = [
               ./home/mrbjarksen.nix
+              inputs.niri.homeModules.config
+              { programs.niri.package = pkgs.niri; }
               inputs.catppuccin.homeModules.catppuccin
               { catppuccin.firefox.profiles = nixpkgs.lib.mkForce { }; }
               inputs.harkprompt.homeModules.harkprompt
@@ -74,11 +75,6 @@
         {
           programs.nix-index.enable = true;
           programs.nix-index-database.comma.enable = true;
-        }
-        inputs.niri.nixosModules.niri
-        {
-          programs.niri.enable = true;
-          programs.niri.package = pkgs.niri-unstable;
         }
         inputs.catppuccin.nixosModules.catppuccin
       ];

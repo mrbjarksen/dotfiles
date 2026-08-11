@@ -26,6 +26,8 @@
   fonts.enableDefaultPackages = true;
   fonts.packages = with pkgs; [ noto-fonts noto-fonts-color-emoji ];
 
+  programs.niri.enable = true;
+
   services.fwupd.enable = true;
   services.locate.enable = true;
 
@@ -37,11 +39,4 @@
     flavor = "mocha";
     accent = "blue";
   };
-
-  # Fix services starting before niri-session
-  # TODO This doesn't work i think
-  systemd.user.services.xdg-desktop-portal = { after = [ "xdg-desktop-autostart.target" ]; };
-  systemd.user.services.xdg-desktop-portal-gtk = { after = [ "xdg-desktop-autostart.target" ]; };
-  systemd.user.services.xdg-desktop-portal-gnome = { after = [ "xdg-desktop-autostart.target" ]; };
-  systemd.user.services.niri-flake-polkit = { after = [ "xdg-desktop-autostart.target" ]; };
 }
