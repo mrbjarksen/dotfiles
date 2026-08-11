@@ -99,7 +99,6 @@
       background-color = "#11111b";
 
       center-focused-column = "never";
-      always-center-single-column = true;
 
       default-column-width.proportion = 0.5;
       preset-column-widths = [
@@ -117,11 +116,11 @@
       border = {
         enable = true;
         width = 1;
-        active.color = "#89b4fa";
+        active.color = "#7f849c";
         inactive.color = "#313244";
       };
 
-      gaps = 10;
+      gaps = 3;
       struts = {
         left = 0; right = 0;
         top = 0; bottom = 0; # 30
@@ -131,7 +130,7 @@
     window-rules = [
       {
         geometry-corner-radius = let
-          corner-radius = 3.0;
+          corner-radius = 6.0;
         in {
           bottom-left = corner-radius;
           bottom-right = corner-radius;
@@ -160,7 +159,36 @@
       }
     ];
 
-    animations = {};
+    animations = {
+      window-open.kind.easing.duration-ms = 150;
+      window-open.kind.easing.curve = "ease-out-cubic";
+      window-open.custom-shader = ''
+        vec4 open_color(vec3 coords_geo, vec3 size_geo) {
+          if (coords_geo.x < 0.0) return vec4(0.0);
+
+          float left_edge_pixels = min(6.0, niri_clamped_progress * size_geo.x / 2.0);
+          if (coords_geo.x * size_geo.x > left_edge_pixels)
+            coords_geo.x += 1.0 - niri_clamped_progress;
+
+          vec3 coords_tex = niri_geo_to_tex * coords_geo;
+          return texture2D(niri_tex, coords_tex.st);
+        }
+      '';
+      window-close.kind.easing.duration-ms = 150;
+      window-close.kind.easing.curve = "ease-out-cubic";
+      window-close.custom-shader = ''
+        vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+          if (coords_geo.x < 0.0) return vec4(0.0);
+
+          float left_edge_pixels = min(6.0, (1.0 - niri_clamped_progress) * size_geo.x / 2.0);
+          if (coords_geo.x * size_geo.x > left_edge_pixels)
+            coords_geo.x += niri_clamped_progress;
+
+          vec3 coords_tex = niri_geo_to_tex * coords_geo;
+          return texture2D(niri_tex, coords_tex.st);
+        }
+      '';
+    };
 
     binds = with config.lib.niri.actions; let
       allowWhenLocked = action: { allow-when-locked = true; inherit action; };
@@ -174,9 +202,14 @@
       "XF86AudioMute".action.spawn = [ wpctl "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
       "XF86AudioMicMute".action.spawn = [ wpctl "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle" ];
 
+      "Mod+Space".action.spawn = [ "dms" "ipc" "spotlight-bar" "toggleWith" "all" ];
+
       "Mod+T" = noRepeat (spawn config.home.sessionVariables.TERM);
+      "Mod+B" = noRepeat (spawn config.home.sessionVariables.BROWSER);
 
       "Mod+Q" = noRepeat close-window;
+
+      "Mod+End".action.spawn = [ "loginctl" "lock-session" ];
 
       "Mod+H".action = focus-column-left;
       "Mod+J".action = focus-window-down;
@@ -199,9 +232,6 @@
       "Mod+Ctrl+U".action = move-column-to-workspace-up;
 
       "Mod+Ctrl+M".action = move-window-to-monitor-next;
-
-      # "Mod+Ctrl+Shift+D".action = move-workspace-down;
-      # "Mod+Ctrl+Shift+U".action = move-workspace-up;
 
       "Mod+Comma"= noRepeat consume-or-expel-window-left;
       "Mod+Period" = noRepeat consume-or-expel-window-right;

@@ -34,6 +34,7 @@
     compositor.name = "niri";
     configHome = config.users.users.mrbjarksen.home;
   };
+  programs.dsearch.enable = true;
 
   services.fwupd.enable = true;
   services.locate.enable = true;
