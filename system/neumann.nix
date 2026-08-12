@@ -9,9 +9,6 @@
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
   # boot.kernelPatches = lib.mkForce [];
 
-  services.upower.enable = true;
-  services.tlp.pd.enable = true;
-
   hardware.nvidia = {
     modesetting.enable = true;
     # powerManagement.enable = true;

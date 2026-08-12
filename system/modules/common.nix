@@ -36,6 +36,9 @@
   };
   programs.dsearch.enable = true;
 
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   services.fwupd.enable = true;
   services.locate.enable = true;
 
