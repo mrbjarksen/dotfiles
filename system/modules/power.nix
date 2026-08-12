@@ -11,5 +11,7 @@
     HandleLidSwitchExternalPower = "suspend-then-hibernate";
     HandlePowerKey = "suspend-then-hibernate";
     HandlePowerKeyLongPress = "poweroff";
+    IdleAction = "lock";
+    IdleActionSec = "30m";
   };
 }
