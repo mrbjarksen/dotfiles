@@ -92,6 +92,12 @@
     [[highlighting.precommands]]
     name = ","
     mode = "default"
+    options = [
+        { short = "P", long = "picker", arg = "required" },
+        { short = "F", long = "nixpkgs-flake", arg = "required" },
+        { short = "c", long = "print-completions", arg = "required" },
+        { long = "cache-level", arg = "required" },
+    ]
 
     [[highlighting.precommands]]
     name = "gamemoderun"
@@ -100,10 +106,56 @@
     [[highlighting.precommands]]
     name = "gamescope"
     mode = "default"
+    options = [
+        { short = "W", long = "output-width", arg = "required" },
+        { short = "H", long = "output-height", arg = "required" },
+        { short = "w", long = "nested-width", arg = "required" },
+        { short = "h", long = "nested-height", arg = "required" },
+        { short = "r", long = "nested-refresh", arg = "required" },
+        { short = "m", long = "max-scale", arg = "required" },
+        { short = "S", long = "scaler", arg = "required" },
+        { short = "F", long = "filter", arg = "required" },
+        { long = "sharpness", arg = "required" },
+        { long = "fsr-sharpness", arg = "required" },
+        { short = "s", long = "mouse-sensitivity", arg = "required" },
+        { long = "backend", arg = "required" },
+        { long = "cursor", arg = "required" },
+        { long = "stats-path", arg = "required" },
+        { short = "C", long = "hide-cursor-delay", arg = "required" },
+        { long = "xwayland-count", arg = "required" },
+        { long = "prefer-vk-device", arg = "required" },
+        { long = "force-orientation", arg = "required" },
+        { long = "cursor-scale-height", arg = "required" },
+        { long = "virtual-connector-strategy", arg = "required" },
+        { long = "sdr-gamut-wideness", arg = "required" },
+        { long = "hdr-sdr-content-nits", arg = "required" },
+        { long = "hdr-itm-target-nits", arg = "required" },
+        { long = "framerate-limit", arg = "required" },
+        { short = "o", long = "nested-unfocused-refresh", arg = "required" },
+        { long = "display-index", arg = "required" },
+        { short = "O", long = "prefer-output", arg = "required" },
+        { long = "default-touch-mode", arg = "required" },
+        { long = "generate-drm-mode", arg = "required" },
+        { long = "vr-overlay-key", arg = "required" },
+        { long = "vr-app-overlay-key", arg = "required" },
+        { long = "vr-overlay-explicit-name", arg = "required" },
+        { long = "vr-overlay-default-name", arg = "required" },
+        { long = "vr-overlay-icon", arg = "required" },
+        { long = "vr-overlay-physical-width", arg = "required" },
+        { long = "vr-overlay-physical-curvature", arg = "required" },
+        { long = "vr-overlay-physical-pre-curve-pitch", arg = "required" },
+        { long = "vr-scrolls-speed", arg = "required" },
+        { long = "reshade-effect", arg = "required" },
+        { long = "reshade-technique-idx", arg = "required" },
+        { long = "mura-map", arg = "required" },
+    ]
 
     [[highlighting.precommands]]
     name = "nvidia-offload"
     mode = "default"
+    options = [
+        { short = "a", arg = "required" },
+    ]
   '';
 
   programs.direnv = {
