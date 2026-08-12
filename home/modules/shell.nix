@@ -90,7 +90,19 @@
     theme = "catppuccin-mocha"
 
     [[highlighting.precommands]]
+    name = ","
+    mode = "default"
+
+    [[highlighting.precommands]]
     name = "gamemoderun"
+    mode = "default"
+
+    [[highlighting.precommands]]
+    name = "gamescope"
+    mode = "default"
+
+    [[highlighting.precommands]]
+    name = "nvidia-offload"
     mode = "default"
   '';
 
