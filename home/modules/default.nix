@@ -11,7 +11,7 @@
     ./mangohud.nix
     ./niri.nix
     ./shell.nix
-    ./slippi.nix
+    # ./slippi.nix
     ./sol.nix
     ./xdg.nix
     ./zathura.nix

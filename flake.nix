@@ -25,17 +25,20 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     harkprompt = {
       url = "github:mrbjarksen/harkprompt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    slippi = {
-      url = "github:mrbjarksen/slippi-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # slippi = {
+    #   url = "github:mrbjarksen/slippi-flake";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, disko, home-manager, ... }@inputs:
@@ -43,7 +46,7 @@
       system = "x86_64-linux";
       overlays = [
         inputs.harkprompt.overlays.harkprompt
-        inputs.slippi.overlays.slippi
+        # inputs.slippi.overlays.slippi
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
         })
@@ -67,7 +70,7 @@
               inputs.catppuccin.homeModules.catppuccin
               { catppuccin.firefox.profiles = nixpkgs.lib.mkForce { }; }
               inputs.harkprompt.homeModules.harkprompt
-              inputs.slippi.homeModules.slippi
+              # inputs.slippi.homeModules.slippi
             ];
           };
         }

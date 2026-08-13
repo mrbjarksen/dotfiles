@@ -2,7 +2,9 @@
   "nodes": {
     "catppuccin": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1786309022,
@@ -45,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786297764,
-        "narHash": "sha256-fm0A4FGNQB3UzHGJeUh4m/+tXaiwMzDPan7zFvWRGxk=",
+        "lastModified": 1786650146,
+        "narHash": "sha256-ze6bW6lUkk/2pix6WzO+NOriiKdEl5pmGLKrZhZ8GX0=",
         "owner": "mrbjarksen",
         "repo": "harkprompt",
-        "rev": "455cef8942d3076cb1f61e3073e74ff01d826b71",
+        "rev": "3b6b9ed4a8bdda95485dc88f220d1c4224e98fa2",
         "type": "github"
       },
       "original": {
@@ -178,15 +180,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1785747939,
-        "narHash": "sha256-NqaCaIITVSDaBYdcWcfCyEu1erL7paTPEQbISQp9xwQ=",
-        "rev": "104240a772428cc2e20d8fd86c9ddbb886bbaff2",
-        "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1046984.104240a77242/nixexprs.tar.xz"
+        "lastModified": 1786106723,
+        "narHash": "sha256-zDSUbpoeo/9ZmD2+wXnzxoo1+uhL8vxc0b8yuYMKYq0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f13ff45afd1bb73e640eaa08a7066dbed07e3238",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz"
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-stable": {
@@ -205,22 +210,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1786106723,
-        "narHash": "sha256-zDSUbpoeo/9ZmD2+wXnzxoo1+uhL8vxc0b8yuYMKYq0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "f13ff45afd1bb73e640eaa08a7066dbed07e3238",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
@@ -230,28 +219,7 @@
         "niri": "niri",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2",
-        "slippi": "slippi"
-      }
-    },
-    "slippi": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1770660997,
-        "narHash": "sha256-fE5EjlYmNwfP7qWX/AWZr+BthKyX4hjRtDsdmyLPTa8=",
-        "owner": "mrbjarksen",
-        "repo": "slippi-flake",
-        "rev": "af52a78088468e2d74d8f25f403284090964c9b7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mrbjarksen",
-        "repo": "slippi-flake",
-        "type": "github"
+        "nixpkgs": "nixpkgs"
       }
     },
     "xwayland-satellite-stable": {

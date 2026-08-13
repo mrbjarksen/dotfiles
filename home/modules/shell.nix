@@ -7,18 +7,15 @@
     enableCompletion = true;
     completionInit = ''
       autoload -U compinit && compinit
-      zstyle ':completion:*' menu interactive
-      zstyle ':completion:*' file-list all=30
-      zstyle ':completion:*:default' list-colors "''${(s.:.)LS_COLORS}"
-      zstyle ':completion:*:default' list-grouped true
-      zstyle ':completion:*:default' group-name ''''''
-      zstyle ':completion:*' insert-sections suffix
+      zstyle ':completion:*' menu yes select
+      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
       zstyle ':completion:*' verbose true
     '';
 
     autosuggestion.enable = true;
 
     defaultKeymap = "viins";
+    localVariables.KEYTIMEOUT = 1;
 
     history.extended = true;
     history.ignoreDups = true;
@@ -68,19 +65,6 @@
         eval "$(${pkgs.zsh-patina}/bin/zsh-patina completion)"
         eval "$(${pkgs.zsh-patina}/bin/zsh-patina activate)"
       '')
-    ];
-
-    plugins = [
-      {
-        name = "vi-mode";
-        src = pkgs.zsh-vi-mode;
-        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-      }
-      {
-        name = "bd";
-        src = pkgs.zsh-bd;
-        file = "share/zsh-bd/zsh-bd.plugin.zsh";
-      }
     ];
 
     harkprompt = {
