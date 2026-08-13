@@ -7,8 +7,13 @@
     enableCompletion = true;
     completionInit = ''
       autoload -U compinit && compinit
-      zstyle ':completion:*' menu select
-      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+      zstyle ':completion:*' menu interactive
+      zstyle ':completion:*' file-list all=30
+      zstyle ':completion:*:default' list-colors "''${(s.:.)LS_COLORS}"
+      zstyle ':completion:*:default' list-grouped true
+      zstyle ':completion:*:default' group-name ''''''
+      zstyle ':completion:*' insert-sections suffix
+      zstyle ':completion:*' verbose true
     '';
 
     autosuggestion.enable = true;
