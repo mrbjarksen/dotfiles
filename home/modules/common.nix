@@ -8,6 +8,7 @@
     nixd
     bscpylgtv
     nautilus
+    libnotify
   ];
 
   gtk.enable = true;
@@ -56,10 +57,6 @@
   #     "HDMI-A-2".path = "${wallpapers}/puddles-3840-2160.png";
   #   };
   # };
-
-  services.dunst.enable = true;
-
-  services.cliphist.enable = true;
 
   programs.aria2 = {
     enable = true;
