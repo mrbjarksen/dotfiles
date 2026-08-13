@@ -12,7 +12,6 @@
     '';
 
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
 
     defaultKeymap = "viins";
 
