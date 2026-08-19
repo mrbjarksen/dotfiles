@@ -9,7 +9,14 @@
     bscpylgtv
     nautilus
     libnotify
+    harkvim
   ];
+
+  home.shellAliases = {
+    harkvim = "nvim";
+    vim = "nvim";
+    vi = "nvim";
+  };
 
   gtk.enable = true;
   gtk.gtk4.theme = config.gtk.theme;

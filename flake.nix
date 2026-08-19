@@ -34,6 +34,10 @@
       url = "github:mrbjarksen/harkprompt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    harkvim = {
+      url = "github:mrbjarksen/harkvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # slippi = {
     #   url = "github:mrbjarksen/slippi-flake";
@@ -46,6 +50,7 @@
       system = "x86_64-linux";
       overlays = [
         inputs.harkprompt.overlays.harkprompt
+        inputs.harkvim.overlays.harkvim
         # inputs.slippi.overlays.slippi
         (final: prev: {
           bscpylgtv = pkgs.callPackage ./packages/bscpylgtv.nix {}; 
