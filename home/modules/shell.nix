@@ -144,6 +144,15 @@
     options = [
         { short = "a", arg = "required" },
     ]
+
+    [[highlighting.precommands]]
+    name = "powerprofilesctl launch"
+    mode = "default"
+    options = [
+        { short = "p", long = "profile", arg = "required" },
+        { short = "r", long = "reason", arg = "required" },
+        { short = "i", long = "appid", arg = "required" },
+    ]
   '';
 
   programs.direnv = {
