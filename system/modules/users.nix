@@ -8,7 +8,7 @@
     description = "Bjarki B. Harksen";
     createHome = true;
     home = "/home/mrbjarksen";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "dialout" ];
     shell = pkgs.zsh;
   };
 }
