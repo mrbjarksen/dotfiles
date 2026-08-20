@@ -4,9 +4,9 @@
   services.libinput.enable = true;
   hardware.logitech = {
     wireless.enable = true;
-    wireless.enableGraphical = true;
     # lcd.enable = true;
   };
+  programs.solaar.enable = true;
   hardware.keyboard.qmk = {
     enable = true;
     keychronSupport = true;
