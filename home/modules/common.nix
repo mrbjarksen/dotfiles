@@ -6,6 +6,7 @@
 
   home.packages = with pkgs; [
     nixd
+    nixfmt
     bscpylgtv
     nautilus
     libnotify
