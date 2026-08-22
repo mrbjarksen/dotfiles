@@ -14,6 +14,7 @@
   programs = {
     htop.enable = true;
     git.enable = true;
+    git.lfs.enable = true;
     less.enable = true;
     nano.enable = true;
     neovim = {
