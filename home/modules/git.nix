@@ -19,7 +19,13 @@
       core = { quoteBranch = false; };
       merge = { conflictStyle = "diff3"; };
       diff = { algorithm = "histogram"; };
-      url = { "https://github.com/" = { insteadOf = [ "gh:" "github:" ]; }; };
+      url = {
+        "https://github.com/" = { insteadOf = [ "gh:" "github:" ]; };
+        "https://gitlab.com/" = { insteadOf = [ "gl:" "gitlab:" ]; };
+        "https://bitbucket.org/" = { insteadOf = [ "bb:" "bitbucket:" ]; };
+        "https://codeberg.org/" = { insteadOf = [ "cb:" "codeberg:" ]; };
+        "https://sr.ht/" = { insteadOf = [ "sh:" "sourcehut:" ]; };
+      };
     };
   };
 
