@@ -20,8 +20,6 @@
       adjust-open = lib.mkForce "best-fit";
       guioptions = lib.mkForce "";
 
-      page-padding = 2;
-
       recolor = true;
       recolor-keephue = true;
       recolor-reverse-video = true;
