@@ -7,16 +7,8 @@
   system.stateVersion = "25.11";
 
   boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
-  # boot.kernelPatches = lib.mkForce [];
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    # powerManagement.enable = true;
-    # powerManagement.finegrained = true;
-  };
-  # boot.extraModprobeConfig = lib.optionalString config.hardware.nvidia.powerManagement.enable ''
-  #   options nvidia "NVreg_PreserveVideoMemoryAllocations=1"
-  # '';
+  hardware.nvidia.modesetting.enable = true;
 
   nixpkgs.config.cudaSupport = true;
   nix.settings.substituters = [ "https://cache.nixos-cuda.org" ];
