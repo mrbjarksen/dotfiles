@@ -24,5 +24,5 @@
     };
   };
 
-  nix.nixPath = lib.mapAttrsToList (key: value: "${key}=${value.outPath}") inputs;
+  nix.settings.nix-path = lib.mapAttrsToList (key: value: "${key}=${value.outPath}") inputs;
 }

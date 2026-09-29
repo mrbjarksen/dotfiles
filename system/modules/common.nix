@@ -29,7 +29,6 @@
 
   programs.niri.enable = true;
   programs.dms-shell.enable = true;
-  programs.dms-shell.enableDynamicTheming = false;
   services.displayManager.dms-greeter = {
     enable = true;
     compositor.name = "niri";
