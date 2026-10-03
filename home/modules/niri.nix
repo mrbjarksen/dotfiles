@@ -6,6 +6,10 @@
     screenshot-path = "${config.xdg.userDirs.pictures}/screenshots/%Y-%m-%d-%H.%M.%S.png";
     hotkey-overlay.skip-at-startup = true;
 
+    spawn-at-startup = [
+      { argv = [ "dms" "run" ]; }
+    ];
+
     environment = {
       NIXOS_OZONE_WL = "1";
 
