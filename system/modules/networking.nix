@@ -33,7 +33,6 @@
       publish-domain = true;
       publish-hinfo = true;
       publish-addresses = true;
-      publish-userServices = true;
       publish-workstation = true;
     };
   };
