@@ -28,14 +28,14 @@
   fonts.packages = with pkgs; [ noto-fonts noto-fonts-color-emoji ];
 
   programs.niri.enable = true;
-  programs.dms-shell.enable = true;
-  programs.dms-shell.systemd.enable = false;
-  services.displayManager.dms-greeter = {
+  programs.dux-shell.enable = true;
+  programs.dux-shell.systemd.enable = false;
+  services.displayManager.dux-greeter = {
     enable = true;
     compositor.name = "niri";
     configHome = config.users.users.mrbjarksen.home;
   };
-  programs.dsearch.enable = true;
+  programs.dux-search.enable = true;
 
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;

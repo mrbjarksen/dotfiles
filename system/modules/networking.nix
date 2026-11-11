@@ -29,13 +29,12 @@
     nssmdns4 = true;
     nssmdns6 = true;
     openFirewall = true;
-    publish = {
-      enable = true;
-      domain = true;
-      hinfo = true;
-      addresses = true;
-      userServices = true;
-      workstation = true;
+    settings.publish = {
+      publish-domain = true;
+      publish-hinfo = true;
+      publish-addresses = true;
+      publish-userServices = true;
+      publish-workstation = true;
     };
   };
 }
